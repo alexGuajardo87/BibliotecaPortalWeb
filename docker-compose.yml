@@ -1,0 +1,21 @@
+services:
+  angularbibliotecaportalweb:
+    build:
+      context: ./frontend/BibliotecaPortalWeb
+      dockerfile: Dockerfile.angular
+    container_name: angularbibliotecaportalweb
+    working_dir: /app
+    ports:
+      - 4195:4195
+    networks:
+      - laravel-net
+    volumes:
+      - ./frontend/BibliotecaPortalWeb:/app
+      - /app/node_modules
+    command: >
+        sh -c "npm install && 
+        npx ng serve --host=0.0.0.0 --host 0.0.0.0 --port 4195 --poll=2000"
+
+networks:
+  laravel-net:
+    external: true

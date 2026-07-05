@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Fondo elegante institucional */
+  background: linear-gradient(
+    180deg,
+    #f8fafc 0%,
+    #08338F 50%,
+    #877514 100%
+  );
+}
+
+
+
+.p-selectbutton {
+    background-color: transparent !important; 
+    border: none !important;
+}
+
+.p-selectbutton .p-button {
+    background-color: transparent !important;
+}
+
+.p-selectbutton .p-button:hover {
+    background-color: #0a2f7a !important; /* azul más oscuro */
+    color: white !important;
+}
+
+/* Hover en ToggleButton */
+.p-togglebutton:hover {
+    background: #0a2f7a !important;
+    color: white !important;
+}
+
+.p-togglebutton {
+    background: #08338F !important;;
+}
+
+.p-togglebutton.p-togglebutton-checked {
+    background: #877514 !important;
+    color: white !important;
+}
+
+.p-togglebutton-checked .p-togglebutton-content {
+    background: #877514 !important;
+}

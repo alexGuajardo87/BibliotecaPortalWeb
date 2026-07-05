@@ -1,0 +1,8 @@
+###################
+# BASE IMAGE 
+###################
+FROM node:20-alpine as base
+RUN echo “Preparando contenedor base…” 
+RUN mkdir /app
+WORKDIR /app
+RUN npm install -g @angular/cli@21.2.0
