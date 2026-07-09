@@ -33,9 +33,14 @@
     <form [formGroup]="registroForm" #registroFormDir="ngForm" (ngSubmit)="onSubmit()">
 
     <div class="flex items-center p-1 mb-4">
-      <div class="flex w-full justify-center">
-        <p-selectButton [options]="stateOptions" formControlName="tipoRegistro" optionLabel="label" optionValue="value" size="small"/>
-      </div>
+
+        <label pLabel for="username" class="font-bold">Elija una modalidad de participación</label> 
+        <div class="flex flex-wrap gap-4">
+          <div class="flex w-full justify-center">
+            <p-selectButton [options]="stateOptions" formControlName="tipoRegistro" optionLabel="label" optionValue="value" size="small"/>
+          </div>
+        </div>
+
     </div>
 
 
@@ -43,7 +48,7 @@
     <div class="flex flex-col md:flex-row gap-4 p-1 w-full">
 
       <div class="flex flex-col gap-2 flex-1">
-        <label pLabel for="username" class="font-bold">Genero:</label> 
+        <label pLabel for="username" class="font-bold">Género:</label> 
         <div class="flex flex-wrap gap-4">
             <div class="flex items-center">
                 <p-radiobutton name="genero" value="Masculino" formControlName="genero" inputId="genero1" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
@@ -89,7 +94,7 @@
     <div class="flex flex-col md:flex-row gap-4 p-1 w-full">
       
       <div class="flex flex-col gap-2 flex-1">
-          <label pLabel for="nombre" class="font-bold">Nombre:</label> 
+          <label pLabel for="nombre" class="font-bold">Nombre(s):</label> 
           <input pInputText placeholder="Nombre" formControlName="nombre" class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small" [invalid]="registroForm.controls['nombre'].invalid && registroForm.controls['nombre'].touched"/>
           @if (registroForm.controls['nombre'].invalid && registroForm.controls['nombre'].touched) {
             <small class="text-red-500"> Ingresa el nombre.</small>
@@ -477,8 +482,10 @@
 
       </div>
 
+      </p-fieldset>
+
       
-      <div class="flex flex-col md:flex-row  w-full">
+      <!---<div class="flex flex-col md:flex-row  w-full">
         <div class="flex flex-col md:flex-row gap-4 p-1 w-full">
           
           <div class="flex flex-col gap-2 basis-[70%]">
@@ -498,96 +505,10 @@
           </div>
 
         </div>
-      </div>
+      </div>---->
 
 
-      <div class="flex flex-col md:flex-row  w-full">
-        <div class="flex flex-col flex-1">
-
-          <div class="flex flex-wrap items-center mb-3">
-            <div class="flex w-full">
-              <label pLabel for="isbn" class="font-bold">¿Desea someter posteriormente su trabajo en extenso para publicación en libro con ISBN?</label>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoPublicarconISBN" value="1" formControlName="aceptoPublicarconISBN" inputId="aceptoPublicarconISBN1" size="small"/>
-                <label pLabel for="aceptoPublicarconISBN1" class="text-sm ml-2">SI</label>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoPublicarconISBN" value="2" formControlName="aceptoPublicarconISBN" inputId="aceptoPublicarconISBN2" size="small"/>
-                <label pLabel for="aceptoPublicarconISBN2" class="text-sm ml-2">NO</label>
-            </div>
-          </div>              
-          @if (registroForm.controls['aceptoPublicarconISBN']?.hasError('required') && registroForm.get('aceptoPublicarconISBN')?.touched) {
-            <small class="text-red-500">Debes seleccionar una opción</small>
-          }
-        </div>
-      </div>
-
-
-      <div class="flex flex-col md:flex-row  w-full">
-        <div class="flex flex-col flex-1">
-
-          <div class="flex flex-wrap items-center mb-3">
-            <div class="flex w-full">
-              <label pLabel for="declaro" class="font-bold">Declaro que el trabajo es original e inédito y no se encuentra en evaluación simultánea en otro evento académico</label>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoTrabajoOriginal" value="1" formControlName="aceptoTrabajoOriginal" inputId="aceptoTrabajoOriginal1" size="small"/>
-                <label pLabel for="aceptoTrabajoOriginal1" class="text-sm ml-2">SI</label>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoTrabajoOriginal" value="2" formControlName="aceptoTrabajoOriginal" inputId="aceptoTrabajoOriginal2" size="small"/>
-                <label pLabel for="aceptoTrabajoOriginal2" class="text-sm ml-2">NO</label>
-            </div>
-          </div>
-          @if (registroForm.controls['aceptoTrabajoOriginal']?.hasError('required') && registroForm.get('aceptoTrabajoOriginal')?.touched) {
-            <small class="text-red-500">Debes seleccionar una opción</small>
-          }
-        </div>
-      </div>
-
-      <div class="flex flex-col md:flex-row  w-full ">
-        <div class="flex flex-col flex-1">
-
-          <div class="flex flex-wrap items-center mb-3">
-            <div class="flex w-full">
-              <label pLabel for="aceptopropuesta" class="font-bold">Acepto que la propuesta sea sometida a revisión por pares y de similitud por el Comité Organizador</label>
-            </div>
-          </div>
-          
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoPropuestaRevision" value="1" formControlName="aceptoPropuestaRevision" inputId="aceptoPropuestaRevision1" size="small"/>
-                <label pLabel for="aceptoPropuestaRevision1" class="text-sm ml-2">SI</label>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoPropuestaRevision" value="2" formControlName="aceptoPropuestaRevision" inputId="aceptoPropuestaRevision2" size="small"/>
-                <label pLabel for="aceptoPropuestaRevision2" class="text-sm ml-2">NO</label>
-            </div>
-          </div>
-          @if (registroForm.controls['aceptoPropuestaRevision']?.hasError('required') && registroForm.get('aceptoPropuestaRevision')?.touched) {
-            <small class="text-red-500">Debes seleccionar una opción</small>
-          }
-        </div>
-      </div>
-
-      </p-fieldset>
-
+      
     </div>
 
 
@@ -1099,6 +1020,107 @@
 
 
     </div>
+
+
+<div *ngIf="divPonentes">
+
+    <div class="flex flex-col md:flex-row  w-full">
+        <div class="flex flex-col flex-1">
+
+          <div class="flex flex-wrap items-center mb-3">
+            <div class="flex w-full">
+              <label pLabel for="isbn" class="font-bold">¿Desea someter posteriormente su trabajo en extenso para publicación en libro con ISBN?</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="aceptoPublicarconISBN" value="1" formControlName="aceptoPublicarconISBN" inputId="aceptoPublicarconISBN1" size="small"/>
+                <label pLabel for="aceptoPublicarconISBN1" class="text-sm ml-2">SI</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="aceptoPublicarconISBN" value="2" formControlName="aceptoPublicarconISBN" inputId="aceptoPublicarconISBN2" size="small"/>
+                <label pLabel for="aceptoPublicarconISBN2" class="text-sm ml-2">NO</label>
+            </div>
+          </div>              
+          @if (registroForm.controls['aceptoPublicarconISBN']?.hasError('required') && registroForm.get('aceptoPublicarconISBN')?.touched) {
+            <small class="text-red-500">Debes seleccionar una opción</small>
+          }
+        </div>
+      </div>
+
+
+      <div class="flex flex-col md:flex-row  w-full">
+        <div class="flex flex-col flex-1">
+
+          <div class="flex flex-wrap items-center mb-3">
+            <div class="flex w-full">
+              <label pLabel for="declaro" class="font-bold">Declaro que el trabajo es original e inédito y no se encuentra en evaluación simultánea en otro evento académico</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="aceptoTrabajoOriginal" value="1" formControlName="aceptoTrabajoOriginal" inputId="aceptoTrabajoOriginal1" size="small"/>
+                <label pLabel for="aceptoTrabajoOriginal1" class="text-sm ml-2">SI</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="aceptoTrabajoOriginal" value="2" formControlName="aceptoTrabajoOriginal" inputId="aceptoTrabajoOriginal2" size="small"/>
+                <label pLabel for="aceptoTrabajoOriginal2" class="text-sm ml-2">NO</label>
+            </div>
+          </div>
+          @if (registroForm.controls['aceptoTrabajoOriginal']?.hasError('required') && registroForm.get('aceptoTrabajoOriginal')?.touched) {
+            <small class="text-red-500">Debes seleccionar una opción</small>
+          }
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row  w-full ">
+        <div class="flex flex-col flex-1">
+
+          <div class="flex flex-wrap items-center mb-3">
+            <div class="flex w-full">
+              <label pLabel for="aceptopropuesta" class="font-bold">Acepto que la propuesta sea sometida a revisión por pares y de similitud por el Comité Organizador</label>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="aceptoPropuestaRevision" value="1" formControlName="aceptoPropuestaRevision" inputId="aceptoPropuestaRevision1" size="small"/>
+                <label pLabel for="aceptoPropuestaRevision1" class="text-sm ml-2">SI</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="aceptoPropuestaRevision" value="2" formControlName="aceptoPropuestaRevision" inputId="aceptoPropuestaRevision2" size="small"/>
+                <label pLabel for="aceptoPropuestaRevision2" class="text-sm ml-2">NO</label>
+            </div>
+          </div>
+          @if (registroForm.controls['aceptoPropuestaRevision']?.hasError('required') && registroForm.get('aceptoPropuestaRevision')?.touched) {
+            <small class="text-red-500">Debes seleccionar una opción</small>
+          }
+        </div>
+      </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
 
     <div class="flex flex-col md:flex-row  w-full">
       <div class="flex flex-col flex-1">

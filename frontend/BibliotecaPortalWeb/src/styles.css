@@ -39,14 +39,15 @@ body {
 }
 
 .p-togglebutton {
-    background: #08338F !important;;
-}
-
-.p-togglebutton.p-togglebutton-checked {
-    background: #877514 !important;
+    background: #08338F !important;
     color: white !important;
 }
 
+.p-togglebutton.p-togglebutton-checked {
+    background: #08338F !important;
+    color: black !important;
+}
+
 .p-togglebutton-checked .p-togglebutton-content {
-    background: #877514 !important;
+    background: white !important;
 }
