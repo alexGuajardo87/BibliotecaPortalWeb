@@ -1,4 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -80,7 +81,30 @@ export class App {
         { label: 'Electrónico', value: '2' }
   ];
 
+  constructor(private http: HttpClient) {}
+
   ngOnInit() {
+
+    this.http.get('http://localhost:8002/sanctum/csrf-cookie', { withCredentials: true })
+      .subscribe({
+        next: () => {
+
+              const body = {};
+              this.http.post('http://localhost:8002/auth/web', body,{ withCredentials: true })
+                .subscribe({
+                  next: ($respuesta: any) => {
+                    console.log($respuesta.message);
+                  },
+                  error: (err) =>  { 
+                    console.log(err.error["message"]);
+                  }
+                });
+        },
+        error: (err) => {
+          console.log(err);
+        } 
+    })
+
     this.registroForm = this.fb.group({
         tipoRegistro: ['1'],
         genero: ['',Validators.required],
@@ -270,6 +294,16 @@ export class App {
 
   onSubmit() {
 
+    const url = 'http://localhost:8002/api/auth/me';
+    this.http.get(url, { withCredentials: true }).subscribe({
+    next: (respuesta) => {
+        console.log('Datos recibidos:', respuesta);
+    },
+    error: (err) => {
+        console.error('Error al obtener los datos:', err);
+    }
+    });
+
     this.registroForm.get('area')?.clearValidators();
     this.registroForm.get('relacionRevista')?.clearValidators();
     this.registroForm.get('tituloPonencia')?.clearValidators();
@@ -339,6 +373,8 @@ export class App {
       this.registroForm.get('ISSNElectronico')?.setValidators([Validators.required]);
       this.registroForm.get('formatoRevista')?.setValidators([Validators.required]);
       this.registroForm.get('NombreCompletoPresentador')?.setValidators([Validators.required]);
+
+      this.registroForm.get('ejeTematico')?.setValue('7');
 
     }
 

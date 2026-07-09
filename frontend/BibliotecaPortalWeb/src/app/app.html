@@ -32,7 +32,7 @@
     <!--  Se van enviar los siguientes datos <pre>{{ valoresDelFormulario | json }}</pre>  -->
     <form [formGroup]="registroForm" #registroFormDir="ngForm" (ngSubmit)="onSubmit()">
 
-    <div class="flex items-center p-1 mb-4">
+    <div class="flex flex-col items-center p-1 mb-4">
 
         <label pLabel for="username" class="font-bold">Elija una modalidad de participación</label> 
         <div class="flex flex-wrap gap-4">
@@ -900,6 +900,9 @@
     </div>
 
 
+    <div *ngIf="!divPressRevista">
+
+    
       <div class="flex flex-col md:flex-row  w-full mt-4">
       
         <div class="flex flex-col flex-1">
@@ -964,6 +967,9 @@
         </div>
 
       </div>
+    
+    </div>
+
 
     <div *ngIf="divPonentes || divPressLibro">
 
