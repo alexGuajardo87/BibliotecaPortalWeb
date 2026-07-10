@@ -85,7 +85,7 @@ export class App {
 
   ngOnInit() {
 
-    this.http.get('http://localhost:8002/sanctum/csrf-cookie', { withCredentials: true })
+    /*this.http.get('http://localhost:8002/sanctum/csrf-cookie', { withCredentials: true })
       .subscribe({
         next: () => {
 
@@ -103,7 +103,7 @@ export class App {
         error: (err) => {
           console.log(err);
         } 
-    })
+    })*/
 
     this.registroForm = this.fb.group({
         tipoRegistro: ['1'],
@@ -294,7 +294,7 @@ export class App {
 
   onSubmit() {
 
-    const url = 'http://localhost:8002/api/auth/me';
+    /*const url = 'http://localhost:8002/api/auth/me';
     this.http.get(url, { withCredentials: true }).subscribe({
     next: (respuesta) => {
         console.log('Datos recibidos:', respuesta);
@@ -302,7 +302,7 @@ export class App {
     error: (err) => {
         console.error('Error al obtener los datos:', err);
     }
-    });
+    });*/
 
     this.registroForm.get('area')?.clearValidators();
     this.registroForm.get('relacionRevista')?.clearValidators();
