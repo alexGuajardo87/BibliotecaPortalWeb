@@ -15,6 +15,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { DataServices } from './Services/data-services';
 import { FieldsetModule } from 'primeng/fieldset';
 
+
+import { AUTH_URL,COOKIE,API,PUBLIC } from '../app/Core/Constants/api.constants';
+
 interface pec {
     label: string;
     value: string;
@@ -85,12 +88,12 @@ export class App {
 
   ngOnInit() {
 
-    this.http.get('http://localhost:8002/sanctum/csrf-cookie', { withCredentials: true })
+    this.http.get(`${COOKIE}/sanctum/csrf-cookie`, { withCredentials: true })
       .subscribe({
         next: () => {
 
               const body = {};
-              this.http.post('http://localhost:8002/auth/web', body,{ withCredentials: true })
+              this.http.post(`${AUTH_URL}/web`, body,{ withCredentials: true })
                 .subscribe({
                   next: ($respuesta: any) => {
                     console.log($respuesta.message);
@@ -139,7 +142,7 @@ export class App {
 
         tituloLibro : ['',Validators.required],
         //autores : ['',Validators.required],
-        autores: this.fb.array([this.fb.control('', Validators.required)]),
+        autores: this.fb.array([this.fb.control('')]),
         aniopublicacion: ['',Validators.required],
         editorial: ['',Validators.required],
         paisPublicacionLibro: ['',Validators.required],
@@ -292,7 +295,7 @@ export class App {
 
   onSubmit() {
 
-    /*const url = 'http://localhost:8002/api/auth/me';
+    const url = `${API}/auth/me`;
     this.http.get(url, { withCredentials: true }).subscribe({
     next: (respuesta) => {
         console.log('Datos recibidos:', respuesta);
@@ -300,7 +303,7 @@ export class App {
     error: (err) => {
         console.error('Error al obtener los datos:', err);
     }
-    });*/
+    });
 
     this.registroForm.get('area')?.clearValidators();
     this.registroForm.get('relacionRevista')?.clearValidators();
@@ -417,8 +420,7 @@ export class App {
       this.valoresDelFormulario = this.registroForm.value;
 
       const body = this.registroForm.value;
-
-      this.http.post('http://localhost:8002/public/registrar-m', body,{ withCredentials: true })
+      this.http.post(`${PUBLIC}/registrar-m`, body,{ withCredentials: true })
       .subscribe({
         next: ($respuesta: any) => {
           console.log($respuesta.message);
