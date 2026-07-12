@@ -97,6 +97,17 @@ export class App {
                 .subscribe({
                   next: ($respuesta: any) => {
                     console.log($respuesta.message);
+
+                    const url = `${AUTH_URL}/me`;
+                    this.http.get(url, { withCredentials: true }).subscribe({
+                    next: (respuesta) => {
+                        console.log('Datos recibidos:', respuesta);
+                    },
+                    error: (err) => {
+                        console.error('Error al obtener los datos:', err);
+                    }
+                    });
+
                   },
                   error: (err) =>  { 
                     console.log(err.error["message"]);
@@ -294,16 +305,6 @@ export class App {
 
 
   onSubmit() {
-
-    const url = `${API}/auth/me`;
-    this.http.get(url, { withCredentials: true }).subscribe({
-    next: (respuesta) => {
-        console.log('Datos recibidos:', respuesta);
-    },
-    error: (err) => {
-        console.error('Error al obtener los datos:', err);
-    }
-    });
 
     this.registroForm.get('area')?.clearValidators();
     this.registroForm.get('relacionRevista')?.clearValidators();
