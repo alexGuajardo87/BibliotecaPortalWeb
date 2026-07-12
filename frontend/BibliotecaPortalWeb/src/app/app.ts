@@ -1,7 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
-import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormControl,FormArray,FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -85,7 +85,7 @@ export class App {
 
   ngOnInit() {
 
-    /*this.http.get('http://localhost:8002/sanctum/csrf-cookie', { withCredentials: true })
+    this.http.get('http://localhost:8002/sanctum/csrf-cookie', { withCredentials: true })
       .subscribe({
         next: () => {
 
@@ -103,7 +103,7 @@ export class App {
         error: (err) => {
           console.log(err);
         } 
-    })*/
+    })
 
     this.registroForm = this.fb.group({
         tipoRegistro: ['1'],
@@ -120,8 +120,8 @@ export class App {
         ciudad: ['',Validators.required],
         estadoCodigo: ['',Validators.required],
         ciudadCodigo: ['',Validators.required],
-        instiadscripcion: [''],
-        profeIndependiente: ['',Validators.required],
+        instiadscripcion: ['',Validators.required],
+        profeIndependiente: [''],
         cargo: ['',Validators.required],
 
 
@@ -130,15 +130,16 @@ export class App {
         relacionRevista: ['',Validators.required],
 
         tituloPonencia: ['',Validators.required],
-        nombrePonenteResponsable: ['',Validators.required],
-        ORCIDResponsable: ['',Validators.required],
+        //nombrePonenteResponsable: ['',Validators.required],
+        //ORCIDResponsable: ['',Validators.required],
         aceptoPublicarconISBN : ['',Validators.required],
         aceptoTrabajoOriginal : ['',Validators.required],
         aceptoPropuestaRevision : ['',Validators.required],
 
 
         tituloLibro : ['',Validators.required],
-        autores : ['',Validators.required],
+        //autores : ['',Validators.required],
+        autores: this.fb.array([this.fb.control('', Validators.required)]),
         aniopublicacion: ['',Validators.required],
         editorial: ['',Validators.required],
         paisPublicacionLibro: ['',Validators.required],
@@ -200,12 +201,13 @@ export class App {
       
 
 
-      if(valor.value == 42){
+      if(valor == 42){
         this.selectEstado = true;
         this.registroForm.get('estadoCodigo')?.setValidators([Validators.required]);
         this.registroForm.get('ciudadCodigo')?.setValidators([Validators.required]);
       }
       else{  
+        this.registroForm.get('estadoCodigo')?.setValue(0);
         this.registroForm.get('estado')?.setValidators([Validators.required]);
         this.registroForm.get('ciudad')?.setValidators([Validators.required]);
         this.txtEstado = true;
@@ -223,9 +225,9 @@ export class App {
       this.selectCiudad = false;
       this.txtCiudad = false; 
 
-      if(valor.value == 25)
+      if(valor == 25){
         this.selectCiudad = true;
-      else{  
+      }else{  
         this.registroForm.get('ciudadCodigo')?.setValue(0);
         this.txtCiudad = true;
       }
@@ -238,14 +240,10 @@ export class App {
         if(valor){
           this.registroForm.get('instiadscripcion')?.disable(); 
           this.registroForm.get('instiadscripcion')?.setValue('Soy profesional independiente');
-          this.registroForm.get('instiadscripcion')?.clearValidators();
-          this.registroForm.get('instiadscripcion')?.updateValueAndValidity();
-        }else{
-          this.registroForm.get('instiadscripcion')?.enable();
-          this.registroForm.get('instiadscripcion')?.setValidators([Validators.required]);
-          this.registroForm.get('instiadscripcion')?.updateValueAndValidity();
+        }else
+        {
+          this.registroForm.get('instiadscripcion')?.enable(); 
         }
-          
     });
 
     this.registroForm.get('editorIndependiente')?.valueChanges.subscribe(valor => {
@@ -307,8 +305,8 @@ export class App {
     this.registroForm.get('area')?.clearValidators();
     this.registroForm.get('relacionRevista')?.clearValidators();
     this.registroForm.get('tituloPonencia')?.clearValidators();
-    this.registroForm.get('nombrePonenteResponsable')?.clearValidators();
-    this.registroForm.get('ORCIDResponsable')?.clearValidators();
+    //this.registroForm.get('nombrePonenteResponsable')?.clearValidators();
+    //this.registroForm.get('ORCIDResponsable')?.clearValidators();
     this.registroForm.get('aceptoPublicarconISBN')?.clearValidators();
     this.registroForm.get('aceptoTrabajoOriginal')?.clearValidators();
     this.registroForm.get('aceptoPropuestaRevision')?.clearValidators();
@@ -342,8 +340,8 @@ export class App {
     }else if(this.registroForm.get('tipoRegistro')?.value == 2)
     {
       this.registroForm.get('tituloPonencia')?.setValidators([Validators.required]);
-      this.registroForm.get('nombrePonenteResponsable')?.setValidators([Validators.required]);
-      this.registroForm.get('ORCIDResponsable')?.setValidators([Validators.required]);
+      //this.registroForm.get('nombrePonenteResponsable')?.setValidators([Validators.required]);
+      //this.registroForm.get('ORCIDResponsable')?.setValidators([Validators.required]);
       this.registroForm.get('aceptoPublicarconISBN')?.setValidators([Validators.required]);
       this.registroForm.get('aceptoTrabajoOriginal')?.setValidators([Validators.required]);
       this.registroForm.get('aceptoPropuestaRevision')?.setValidators([Validators.required]);
@@ -384,8 +382,8 @@ export class App {
 
 
     this.registroForm.get('tituloPonencia')?.updateValueAndValidity();
-    this.registroForm.get('nombrePonenteResponsable')?.updateValueAndValidity();
-    this.registroForm.get('ORCIDResponsable')?.updateValueAndValidity();
+    //this.registroForm.get('nombrePonenteResponsable')?.updateValueAndValidity();
+    //this.registroForm.get('ORCIDResponsable')?.updateValueAndValidity();
     this.registroForm.get('aceptoPublicarconISBN')?.updateValueAndValidity();
     this.registroForm.get('aceptoTrabajoOriginal')?.updateValueAndValidity();
     this.registroForm.get('aceptoPropuestaRevision')?.updateValueAndValidity();
@@ -413,18 +411,30 @@ export class App {
     this.registroForm.get('numeroAutores')?.updateValueAndValidity();
   
     if (this.registroForm.valid) {
-      //console.log('Formulario válido, enviando...', this.registroForm.value);
-      alert("Formulario válido, enviando...");
+
+
+      console.log('Formulario válido, enviando...', this.registroForm.value);
       this.valoresDelFormulario = this.registroForm.value;
-      this.registroForm.reset();
+
+      const body = this.registroForm.value;
+
+      this.http.post('http://localhost:8002/public/registrar-m', body,{ withCredentials: true })
+      .subscribe({
+        next: ($respuesta: any) => {
+          console.log($respuesta.message);
+        },
+        error: (err) =>  { 
+          console.log(err.error["message"]);
+        }
+      });
+
+      //this.registroForm.reset();
     } else {
       this.registroForm.markAllAsTouched();
-      //const campos = this.getCamposInvalidos();
-      //console.log('Campos faltantes o inválidos:', campos);
+      const campos = this.getCamposInvalidos();
+      console.log('Campos faltantes o inválidos:', campos);
     }
   } 
-
-
 
 
   getCamposInvalidos(): string[] {
@@ -439,4 +449,20 @@ export class App {
     return invalidos;
   }
 
+
+  get autores(): FormArray {
+      return this.registroForm.get('autores') as FormArray;
+  }
+
+  agregarAutor() {
+      this.autores.push(
+          new FormControl('', Validators.required)
+      );
+  }
+
+  eliminarAutor(index: number) {
+      if (this.autores.length > 1) {
+          this.autores.removeAt(index);
+      }
+  }
 }

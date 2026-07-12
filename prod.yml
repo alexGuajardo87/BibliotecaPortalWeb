@@ -3,6 +3,13 @@ services:
   angularportalweb:
     image: nginx:1.23.2-alpine
     container_name: angularportalweb
+    deploy:
+        resources:
+          limits:
+            cpus: '1.0'    
+            memory: 8G    
+          reservations:
+            memory: 2G
     restart: unless-stopped
     working_dir: /usr/share/nginx/html
     #ports:
