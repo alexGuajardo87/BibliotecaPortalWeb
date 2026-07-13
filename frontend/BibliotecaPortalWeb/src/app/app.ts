@@ -421,21 +421,23 @@ export class App {
   
     if (this.registroForm.valid) {
 
+
+
       this.valoresDelFormulario = this.registroForm.value;
 
       const body = this.registroForm.value;
       this.http.post(`${PUBLIC}/registrar-m`, body,{ withCredentials: true })
       .subscribe({
         next: ($respuesta: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Registro guardado' , detail: $respuesta.message });
+          this.messageService.add({ severity: 'success', summary: 'Registro guardado' , detail: $respuesta.message, life: 3000 });
         },
         error: (err) =>  { 
-          this.messageService.add({ severity: 'warn', summary: 'Algo salió mal' , detail: err.error["message"] });
-          console.log(err.error["message"]);
+
+          this.messageService.add({ severity: 'warn', summary: 'Algo salió mal' , detail: err.error["message"], life: 3000  });
         }
       });
 
-      this.registroForm.reset();
+      //this.registroForm.reset();
     } else {
       this.registroForm.markAllAsTouched();
       const campos = this.getCamposInvalidos();
@@ -489,4 +491,5 @@ export class App {
           this.autores.removeAt(index);
       }
   }
+
 }
