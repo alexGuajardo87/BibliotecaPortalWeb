@@ -123,11 +123,9 @@ export class App {
         instiadscripcion: [''],
         profeIndependiente: ['',Validators.required],
         cargo: ['',Validators.required],
-
-
-
         area: ['',Validators.required],
-        relacionRevista: ['',Validators.required],
+
+        
 
         tituloPonencia: ['',Validators.required],
         nombrePonenteResponsable: ['',Validators.required],
@@ -144,6 +142,7 @@ export class App {
         paisPublicacionLibro: ['',Validators.required],
         ISBN: ['',Validators.required],
 
+        relacionRevista: ['',Validators.required],
         tituloRevista: ['',Validators.required],
         nombreEditorJefe: ['',Validators.required],
         entidadEditora: ['',Validators.required],
