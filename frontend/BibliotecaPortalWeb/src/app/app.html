@@ -15,17 +15,20 @@
     </div>
 
     <div class="flex items-center p-1 mb-4">
-      <div class="flex w-full justify-center">
-        <p-card class="w-full" header="1er. CONGRESO LATINOAMERICANO INTERDISCIPLINARIO DE DIVULGACIÓN CIENTÍFICA EN CIENCIAS SOCIALES Y HUMANIDADES.">
+      <div class="flex w-full">
+        <p-card class="w-full">
+            <div class="text-center p-4 font-bold">
+                1er. CONGRESO LATINOAMERICANO INTERDISCIPLINARIO DE DIVULGACIÓN CIENTÍFICA EN CIENCIAS SOCIALES Y HUMANIDADES
+            </div>
             <p class="m-0 text-justify mb-4">Bienvenido al sistema de registro del 1er Congreso Latinoamericano Interdisciplinario de Divulgación Científica en Ciencias Sociales y Humanidades (CONLAINUAS 2026), organizado por la Universidad Autónoma de Sinaloa.</p>
             <p class="m-0 text-justify mb-4">Este congreso tiene como propósito promover el intercambio de conocimientos, experiencias y resultados de investigación entre académicos, investigadores, estudiantes y profesionales de América Latina, fortaleciendo la colaboración interdisciplinaria en las ciencias sociales y las humanidades.</p>
-            <p class="m-0 text-justify">Seleccione la modalidad de registro (asistente o ponente) y complete la información solicitada. Los datos proporcionados serán utilizados únicamente para la gestión académica y administrativa del evento, conforme a la normativa institucional aplicable. </p>
-            <ng-template #footer>
+            <p class="m-0 text-justify">Seleccione la modalidad de registro (asistente, ponente) y complete la información solicitada. Los datos proporcionados serán utilizados únicamente para la gestión académica y administrativa del evento, conforme a la normativa institucional aplicable.  Favor de leer el aviso de privacidad <a href="http://transparencia.uasnet.mx/documentos/Aviso%20privacidad%20integral_2022.pdf" target="_blank"><b>Aquí</b></a>. </p>
+            <ng-template #footer class="flex w-full">
                 <span class="text-sm text-surface-500 dark:text-surface-400"><b>Importante:<br></b></span>
 
                 <span class="text-sm text-surface-500 dark:text-surface-400"> 
                   a) Escriba su nombre completo correctamente incluya mayúsculas, minúsculas y acentos, ya que así aparecerá en su constancia de participación. <br>
-                  b) Todo libro postulado para su presentación debe haber sido editado entre 2025 y 2026 </span>
+                  b) Todo libro postulado para su presentación debe haber sido editado entre 2025 y 2026 </span><br>
             </ng-template>
         </p-card>
       </div>
@@ -38,7 +41,7 @@
         <label pLabel for="username" class="font-bold">Elija una modalidad de participación</label> 
         <div class="flex flex-wrap gap-4">
           <div class="flex w-full justify-center">
-            <p-selectButton [options]="stateOptions" formControlName="tipoRegistro" optionLabel="label" optionValue="value" size="small"/>
+            <p-selectButton [options]="stateOptions" formControlName="tipoRegistro" optionLabel="label" optionValue="value" size="small" [allowEmpty]="false"/>
           </div>
         </div>
 
@@ -409,7 +412,7 @@
           
           <div class="flex flex-wrap items-center mb-2">
             <div class="flex w-full">
-              <label pLabel for="cargo" class="font-bold">Relación con la revista:</label>
+              <label pLabel class="font-bold">Relación con la revista:</label>
             </div>
           </div>
 
@@ -450,21 +453,14 @@
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="relacionRevista"  value="6" formControlName="relacionRevista" inputId="relacionRevista6" size="small"/>
-                <label pLabel for="normal-checkbox" class="text-sm">Economía y Administración</label>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-1">
-            <div class="flex items-center gap-2">
-                <p-radiobutton name="relacionRevista"  value="7" formControlName="relacionRevista" inputId="relacionRevista7" size="small"/>
+                <p-radiobutton name="relacionRevista"  value="6" formControlName="relacionRevista" inputId="relacionRevista7" size="small"/>
                 <label pLabel for="normal-checkbox" class="text-sm">Administrador/soporte</label>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="relacionRevista"  value="8" formControlName="relacionRevista" inputId="relacionRevista8" size="small"/>
+                <p-radiobutton name="relacionRevista"  value="7" formControlName="relacionRevista" inputId="relacionRevista8" size="small"/>
                 <label pLabel for="normal-checkbox" class="text-sm">Otra</label>
             </div>
           </div>
@@ -497,7 +493,7 @@
 
       <div class="flex flex-col gap-2 flex-1" formArrayName="autoresPonencia">
 
-        <label pLabel class="font-bold">Autor(es):</label>
+        <label pLabel class="font-bold">Autor y Coautor(es):</label>
 
         @for (control of autoresPonencia.controls; track $index) {
 
@@ -592,7 +588,7 @@
 
         <div class="flex flex-col gap-2 flex-1" formArrayName="autores">
 
-            <label pLabel class="font-bold">Autor(es):</label>
+            <label pLabel class="font-bold">Autor y Coautor(es):</label>
 
             @for (control of autores.controls; track $index) {
 
@@ -687,10 +683,25 @@
 
         </div>
 
+        <div class="flex flex-col gap-2 w-full md:w-[30%]">
+              <label pLabel class="font-bold">El formato del libro es:</label>
+              <p-select 
+                  [options]="libroFormato" 
+                  formControlName="formatoLibro" 
+                  optionLabel="label" 
+                  optionValue="value" 
+                  placeholder="Selecciona la peridiocidad" 
+                  class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300 items-center" 
+                  size="small"/>
+              @if (registroForm.controls['formatoLibro'].invalid && registroForm.controls['formatoLibro'].touched) {
+                <small class="text-red-500"> Debes seleccionar el formato del libro</small>
+              }
+          </div>
+
       </p-fieldset>
 
     </div>
-    
+
 
     <div *ngIf="divPressRevista">
 
@@ -1081,35 +1092,35 @@
  
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="numeroAutores1" value="1" formControlName="numeroAutores" inputId="numeroAutores1" size="small"/>
+                <p-radiobutton name="numeroAutores" value="1" formControlName="numeroAutores" inputId="numeroAutores1" size="small"/>
                 <label pLabel for="small-checkbox" class="text-sm">1</label>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="numeroAutores2" value="2" formControlName="numeroAutores" inputId="numeroAutores2" size="small"/>
+                <p-radiobutton name="numeroAutores" value="2" formControlName="numeroAutores" inputId="numeroAutores2" size="small"/>
                 <label pLabel for="normal-checkbox" class="text-sm">2</label>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="numeroAutores3" value="3" formControlName="numeroAutores" inputId="numeroAutores3" size="small"/>
+                <p-radiobutton name="numeroAutores" value="3" formControlName="numeroAutores" inputId="numeroAutores3" size="small"/>
                 <label pLabel for="normal-checkbox" class="text-sm">3</label>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-4 mb-1">
+          <div class="flex flex-wrap items-center gap-4 mb-1" *ngIf="divPressLibro">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="numeroAutores4" value="4" formControlName="numeroAutores" inputId="numeroAutores4" size="small"/>
+                <p-radiobutton name="numeroAutores" value="4" formControlName="numeroAutores" inputId="numeroAutores4" size="small"/>
                 <label pLabel for="normal-checkbox" class="text-sm">4</label>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-4 mb-1">
+          <div class="flex flex-wrap items-center gap-4 mb-1" *ngIf="divPressLibro">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="numeroAutores5x" value="5" formControlName="numeroAutores" inputId="numeroAutores5" size="small"/>
+                <p-radiobutton name="numeroAutores" value="5" formControlName="numeroAutores" inputId="numeroAutores5" size="small"/>
                 <label pLabel for="normal-checkbox" class="text-sm">5 o más</label>
             </div>
           </div>

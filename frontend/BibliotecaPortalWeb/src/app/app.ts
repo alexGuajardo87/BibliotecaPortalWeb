@@ -88,6 +88,11 @@ export class App {
         { label: 'Electrónico', value: '2' }
   ];
 
+  libroFormato: any[] = [
+        { label: 'Impreso', value: '1' },
+        { label: 'Electrónico', value: '2' }
+  ];
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -161,6 +166,7 @@ export class App {
         editorial: ['',Validators.required],
         paisPublicacionLibro: ['',Validators.required],
         ISBN: ['',Validators.required],
+        formatoLibro: ['',Validators.required],
 
         relacionRevista: ['',Validators.required],
         tituloRevista: ['',Validators.required],
@@ -310,6 +316,7 @@ export class App {
 
   onSubmit() {
 
+    this.registroForm.get('cargo')?.clearValidators();
     this.registroForm.get('area')?.clearValidators();
     this.registroForm.get('relacionRevista')?.clearValidators();
     this.registroForm.get('tituloPonencia')?.clearValidators();
@@ -319,13 +326,13 @@ export class App {
     this.registroForm.get('aceptoTrabajoOriginal')?.clearValidators();
     this.registroForm.get('aceptoPropuestaRevision')?.clearValidators();
 
-
     this.registroForm.get('tituloLibro')?.clearValidators();
     this.registroForm.get('autores')?.clearValidators();
     this.registroForm.get('aniopublicacion')?.clearValidators();
     this.registroForm.get('editorial')?.clearValidators();
     this.registroForm.get('paisPublicacionLibro')?.clearValidators();
-    this.registroForm.get('ISBN')?.clearValidators();
+    this.registroForm.get('ISBN')?.clearValidators(); 
+    this.registroForm.get('formatoLibro')?.clearValidators();
 
     this.registroForm.get('tituloRevista')?.clearValidators();
     this.registroForm.get('nombreEditorJefe')?.clearValidators();
@@ -342,9 +349,11 @@ export class App {
     if(this.registroForm.get('tipoRegistro')?.value == 1)
     {
       this.registroForm.get('area')?.setValidators([Validators.required]);
+      this.registroForm.get('cargo')?.setValidators([Validators.required]);
 
     }else if(this.registroForm.get('tipoRegistro')?.value == 2)
     {
+      this.registroForm.get('cargo')?.setValidators([Validators.required]);
       this.registroForm.get('tituloPonencia')?.setValidators([Validators.required]);
       //this.registroForm.get('nombrePonenteResponsable')?.setValidators([Validators.required]);
       //this.registroForm.get('ORCIDResponsable')?.setValidators([Validators.required]);
@@ -355,12 +364,14 @@ export class App {
       this.registroForm.get('numeroAutores')?.setValidators([Validators.required]);
 
     }else if(this.registroForm.get('tipoRegistro')?.value == 3) {
+      this.registroForm.get('cargo')?.setValidators([Validators.required]);
       this.registroForm.get('tituloLibro')?.setValidators([Validators.required]);
       this.registroForm.get('autores')?.setValidators([Validators.required]);
       this.registroForm.get('aniopublicacion')?.setValidators([Validators.required]);
       this.registroForm.get('editorial')?.setValidators([Validators.required]);
       this.registroForm.get('paisPublicacionLibro')?.setValidators([Validators.required]);
       this.registroForm.get('ISBN')?.setValidators([Validators.required]);
+      this.registroForm.get('formatoLibro')?.setValidators([Validators.required]);
 
       this.registroForm.get('numeroAutores')?.setValidators([Validators.required]);
 
@@ -373,8 +384,6 @@ export class App {
       this.registroForm.get('areaCienciasSociales')?.setValidators([Validators.required]);
       this.registroForm.get('peridiocidad')?.setValidators([Validators.required]);
       this.registroForm.get('paisPublicacionRevista')?.setValidators([Validators.required]);
-      this.registroForm.get('ISSNImpreso')?.setValidators([Validators.required]);
-      this.registroForm.get('ISSNElectronico')?.setValidators([Validators.required]);
       this.registroForm.get('formatoRevista')?.setValidators([Validators.required]);
       this.registroForm.get('NombreCompletoPresentador')?.setValidators([Validators.required]);
 
@@ -382,7 +391,8 @@ export class App {
 
     }
 
-      
+    
+    this.registroForm.get('cargo')?.updateValueAndValidity();
     this.registroForm.get('area')?.updateValueAndValidity();
     this.registroForm.get('relacionRevista')?.updateValueAndValidity();
 
@@ -400,6 +410,7 @@ export class App {
     this.registroForm.get('editorial')?.updateValueAndValidity();
     this.registroForm.get('paisPublicacionLibro')?.updateValueAndValidity();
     this.registroForm.get('ISBN')?.updateValueAndValidity();
+    this.registroForm.get('formatoLibro')?.updateValueAndValidity();
 
 
     this.registroForm.get('tituloRevista')?.updateValueAndValidity();
@@ -431,9 +442,26 @@ export class App {
       });
 
       this.registroForm.reset();
+
+      this.registroForm.get('tipoRegistro')?.setValue('1');
+
+      while (this.autoresPonencia.length !== 1) {
+        this.autoresPonencia.removeAt(0);
+      }
+
+      while (this.autores.length !== 1) {
+        this.autores.removeAt(0);
+      }
+
+      this.selectEstado = false;
+      this.txtEstado = false; 
+      this.selectCiudad = false;
+      this.txtCiudad = false; 
+
     } else {
       this.registroForm.markAllAsTouched();
       const campos = this.getCamposInvalidos();
+      this.messageService.add({ severity: 'warn', summary: 'Atención' , detail: 'Campos faltantes o inválidos', life: 3000  });
       console.log('Campos faltantes o inválidos:', campos);
     }
   } 
@@ -457,9 +485,11 @@ export class App {
   }
 
   agregarAutorPonencia() {
+      if (this.autoresPonencia.length < 3) {
       this.autoresPonencia.push(
           new FormControl('', Validators.required)
       );
+    }
   }
 
   eliminarAutorPonencia(index: number) {
