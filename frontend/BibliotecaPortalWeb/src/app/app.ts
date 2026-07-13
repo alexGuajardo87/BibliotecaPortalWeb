@@ -415,9 +415,7 @@ export class App {
     this.registroForm.get('numeroAutores')?.updateValueAndValidity();
   
     if (this.registroForm.valid) {
-
-
-
+      
       this.valoresDelFormulario = this.registroForm.value;
 
       const body = this.registroForm.value;
