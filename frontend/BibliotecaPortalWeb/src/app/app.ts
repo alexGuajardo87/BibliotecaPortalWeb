@@ -415,7 +415,7 @@ export class App {
     this.registroForm.get('numeroAutores')?.updateValueAndValidity();
   
     if (this.registroForm.valid) {
-      
+
       this.valoresDelFormulario = this.registroForm.value;
 
       const body = this.registroForm.value;
@@ -430,7 +430,7 @@ export class App {
         }
       });
 
-      //this.registroForm.reset();
+      this.registroForm.reset();
     } else {
       this.registroForm.markAllAsTouched();
       const campos = this.getCamposInvalidos();
