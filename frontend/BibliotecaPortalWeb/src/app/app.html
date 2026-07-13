@@ -1,3 +1,5 @@
+<p-toast />
+
 <div class="flex justify-center mt-6 px-4">
     
     <div class="bg-white/10 rounded-2xl border-5 border-[#877514] p-6 w-full max-w-4xl shadow-lg" style="background-color: white;">
@@ -29,7 +31,6 @@
       </div>
     </div>
 
-    <!--  Se van enviar los siguientes datos <pre>{{ valoresDelFormulario | json }}</pre>  -->
     <form [formGroup]="registroForm" #registroFormDir="ngForm" (ngSubmit)="onSubmit()">
 
     <div class="flex flex-col items-center p-1 mb-4">
@@ -51,15 +52,15 @@
         <label pLabel for="username" class="font-bold">Género:</label> 
         <div class="flex flex-wrap gap-4">
             <div class="flex items-center">
-                <p-radiobutton name="genero" value="Masculino" formControlName="genero" inputId="genero1" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
+                <p-radiobutton name="genero" value="1" formControlName="genero" inputId="genero1" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
                 <label pLabel for="genero1" class="text-sm ml-2">Masculino</label>
             </div>
             <div class="flex items-center">
-                <p-radiobutton name="genero" value="Femenino" formControlName="genero" inputId="genero2" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
+                <p-radiobutton name="genero" value="2" formControlName="genero" inputId="genero2" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
                 <label pLabel for="genero2" class="text-sm ml-2">Femenino</label>
             </div>
             <div class="flex items-center">
-                <p-radiobutton name="genero" value="No binario" formControlName="genero" inputId="genero3" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
+                <p-radiobutton name="genero" value="3" formControlName="genero" inputId="genero3" size="small" [invalid]="registroForm.controls['genero'].invalid && registroForm.controls['genero'].touched"/>
                 <label pLabel for="genero3" class="text-sm ml-2">No binario</label>
             </div>
         </div>
@@ -72,15 +73,19 @@
         <label pLabel for="username" class="font-bold">Grado académico:</label> 
         <div class="flex flex-wrap gap-4">
             <div class="flex items-center">
-                <p-radiobutton name="gradoAcademico" value="Masculino" formControlName="gradoAcademico" inputId="gradoAcademico1" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
+                <p-radiobutton name="gradoAcademico" value="1" formControlName="gradoAcademico" inputId="gradoAcademico1" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
+                <label pLabel for="gradoAcademico1" class="text-sm ml-2">Estudiante</label>
+            </div>
+            <div class="flex items-center">
+                <p-radiobutton name="gradoAcademico" value="2" formControlName="gradoAcademico" inputId="gradoAcademico2" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
                 <label pLabel for="gradoAcademico1" class="text-sm ml-2">Licenciatura</label>
             </div>
             <div class="flex items-center">
-                <p-radiobutton name="gradoAcademico" value="Femenino" formControlName="gradoAcademico" inputId="gradoAcademico2" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
+                <p-radiobutton name="gradoAcademico" value="3" formControlName="gradoAcademico" inputId="gradoAcademico3" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
                 <label pLabel for="gradoAcademico2" class="text-sm ml-2">Maestría</label>
             </div>
             <div class="flex items-center">
-                <p-radiobutton name="gradoAcademico" value="No binario" formControlName="gradoAcademico" inputId="gradoAcademico3" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
+                <p-radiobutton name="gradoAcademico" value="4" formControlName="gradoAcademico" inputId="gradoAcademico4" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
                 <label pLabel for="gradoAcademico3" class="text-sm ml-2">Doctorado</label>
             </div>
         </div>
@@ -103,12 +108,12 @@
 
       <div class="flex flex-col gap-2 flex-1">
           <label pLabel for="primerapellido" class="font-bold">Primer apellido:</label>
-          <input pInputText placeholder="Primer Apellido:"  class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small"/>
+          <input pInputText placeholder="Primer Apellido:" formControlName="primerApellido"  class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small"/>
       </div>
 
       <div class="flex flex-col gap-2 flex-1">
           <label pLabel for="segundoapellido" class="font-bold">Segundo apellido:</label>
-          <input pInputText placeholder="Segundo Apellido:"  class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small"/>
+          <input pInputText placeholder="Segundo Apellido:" formControlName="segundoApellido"  class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small"/>
       </div>
 
     </div>
@@ -136,8 +141,8 @@
 
 
       <div class="flex flex-col gap-2 flex-1">
-          <label pLabel for="telefono" class="font-bold">Telefono de contacto:</label>
-          <input pInputText pKeyFilter="int" type="tel" formControlName="telefono" placeholder="Telefono de contacto" class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small" [invalid]="registroForm.controls['telefono'].invalid && registroForm.controls['telefono'].touched"/>
+          <label pLabel for="telefono" class="font-bold">Teléfono de contacto:</label>
+          <input pInputText pKeyFilter="int" type="tel" formControlName="telefono" placeholder="Teléfono de contacto" class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small" [invalid]="registroForm.controls['telefono'].invalid && registroForm.controls['telefono'].touched"/>
           @if (registroForm.controls['telefono']?.hasError('required') && registroForm.get('telefono')?.touched) {
             <small class="text-red-500">El teléfono es obligatorio.</small>
           }
@@ -153,6 +158,7 @@
           [options]="paises"
           formControlName="pais"
           optionLabel="label"
+          optionValue="value"
           [filter]="true"
           filterBy="label"
           [checkmark]="true"
@@ -178,6 +184,7 @@
               [options]="estados"
               formControlName="estadoCodigo"
               optionLabel="label"
+              optionValue="value"
               [filter]="true"
               filterBy="label"
               [checkmark]="true"
@@ -207,6 +214,7 @@
               [options]="ciudades"
               formControlName="ciudadCodigo"
               optionLabel="label"
+              optionValue="value"
               [filter]="true"
               filterBy="label"
               [checkmark]="true"
@@ -253,68 +261,73 @@
       </div>
     </div>
 
+    
+
     <div class="flex flex-col md:flex-row  w-full">
     
-      <div class="flex flex-col flex-1">
 
-        <div class="flex flex-wrap items-center mb-2">
-          <div class="flex w-full">
-            <label pLabel for="cargo" class="font-bold">Cargo o función:</label>
+        <div class="flex flex-col flex-1" *ngIf="!divPressRevista">
+
+          <div class="flex flex-wrap items-center mb-2">
+            <div class="flex w-full">
+              <label pLabel for="cargo" class="font-bold">Cargo o función:</label>
+            </div>
           </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="1" formControlName="cargo" inputId="cargo1" size="small"/>
+                <label pLabel for="small-checkbox" class="text-sm">Profesor(a)</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="2" formControlName="cargo" inputId="cargo2" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Investigador(a)</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="3" formControlName="cargo" inputId="cargo3" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Estudiante de licenciatura</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="4" formControlName="cargo" inputId="cargo4" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Estudiante de posgrado</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="5" formControlName="cargo" inputId="cargo5" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Profesional independiente</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="6" formControlName="cargo" inputId="cargo6" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Editor académico</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="7" formControlName="cargo" inputId="cargo7" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Otras</label>
+            </div>
+          </div>
+          @if (registroForm.controls['cargo']?.hasError('required') && registroForm.get('cargo')?.touched) {
+            <small class="text-red-500">Debes seleccionar un cargo.</small>
+          }
         </div>
 
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="1" formControlName="cargo" inputId="cargo1" size="small"/>
-              <label pLabel for="small-checkbox" class="text-sm">Profesor(a)</label>
-          </div>
-        </div>
 
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="2" formControlName="cargo" inputId="cargo2" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Investigador(a)</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="3" formControlName="cargo" inputId="cargo3" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Estudiante de licenciatura</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="4" formControlName="cargo" inputId="cargo4" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Estudiante de posgrado</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="5" formControlName="cargo" inputId="cargo5" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Profesional independiente</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="6" formControlName="cargo" inputId="cargo6" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Editor académico</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="7" formControlName="cargo" inputId="cargo7" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Otras</label>
-          </div>
-        </div>
-        @if (registroForm.controls['cargo']?.hasError('required') && registroForm.get('cargo')?.touched) {
-          <small class="text-red-500">Debes seleccionar un cargo.</small>
-        }
-      </div>
 
         <div class="flex flex-col flex-1" *ngIf="divAsistentes">
 
@@ -482,6 +495,45 @@
 
       </div>
 
+      <div class="flex flex-col gap-2 flex-1" formArrayName="autoresPonencia">
+
+        <label pLabel class="font-bold">Autor(es):</label>
+
+        @for (control of autoresPonencia.controls; track $index) {
+
+            <div class="flex gap-2 items-center mb-2">
+
+                <input
+                    pInputText
+                    [formControlName]="$index"
+                    placeholder="Autor"
+                    class="flex-1 !p-1 !h-10 !rounded-2xl border border-gray-300"/>
+
+                <button
+                    type="button"
+                    pButton
+                    icon="pi pi-plus"
+                    class="p-button-sm"
+                    (click)="agregarAutorPonencia()">
+                </button>
+
+                @if (autoresPonencia.length > 1) {
+                    <button
+                        type="button"
+                        pButton
+                        icon="pi pi-trash"
+                        class="p-button-sm"
+                        severity="danger"
+                        (click)="eliminarAutorPonencia($index)">
+                    </button>
+                }
+
+            </div>
+
+        }
+
+      </div>
+
       </p-fieldset>
 
       
@@ -526,15 +578,57 @@
               }
           </div>
 
-          <div class="flex flex-col gap-2 flex-1">
+          <!--<div class="flex flex-col gap-2 flex-1">
               <label pLabel for="primerapellido" class="font-bold">Autor(es):</label>
               <input pInputText placeholder="Autores(es)" formControlName="autores"  class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small"/>
               @if (registroForm.controls['autores'].invalid && registroForm.controls['autores'].touched) {
                 <small class="text-red-500"> Ingresa autor(es)</small>
               }
-          </div>
+          </div>-->
 
         </div>
+
+
+
+        <div class="flex flex-col gap-2 flex-1" formArrayName="autores">
+
+            <label pLabel class="font-bold">Autor(es):</label>
+
+            @for (control of autores.controls; track $index) {
+
+                <div class="flex gap-2 items-center mb-2">
+
+                    <input
+                        pInputText
+                        [formControlName]="$index"
+                        placeholder="Autor"
+                        class="flex-1 !p-1 !h-10 !rounded-2xl border border-gray-300"/>
+
+                    <button
+                        type="button"
+                        pButton
+                        icon="pi pi-plus"
+                        class="p-button-sm"
+                        (click)="agregarAutor()">
+                    </button>
+
+                    @if (autores.length > 1) {
+                        <button
+                            type="button"
+                            pButton
+                            icon="pi pi-trash"
+                            class="p-button-sm"
+                            severity="danger"
+                            (click)="eliminarAutor($index)">
+                        </button>
+                    }
+
+                </div>
+
+            }
+
+        </div>
+
 
 
         <div class="flex flex-col md:flex-row gap-4 p-1 w-full">
@@ -563,6 +657,7 @@
                   [options]="paises"
                   formControlName="paisPublicacionLibro"
                   optionLabel="label"
+                  optionValue="value"
                   [filter]="true"
                   filterBy="label"
                   [checkmark]="true"
@@ -677,7 +772,7 @@
 
         <div class="flex flex-wrap items-center mb-3">
           <div class="flex w-full">
-            <label pLabel for="recibirinformacion" class="font-bold">De acuerdo con la clasificación alineada a la Secretaría de Ciencia, Humanidades, Tecnología e Innovación (Secihti). Elija el Área de las Ciencias Sociales y Humanidades en la que se inscribe:</label>
+            <label pLabel for="recibirinformacion" class="font-bold">De acuerdo con la clasificación alineada a la Secretaría de Ciencia, Humanidades, Tecnología e Innovación (Secihti) México. Elija el Área de las Ciencias Sociales y Humanidades en la que se inscribe:</label>
           </div>
         </div>
 
@@ -815,6 +910,7 @@
                 [options]="paises"
                 formControlName="paisPublicacionRevista"
                 optionLabel="label"
+                optionValue="value"
                 [filter]="true"
                 filterBy="label"
                 [checkmark]="true"
@@ -1048,7 +1144,7 @@
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoPublicarconISBN" value="2" formControlName="aceptoPublicarconISBN" inputId="aceptoPublicarconISBN2" size="small"/>
+                <p-radiobutton name="aceptoPublicarconISBN" value="0" formControlName="aceptoPublicarconISBN" inputId="aceptoPublicarconISBN2" size="small"/>
                 <label pLabel for="aceptoPublicarconISBN2" class="text-sm ml-2">NO</label>
             </div>
           </div>              
@@ -1077,7 +1173,7 @@
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoTrabajoOriginal" value="2" formControlName="aceptoTrabajoOriginal" inputId="aceptoTrabajoOriginal2" size="small"/>
+                <p-radiobutton name="aceptoTrabajoOriginal" value="0" formControlName="aceptoTrabajoOriginal" inputId="aceptoTrabajoOriginal2" size="small"/>
                 <label pLabel for="aceptoTrabajoOriginal2" class="text-sm ml-2">NO</label>
             </div>
           </div>
@@ -1105,7 +1201,7 @@
 
           <div class="flex flex-wrap items-center gap-4 mb-1">
             <div class="flex items-center gap-2">
-                <p-radiobutton name="aceptoPropuestaRevision" value="2" formControlName="aceptoPropuestaRevision" inputId="aceptoPropuestaRevision2" size="small"/>
+                <p-radiobutton name="aceptoPropuestaRevision" value="0" formControlName="aceptoPropuestaRevision" inputId="aceptoPropuestaRevision2" size="small"/>
                 <label pLabel for="aceptoPropuestaRevision2" class="text-sm ml-2">NO</label>
             </div>
           </div>
@@ -1146,7 +1242,7 @@
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="AceptoRecibirNotificacion" value="2" formControlName="AceptoRecibirNotificacion" inputId="AceptoRecibirNotificacion2" size="small"/>
+              <p-radiobutton name="AceptoRecibirNotificacion" value="0" formControlName="AceptoRecibirNotificacion" inputId="AceptoRecibirNotificacion2" size="small"/>
               <label pLabel for="AceptoRecibirNotificacion2" class="text-sm ml-2">NO</label>
           </div>
         </div>
@@ -1175,7 +1271,7 @@
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="AceptoTratamiento" value="2" formControlName="AceptoTratamiento" inputId="AceptoTratamiento2" size="small"/>
+              <p-radiobutton name="AceptoTratamiento" value="0" formControlName="AceptoTratamiento" inputId="AceptoTratamiento2" size="small"/>
               <label pLabel for="AceptoTratamiento2" class="text-sm ml-2">NO</label>
           </div>
         </div>
@@ -1197,42 +1293,42 @@
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
         <div class="flex items-center gap-2">
-              <p-radiobutton name="comoEntero1" value="1" formControlName="comoEntero" inputId="comoEntero1" size="small"/>
+              <p-radiobutton name="comoEntero" value="1" formControlName="comoEntero" inputId="comoEntero1" size="small"/>
               <label pLabel for="small-checkbox" class="text-sm">Redes sociales</label>
           </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="comoEntero2" value="2" formControlName="comoEntero" inputId="comoEntero2" size="small"/>
+              <p-radiobutton name="comoEntero" value="2" formControlName="comoEntero" inputId="comoEntero2" size="small"/>
               <label pLabel for="normal-checkbox" class="text-sm">Sitio web de mi institución</label>
           </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="comoEntero3" value="3" formControlName="comoEntero" inputId="comoEntero3" size="small"/>
+              <p-radiobutton name="comoEntero" value="3" formControlName="comoEntero" inputId="comoEntero3" size="small"/>
               <label pLabel for="normal-checkbox" class="text-sm">Recibí información por correo</label>
           </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="comoEntero4" value="4" formControlName="comoEntero" inputId="comoEntero4" size="small"/>
+              <p-radiobutton name="comoEntero" value="4" formControlName="comoEntero" inputId="comoEntero4" size="small"/>
               <label pLabel for="normal-checkbox" class="text-sm">Por invitación institucional</label>
           </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="comoEntero5" value="5" formControlName="comoEntero" inputId="comoEntero5" size="small"/>
+              <p-radiobutton name="comoEntero" value="5" formControlName="comoEntero" inputId="comoEntero5" size="small"/>
               <label pLabel for="normal-checkbox" class="text-sm">Invitación de colega</label>
           </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-4 mb-1">
           <div class="flex items-center gap-2">
-              <p-radiobutton name="comoEntero6" value="6" formControlName="comoEntero" inputId="comoEntero6" size="small"/>
+              <p-radiobutton name="comoEntero" value="6" formControlName="comoEntero" inputId="comoEntero6" size="small"/>
               <label pLabel for="normal-checkbox" class="text-sm">Otro</label>
           </div>
         </div>

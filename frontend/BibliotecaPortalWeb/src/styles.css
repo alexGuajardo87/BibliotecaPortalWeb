@@ -2,6 +2,8 @@
 
 @import 'tailwindcss';
 
+@import "../node_modules/primeicons/primeicons.css";
+
 body {
   margin: 0;
   padding: 0;
