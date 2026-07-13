@@ -1,3 +1,4 @@
+<p-toast />
 <div class="flex justify-center mt-6 px-4">
     
     <div class="bg-white/10 rounded-2xl border-5 border-[#877514] p-6 w-full max-w-4xl shadow-lg" style="background-color: white;">
@@ -72,14 +73,18 @@
         <div class="flex flex-wrap gap-4">
             <div class="flex items-center">
                 <p-radiobutton name="gradoAcademico" value="1" formControlName="gradoAcademico" inputId="gradoAcademico1" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
-                <label pLabel for="gradoAcademico1" class="text-sm ml-2">Licenciatura</label>
+                <label pLabel for="gradoAcademico1" class="text-sm ml-2">Estudiante</label>
             </div>
             <div class="flex items-center">
                 <p-radiobutton name="gradoAcademico" value="2" formControlName="gradoAcademico" inputId="gradoAcademico2" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
-                <label pLabel for="gradoAcademico2" class="text-sm ml-2">Maestría</label>
+                <label pLabel for="gradoAcademico1" class="text-sm ml-2">Licenciatura</label>
             </div>
             <div class="flex items-center">
                 <p-radiobutton name="gradoAcademico" value="3" formControlName="gradoAcademico" inputId="gradoAcademico3" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
+                <label pLabel for="gradoAcademico2" class="text-sm ml-2">Maestría</label>
+            </div>
+            <div class="flex items-center">
+                <p-radiobutton name="gradoAcademico" value="4" formControlName="gradoAcademico" inputId="gradoAcademico4" size="small" [invalid]="registroForm.controls['gradoAcademico'].invalid && registroForm.controls['gradoAcademico'].touched"/>
                 <label pLabel for="gradoAcademico3" class="text-sm ml-2">Doctorado</label>
             </div>
         </div>
@@ -135,8 +140,8 @@
 
 
       <div class="flex flex-col gap-2 flex-1">
-          <label pLabel for="telefono" class="font-bold">Telefono de contacto:</label>
-          <input pInputText pKeyFilter="int" type="tel" formControlName="telefono" placeholder="Telefono de contacto" class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small" [invalid]="registroForm.controls['telefono'].invalid && registroForm.controls['telefono'].touched"/>
+          <label pLabel for="telefono" class="font-bold">Teléfono de contacto:</label>
+          <input pInputText pKeyFilter="int" type="tel" formControlName="telefono" placeholder="Teléfono de contacto" class="w-full !p-1 !h-10 !rounded-2xl border border-gray-300" size="small" [invalid]="registroForm.controls['telefono'].invalid && registroForm.controls['telefono'].touched"/>
           @if (registroForm.controls['telefono']?.hasError('required') && registroForm.get('telefono')?.touched) {
             <small class="text-red-500">El teléfono es obligatorio.</small>
           }
@@ -255,68 +260,73 @@
       </div>
     </div>
 
+    
+
     <div class="flex flex-col md:flex-row  w-full">
     
-      <div class="flex flex-col flex-1">
 
-        <div class="flex flex-wrap items-center mb-2">
-          <div class="flex w-full">
-            <label pLabel for="cargo" class="font-bold">Cargo o función:</label>
+        <div class="flex flex-col flex-1" *ngIf="!divPressRevista">
+
+          <div class="flex flex-wrap items-center mb-2">
+            <div class="flex w-full">
+              <label pLabel for="cargo" class="font-bold">Cargo o función:</label>
+            </div>
           </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="1" formControlName="cargo" inputId="cargo1" size="small"/>
+                <label pLabel for="small-checkbox" class="text-sm">Profesor(a)</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="2" formControlName="cargo" inputId="cargo2" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Investigador(a)</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="3" formControlName="cargo" inputId="cargo3" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Estudiante de licenciatura</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="4" formControlName="cargo" inputId="cargo4" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Estudiante de posgrado</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="5" formControlName="cargo" inputId="cargo5" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Profesional independiente</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="6" formControlName="cargo" inputId="cargo6" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Editor académico</label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-1">
+            <div class="flex items-center gap-2">
+                <p-radiobutton name="cargo"  value="7" formControlName="cargo" inputId="cargo7" size="small"/>
+                <label pLabel for="normal-checkbox" class="text-sm">Otras</label>
+            </div>
+          </div>
+          @if (registroForm.controls['cargo']?.hasError('required') && registroForm.get('cargo')?.touched) {
+            <small class="text-red-500">Debes seleccionar un cargo.</small>
+          }
         </div>
 
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="1" formControlName="cargo" inputId="cargo1" size="small"/>
-              <label pLabel for="small-checkbox" class="text-sm">Profesor(a)</label>
-          </div>
-        </div>
 
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="2" formControlName="cargo" inputId="cargo2" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Investigador(a)</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="3" formControlName="cargo" inputId="cargo3" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Estudiante de licenciatura</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="4" formControlName="cargo" inputId="cargo4" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Estudiante de posgrado</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="5" formControlName="cargo" inputId="cargo5" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Profesional independiente</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="6" formControlName="cargo" inputId="cargo6" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Editor académico</label>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4 mb-1">
-          <div class="flex items-center gap-2">
-              <p-radiobutton name="cargo"  value="7" formControlName="cargo" inputId="cargo7" size="small"/>
-              <label pLabel for="normal-checkbox" class="text-sm">Otras</label>
-          </div>
-        </div>
-        @if (registroForm.controls['cargo']?.hasError('required') && registroForm.get('cargo')?.touched) {
-          <small class="text-red-500">Debes seleccionar un cargo.</small>
-        }
-      </div>
 
         <div class="flex flex-col flex-1" *ngIf="divAsistentes">
 
@@ -481,6 +491,45 @@
             }
      
         </div>
+
+      </div>
+
+      <div class="flex flex-col gap-2 flex-1" formArrayName="autoresPonencia">
+
+        <label pLabel class="font-bold">Autor(es):</label>
+
+        @for (control of autoresPonencia.controls; track $index) {
+
+            <div class="flex gap-2 items-center mb-2">
+
+                <input
+                    pInputText
+                    [formControlName]="$index"
+                    placeholder="Autor"
+                    class="flex-1 !p-1 !h-10 !rounded-2xl border border-gray-300"/>
+
+                <button
+                    type="button"
+                    pButton
+                    icon="pi pi-plus"
+                    class="p-button-sm"
+                    (click)="agregarAutorPonencia()">
+                </button>
+
+                @if (autoresPonencia.length > 1) {
+                    <button
+                        type="button"
+                        pButton
+                        icon="pi pi-trash"
+                        class="p-button-sm"
+                        severity="danger"
+                        (click)="eliminarAutorPonencia($index)">
+                    </button>
+                }
+
+            </div>
+
+        }
 
       </div>
 
@@ -722,7 +771,7 @@
 
         <div class="flex flex-wrap items-center mb-3">
           <div class="flex w-full">
-            <label pLabel for="recibirinformacion" class="font-bold">De acuerdo con la clasificación alineada a la Secretaría de Ciencia, Humanidades, Tecnología e Innovación (Secihti). Elija el Área de las Ciencias Sociales y Humanidades en la que se inscribe:</label>
+            <label pLabel for="recibirinformacion" class="font-bold">De acuerdo con la clasificación alineada a la Secretaría de Ciencia, Humanidades, Tecnología e Innovación (Secihti) México. Elija el Área de las Ciencias Sociales y Humanidades en la que se inscribe:</label>
           </div>
         </div>
 

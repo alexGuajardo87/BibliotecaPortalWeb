@@ -15,6 +15,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { DataServices } from './Services/data-services';
 import { FieldsetModule } from 'primeng/fieldset';
 
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
 
 import { AUTH_URL,COOKIE,API,PUBLIC } from '../app/Core/Constants/api.constants';
 
@@ -27,7 +30,7 @@ interface pec {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CommonModule,ReactiveFormsModule,FormsModule,CardModule,SelectButtonModule,InputTextModule,SelectModule,CheckboxModule,ButtonModule,InputMaskModule,KeyFilterModule,RadioButtonModule,FieldsetModule],
+  imports: [RouterOutlet,CommonModule,ReactiveFormsModule,FormsModule,CardModule,SelectButtonModule,InputTextModule,SelectModule,CheckboxModule,ButtonModule,InputMaskModule,KeyFilterModule,RadioButtonModule,FieldsetModule,ToastModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -35,6 +38,7 @@ export class App {
   protected readonly title = signal('biblioteca-portal-web');
   public dataService = inject(DataServices);
   private fb = inject(FormBuilder);
+  messageService = inject(MessageService);
   registroForm!: FormGroup;
 
   divAsistentes:boolean=true;
@@ -98,7 +102,7 @@ export class App {
                   next: ($respuesta: any) => {
                     console.log($respuesta.message);
 
-                    const url = `${AUTH_URL}/me`;
+                    /*const url = `${AUTH_URL}/me`;
                     this.http.get(url, { withCredentials: true }).subscribe({
                     next: (respuesta) => {
                         console.log('Datos recibidos:', respuesta);
@@ -106,7 +110,7 @@ export class App {
                     error: (err) => {
                         console.error('Error al obtener los datos:', err);
                     }
-                    });
+                    });*/
 
                   },
                   error: (err) =>  { 
@@ -144,6 +148,7 @@ export class App {
         relacionRevista: ['',Validators.required],
 
         tituloPonencia: ['',Validators.required],
+        autoresPonencia: this.fb.array([this.fb.control('')]),
         //nombrePonenteResponsable: ['',Validators.required],
         //ORCIDResponsable: ['',Validators.required],
         aceptoPublicarconISBN : ['',Validators.required],
@@ -221,7 +226,7 @@ export class App {
         this.registroForm.get('ciudadCodigo')?.setValidators([Validators.required]);
       }
       else{  
-        this.registroForm.get('estadoCodigo')?.setValue(0);
+        this.registroForm.get('estadoCodigo')?.setValue(null);
         this.registroForm.get('estado')?.setValidators([Validators.required]);
         this.registroForm.get('ciudad')?.setValidators([Validators.required]);
         this.txtEstado = true;
@@ -242,7 +247,7 @@ export class App {
       if(valor == 25){
         this.selectCiudad = true;
       }else{  
-        this.registroForm.get('ciudadCodigo')?.setValue(0);
+        this.registroForm.get('ciudadCodigo')?.setValue(null);
         this.txtCiudad = true;
       }
 
@@ -416,22 +421,21 @@ export class App {
   
     if (this.registroForm.valid) {
 
-
-      console.log('Formulario válido, enviando...', this.registroForm.value);
       this.valoresDelFormulario = this.registroForm.value;
 
       const body = this.registroForm.value;
       this.http.post(`${PUBLIC}/registrar-m`, body,{ withCredentials: true })
       .subscribe({
         next: ($respuesta: any) => {
-          console.log($respuesta.message);
+          this.messageService.add({ severity: 'success', summary: 'Registro guardado' , detail: $respuesta.message });
         },
         error: (err) =>  { 
+          this.messageService.add({ severity: 'warn', summary: 'Algo salió mal' , detail: err.error["message"] });
           console.log(err.error["message"]);
         }
       });
 
-      //this.registroForm.reset();
+      this.registroForm.reset();
     } else {
       this.registroForm.markAllAsTouched();
       const campos = this.getCamposInvalidos();
@@ -450,6 +454,23 @@ export class App {
       }
     }
     return invalidos;
+  }
+
+
+  get autoresPonencia(): FormArray {
+      return this.registroForm.get('autoresPonencia') as FormArray;
+  }
+
+  agregarAutorPonencia() {
+      this.autoresPonencia.push(
+          new FormControl('', Validators.required)
+      );
+  }
+
+  eliminarAutorPonencia(index: number) {
+      if (this.autoresPonencia.length > 1) {
+          this.autoresPonencia.removeAt(index);
+      }
   }
 
 
