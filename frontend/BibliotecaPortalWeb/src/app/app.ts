@@ -171,8 +171,8 @@ export class App {
         areaCienciasSociales: ['',Validators.required],
         peridiocidad: ['',Validators.required],
         paisPublicacionRevista: ['',Validators.required],
-        ISSNImpreso: ['',Validators.required],
-        ISSNElectronico: ['',Validators.required],
+        ISSNImpreso: [''],
+        ISSNElectronico: [''],
         formatoRevista: ['',Validators.required],
         urlRevista: [''],
         NombreCompletoPresentador: ['',Validators.required],
@@ -335,8 +335,6 @@ export class App {
     this.registroForm.get('areaCienciasSociales')?.clearValidators();
     this.registroForm.get('peridiocidad')?.clearValidators();
     this.registroForm.get('paisPublicacionRevista')?.clearValidators();
-    this.registroForm.get('ISSNImpreso')?.clearValidators();
-    this.registroForm.get('ISSNElectronico')?.clearValidators();
     this.registroForm.get('formatoRevista')?.clearValidators();
     this.registroForm.get('NombreCompletoPresentador')?.clearValidators();
 
@@ -412,8 +410,6 @@ export class App {
     this.registroForm.get('areaCienciasSociales')?.updateValueAndValidity();
     this.registroForm.get('peridiocidad')?.updateValueAndValidity();
     this.registroForm.get('paisPublicacionRevista')?.updateValueAndValidity();
-    this.registroForm.get('ISSNImpreso')?.updateValueAndValidity();
-    this.registroForm.get('ISSNElectronico')?.updateValueAndValidity();
     this.registroForm.get('formatoRevista')?.updateValueAndValidity();
     this.registroForm.get('NombreCompletoPresentador')?.updateValueAndValidity();
 
