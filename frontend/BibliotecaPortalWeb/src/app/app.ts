@@ -288,12 +288,12 @@ export class App {
 
 
     this.registroForm.get('formatoRevista')?.valueChanges.subscribe(valor => {
-         this.registroForm.get('urlRevista')?.reset();
         if(valor == 2){
             this.registroForm.get('urlRevista')?.enable();
             this.registroForm.get('urlRevista')?.setValidators([Validators.required]);
             this.registroForm.get('urlRevista')?.updateValueAndValidity();
         }else{
+          this.registroForm.get('urlRevista')?.setValue('');
           this.registroForm.get('urlRevista')?.disable();
           this.registroForm.get('urlRevista')?.clearValidators();
           this.registroForm.get('urlRevista')?.updateValueAndValidity();
@@ -434,29 +434,30 @@ export class App {
       .subscribe({
         next: ($respuesta: any) => {
           this.messageService.add({ severity: 'success', summary: 'Registro guardado' , detail: $respuesta.message, life: 3000 });
+          this.registroForm.reset();
+          this.registroForm.get('tipoRegistro')?.setValue('1');
+
+          while (this.autoresPonencia.length !== 1) {
+            this.autoresPonencia.removeAt(0);
+          }
+
+          while (this.autores.length !== 1) {
+            this.autores.removeAt(0);
+          }
+
+          this.selectEstado = false;
+          this.txtEstado = false; 
+          this.selectCiudad = false;
+          this.txtCiudad = false; 
         },
         error: (err) =>  { 
-
           this.messageService.add({ severity: 'warn', summary: 'Algo salió mal' , detail: err.error["message"], life: 3000  });
         }
       });
 
-      this.registroForm.reset();
+      
 
-      this.registroForm.get('tipoRegistro')?.setValue('1');
 
-      while (this.autoresPonencia.length !== 1) {
-        this.autoresPonencia.removeAt(0);
-      }
-
-      while (this.autores.length !== 1) {
-        this.autores.removeAt(0);
-      }
-
-      this.selectEstado = false;
-      this.txtEstado = false; 
-      this.selectCiudad = false;
-      this.txtCiudad = false; 
 
     } else {
       this.registroForm.markAllAsTouched();

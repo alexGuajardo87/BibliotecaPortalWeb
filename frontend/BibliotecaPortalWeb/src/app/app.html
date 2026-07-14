@@ -632,7 +632,7 @@
           <div class="flex flex-col gap-2 flex-1">
                 <label pLabel for="estado" class="font-bold">Año de publicación:</label>
                 <p-select [options]="libroPublicacion" formControlName="aniopublicacion" optionLabel="label" optionValue="value" placeholder="Selecciona el año" class="ww-full !p-1 !h-10 !rounded-2xl border border-gray-300 items-center" size="small"/>
-                @if (registroForm.controls['autores'].invalid && registroForm.controls['autores'].touched) {
+                @if (registroForm.controls['aniopublicacion'].invalid && registroForm.controls['aniopublicacion'].touched) {
                   <small class="text-red-500">Selecciona el año de la publicación</small>
                 }
           </div>
