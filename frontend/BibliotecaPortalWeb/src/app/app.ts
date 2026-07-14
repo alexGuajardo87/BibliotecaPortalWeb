@@ -488,7 +488,7 @@ export class App {
   agregarAutorPonencia() {
       if (this.autoresPonencia.length < 3) {
       this.autoresPonencia.push(
-          new FormControl('', Validators.required)
+          new FormControl('')
       );
     }
   }
@@ -506,7 +506,7 @@ export class App {
 
   agregarAutor() {
       this.autores.push(
-          new FormControl('', Validators.required)
+          new FormControl('')
       );
   }
 
