@@ -219,29 +219,22 @@ export class App {
       this.txtCiudad = false; 
 
       this.registroForm.get('estado')?.clearValidators();
-      this.registroForm.get('ciudad')?.clearValidators();
       this.registroForm.get('estadoCodigo')?.clearValidators();
-      this.registroForm.get('ciudadCodigo')?.clearValidators();
       
-
-
+      
       if(valor == 42){
         this.selectEstado = true;
         this.registroForm.get('estadoCodigo')?.setValidators([Validators.required]);
-        this.registroForm.get('ciudadCodigo')?.setValidators([Validators.required]);
       }
       else{  
         this.registroForm.get('estadoCodigo')?.setValue(null);
         this.registroForm.get('estado')?.setValidators([Validators.required]);
-        this.registroForm.get('ciudad')?.setValidators([Validators.required]);
         this.txtEstado = true;
         this.txtCiudad = true;
       }
 
       this.registroForm.get('estado')?.updateValueAndValidity();
-      this.registroForm.get('ciudad')?.updateValueAndValidity();
       this.registroForm.get('estadoCodigo')?.updateValueAndValidity();
-      this.registroForm.get('ciudadCodigo')?.updateValueAndValidity();
       
     });
 
@@ -249,12 +242,21 @@ export class App {
       this.selectCiudad = false;
       this.txtCiudad = false; 
 
+      this.registroForm.get('ciudad')?.clearValidators();
+      this.registroForm.get('ciudadCodigo')?.clearValidators();
+
       if(valor == 25){
         this.selectCiudad = true;
+        this.registroForm.get('ciudadCodigo')?.setValidators([Validators.required]);
       }else{  
         this.registroForm.get('ciudadCodigo')?.setValue(null);
+        this.registroForm.get('ciudad')?.setValidators([Validators.required]);
         this.txtCiudad = true;
       }
+
+
+      this.registroForm.get('ciudad')?.updateValueAndValidity();
+      this.registroForm.get('ciudadCodigo')?.updateValueAndValidity();
 
     });
 
