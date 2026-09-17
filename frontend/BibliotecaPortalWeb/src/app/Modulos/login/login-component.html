@@ -1,0 +1,245 @@
+<p-toast />
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-header">
+
+            <div class="login-icon">
+                <i class="pi pi-lock"></i>
+            </div>
+
+            <h1>Iniciar sesión</h1>
+
+            <p>
+                Accede al Sistema Bibliotecario de la Universidad Autónoma de Sinaloa
+            </p>
+
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="iniciarSesion()">
+
+            <div class="form-field">
+
+                <label for="email">
+                    Correo electrónico
+                </label>
+
+                <span class="input-icon">
+
+                    <i class="pi pi-envelope"></i>
+
+                    <input
+                        id="email"
+                        type="email"
+                        pInputText
+                        formControlName="email"
+                        placeholder="correo@tudominio.com.mx"
+                        autocomplete="email">
+                </span>
+                @if (loginForm.controls['email'].invalid && loginForm.controls['email'].touched) {
+                    <small class="text-red-500"> Ingresa un correo electrónico válido.</small>
+                }
+            </div>
+
+            <div class="form-field">
+
+                <label for="password">
+                    Contraseña
+                </label>
+
+                <span class="input-icon">
+
+                    <i class="pi pi-lock"></i>
+
+                    <input
+                        id="password"
+                        type="password"
+                        pInputText
+                        formControlName="password"
+                        placeholder="Contraseña"
+                        autocomplete="current-password">
+
+                </span>
+                @if (loginForm.controls['password'].touched) {
+                    <small class="text-red-500"> Ingresa la contraseña.</small>
+                }
+            </div>
+
+            <div class="login-options">
+
+                <a routerLink="/registro-usuarios" class="register-link">
+                    
+                    Registrarse
+
+                </a>
+
+                <a
+                    href="javascript:void(0)"
+                    (click)="mostrarRecuperacion()">
+
+                    ¿Olvidaste tu contraseña?
+
+                </a>
+
+            </div>
+
+            <button
+                pButton
+                type="submit"
+                label="Iniciar sesión"
+                icon="pi pi-sign-in"
+                class="login-button"
+                [disabled]="loginForm.invalid || cargando()">
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<p-dialog
+    [(visible)]="dialogRecuperacion"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="!enviandoRecuperacion()"
+    [style]="{ width: '450px' }"
+    styleClass="password-recovery-dialog">
+
+    <ng-template pTemplate="header">
+
+        <div class="recovery-header">
+
+            <div class="recovery-icon">
+                <i class="pi pi-envelope"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Recuperar contraseña
+                </h2>
+
+                <span>
+                    Restablece el acceso a tu cuenta
+                </span>
+
+            </div>
+
+        </div>
+
+    </ng-template>
+
+
+    @if (!recuperacionEnviada()) {
+
+        <div class="recovery-content">
+
+            <p>
+                Ingresa el correo electrónico asociado a tu cuenta.
+                Te enviaremos las instrucciones para restablecer tu contraseña.
+            </p>
+
+            <form [formGroup]="recuperacionForm">
+
+                <div class="form-field">
+
+                    <label for="correoRecuperacion">
+                        Correo electrónico
+                    </label>
+
+                    <span class="input-icon">
+
+                        <i class="pi pi-envelope"></i>
+
+                        <input
+                            id="correoRecuperacion"
+                            type="email"
+                            pInputText
+                            formControlName="email"
+                            placeholder="correo@uas.edu.mx"
+                            autocomplete="email">
+
+                    </span>
+
+                    @if (
+                        recuperacionForm.get('email')?.touched &&
+                        recuperacionForm.get('email')?.invalid
+                    ) {
+
+                        <small class="field-error">
+                            Ingresa un correo electrónico válido.
+                        </small>
+
+                    }
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <ng-template pTemplate="footer">
+
+            <div class="recovery-footer">
+
+                <button
+                    pButton
+                    type="button"
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    [disabled]="enviandoRecuperacion()"
+                    (click)="cerrarRecuperacion()">
+                </button>
+
+                <button
+                    pButton
+                    type="button"
+                    label="Enviar instrucciones"
+                    icon="pi pi-send"
+                    [loading]="enviandoRecuperacion()"
+                    [disabled]="recuperacionForm.invalid || enviandoRecuperacion()"
+                    (click)="recuperarPassword()">
+                </button>
+
+            </div>
+
+        </ng-template>
+
+    }
+    @else {
+
+        <div class="recovery-success">
+
+            <div class="success-icon">
+                <i class="pi pi-check"></i>
+            </div>
+
+            <h3>
+                Solicitud enviada
+            </h3>
+
+            <p>
+                Si el correo electrónico está registrado,
+                recibirás un mensaje con las instrucciones
+                para restablecer tu contraseña.
+            </p>
+
+            <button
+                pButton
+                type="button"
+                label="Cerrar"
+                icon="pi pi-check"
+                (click)="cerrarRecuperacion()">
+            </button>
+
+        </div>
+
+    }
+
+</p-dialog>

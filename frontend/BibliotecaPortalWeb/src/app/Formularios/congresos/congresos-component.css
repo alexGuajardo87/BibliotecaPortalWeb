@@ -1,0 +1,71 @@
+/* =========================================================
+   CONTENIDO DEL COMPONENTE
+   ========================================================= */
+
+:host {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    background-color: white;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.content-container {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+
+    padding-top: 0px;
+
+    min-height: 100vh;
+
+    background-color: white;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PRIME NG - SELECT BUTTON
+   ========================================================= */
+
+:host ::ng-deep .p-selectbutton {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+:host ::ng-deep .p-selectbutton .p-button {
+    background-color: transparent !important;
+}
+
+:host ::ng-deep .p-selectbutton .p-button:hover {
+    background-color: #0a2f7a !important;
+    color: white !important;
+}
+
+
+/* =========================================================
+   PRIME NG - TOGGLE BUTTON
+   ========================================================= */
+
+:host ::ng-deep .p-togglebutton {
+    background: #08338F !important;
+    color: white !important;
+}
+
+:host ::ng-deep .p-togglebutton:hover {
+    background: #0a2f7a !important;
+    color: white !important;
+}
+
+:host ::ng-deep .p-togglebutton.p-togglebutton-checked {
+    background: #08338F !important;
+    color: black !important;
+}
+
+:host ::ng-deep .p-togglebutton-checked .p-togglebutton-content {
+    background: white !important;
+}

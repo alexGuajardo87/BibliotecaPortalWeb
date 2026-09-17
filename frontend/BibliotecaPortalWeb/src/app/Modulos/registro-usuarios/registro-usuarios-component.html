@@ -1,0 +1,893 @@
+<p-toast />
+
+<div class="registro-page">
+
+    <div class="registro-card">
+
+        <div class="registro-header">
+
+            <div class="registro-icon">
+                <i class="pi pi-user-plus"></i>
+            </div>
+
+            <div class="registro-header-text">
+
+                <h1>
+                    Registro de usuario
+                </h1>
+
+                <p>
+                    Completa la información para crear tu cuenta
+                </p>
+
+            </div>
+
+        </div>
+
+        <form
+            [formGroup]="registroForm"
+            (ngSubmit)="registrarUsuario()">
+
+            <div class="registro-content">
+
+                <section class="form-section">
+
+                    <div class="section-title">
+
+                        <i class="pi pi-user"></i>
+
+                        <span>
+                            Información personal
+                        </span>
+
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+
+                            <label for="nombre">
+                                Nombre
+                            </label>
+
+                            <input
+                                id="nombre"
+                                type="text"
+                                pInputText
+                                formControlName="nombre"
+                                placeholder="Ingresa tu nombre"
+                                autocomplete="given-name">
+
+                            @if (
+                                registroForm.get('nombre')?.invalid &&
+                                registroForm.get('nombre')?.touched
+                            ) {
+
+                                <small class="field-error">
+                                    El nombre es obligatorio.
+                                </small>
+
+                            }
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="primerApellido">
+                                Primer apellido
+                            </label>
+
+                            <input
+                                id="primerApellido"
+                                type="text"
+                                pInputText
+                                formControlName="primerApellido"
+                                placeholder="Ingresa tu primer apellido"
+                                autocomplete="family-name">
+
+                            @if (
+                                registroForm.get('primerApellido')?.invalid &&
+                                registroForm.get('primerApellido')?.touched
+                            ) {
+
+                                <small class="field-error">
+                                    El primer apellido es obligatorio.
+                                </small>
+
+                            }
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="segundoApellido">
+                                Segundo apellido
+                            </label>
+
+                            <input
+                                id="segundoApellido"
+                                type="text"
+                                pInputText
+                                formControlName="segundoApellido"
+                                placeholder="Ingresa tu segundo apellido"
+                                autocomplete="additional-name">
+
+                            @if (
+                                registroForm.get('segundoApellido')?.invalid &&
+                                registroForm.get('segundoApellido')?.touched
+                            ) {
+
+                                <small class="field-error">
+                                    Ingresa un segundo apellido válido.
+                                </small>
+
+                            }
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="telefono">
+                                Teléfono de contacto
+                            </label>
+
+                            <input
+                                id="telefono"
+                                type="tel"
+                                pInputText
+                                formControlName="telefono"
+                                placeholder="Ingresa tu teléfono"
+                                autocomplete="tel">
+
+                            @if (
+                                registroForm.get('telefono')?.invalid &&
+                                registroForm.get('telefono')?.touched
+                            ) {
+
+                                <small class="field-error">
+                                    Ingresa un teléfono válido.
+                                </small>
+
+                            }
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="form-section">
+
+                    <div class="section-title">
+
+                        <i class="pi pi-envelope"></i>
+
+                        <span>
+                            Información de contacto
+                        </span>
+
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+
+                            <label for="correo">
+                                Correo electrónico
+                            </label>
+
+                            <input
+                                id="correo"
+                                type="email"
+                                pInputText
+                                formControlName="correo"
+                                placeholder="correo@ejemplo.com"
+                                autocomplete="email">
+
+                            @if (
+                                registroForm.get('correo')?.invalid &&
+                                registroForm.get('correo')?.touched
+                            ) {
+
+                                <small class="field-error">
+                                    Ingresa un correo electrónico válido.
+                                </small>
+
+                            }
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label for="confirmarCorreo">
+                                Confirmar correo electrónico
+                            </label>
+
+                            <input
+                                id="confirmarCorreo"
+                                type="email"
+                                pInputText
+                                formControlName="confirmarCorreo"
+                                placeholder="Confirma tu correo"
+                                autocomplete="email">
+
+                            @if (
+                                registroForm.get('confirmarCorreo')?.invalid &&
+                                registroForm.get('confirmarCorreo')?.touched
+                            ) {
+
+                                @if (
+                                    registroForm.get('confirmarCorreo')?.hasError('required')
+                                ) {
+
+                                    <small class="field-error">
+                                        Confirma tu correo electrónico.
+                                    </small>
+
+                                }
+
+                                @if (
+                                    registroForm.hasError('correosNoCoinciden') &&
+                                    !registroForm.get('confirmarCorreo')?.hasError('required')
+                                ) {
+
+                                    <small class="field-error">
+                                        Los correos electrónicos no coinciden.
+                                    </small>
+
+                                }
+
+                            }
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="form-section">
+
+                    <div class="section-title">
+
+                        <i class="pi pi-users"></i>
+
+                        <span>
+                            Tipo de usuario
+                        </span>
+
+                    </div>
+
+                    <div class="tipo-usuario-container">
+
+                        <div class="checkbox-list">
+
+                            <div class="checkbox-user-option">
+
+                                <div class="checkbox-option">
+
+                                    <p-checkbox
+                                        inputId="estudiante"
+                                        name="tipoUsuario"
+                                        value="estudiante"
+                                        formControlName="tipoUsuario">
+                                    </p-checkbox>
+
+                                    <label for="estudiante">
+                                        Estudiante
+                                    </label>
+
+                                </div>
+
+                                @if (
+                                    registroForm.get('tipoUsuario')?.value?.includes('estudiante')
+                                ) {
+
+                                    <div class="user-detail-form">
+
+                                        <div class="form-grid">
+
+                                            <div class="form-field">
+
+                                                <label for="numeroCuenta">
+                                                    Número de cuenta
+                                                </label>
+
+                                                <input
+                                                    id="numeroCuenta"
+                                                    type="text"
+                                                    pInputText
+                                                    formControlName="numeroCuenta"
+                                                    placeholder="Ingresa tu número de cuenta">
+
+                                                @if (
+                                                    registroForm.get('numeroCuenta')?.invalid &&
+                                                    registroForm.get('numeroCuenta')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        El número de cuenta es obligatorio.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="nivel">
+                                                    Nivel
+                                                </label>
+
+                                                <p-select
+                                                    id="nivel"
+                                                    formControlName="nivel"
+                                                    [options]="niveles"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona un nivel"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('nivel')?.invalid &&
+                                                    registroForm.get('nivel')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona un nivel.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="unidadAcademica">
+                                                    Unidad académica
+                                                </label>
+
+                                                <p-select
+                                                    id="unidadAcademica"
+                                                    formControlName="unidadAcademica"
+                                                    [options]="unidadesAcademicas"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona una unidad académica"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('unidadAcademica')?.invalid &&
+                                                    registroForm.get('unidadAcademica')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona una unidad académica.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                            <div class="checkbox-user-option">
+
+                                <div class="checkbox-option">
+
+                                    <p-checkbox
+                                        inputId="docente"
+                                        name="tipoUsuario"
+                                        value="docente"
+                                        formControlName="tipoUsuario">
+                                    </p-checkbox>
+
+                                    <label for="docente">
+                                        Docente
+                                    </label>
+
+                                </div>
+
+                                @if (
+                                    registroForm.get('tipoUsuario')?.value?.includes('docente')
+                                ) {
+
+                                    <div class="user-detail-form">
+
+                                        <div class="form-grid">
+
+                                            <div class="form-field">
+
+                                                <label for="numeroEmpleado">
+                                                    Número de empleado
+                                                </label>
+
+                                                <input
+                                                    id="numeroEmpleado"
+                                                    type="text"
+                                                    pInputText
+                                                    formControlName="numeroEmpleado"
+                                                    placeholder="Ingresa tu número de empleado">
+
+                                                @if (
+                                                    registroForm.get('numeroEmpleado')?.invalid &&
+                                                    registroForm.get('numeroEmpleado')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        El número de empleado es obligatorio.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="nivelDocente">
+                                                    Nivel
+                                                </label>
+
+                                                <p-select
+                                                    id="nivelDocente"
+                                                    formControlName="nivelDocente"
+                                                    [options]="niveles"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona un nivel"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('nivelDocente')?.invalid &&
+                                                    registroForm.get('nivelDocente')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona un nivel.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="unidadAcademicaDocente">
+                                                    Unidad académica
+                                                </label>
+
+                                                <p-select
+                                                    id="unidadAcademicaDocente"
+                                                    formControlName="unidadAcademicaDocente"
+                                                    [options]="unidadesAcademicas"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona una unidad académica"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('unidadAcademicaDocente')?.invalid &&
+                                                    registroForm.get('unidadAcademicaDocente')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona una unidad académica.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                            <div class="checkbox-user-option">
+
+                                <div class="checkbox-option">
+
+                                    <p-checkbox
+                                        inputId="administrativo"
+                                        name="tipoUsuario"
+                                        value="administrativo"
+                                        formControlName="tipoUsuario">
+                                    </p-checkbox>
+
+                                    <label for="administrativo">
+                                        Administrativo
+                                    </label>
+
+                                </div>
+
+                                @if (
+                                    registroForm.get('tipoUsuario')?.value?.includes('administrativo')
+                                ) {
+
+                                    <div class="user-detail-form">
+
+                                        <div class="form-grid">
+
+                                            <div class="form-field">
+
+                                                <label for="numeroEmpleadoAdministrativo">
+                                                    Número de empleado
+                                                </label>
+
+                                                <input
+                                                    id="numeroEmpleadoAdministrativo"
+                                                    type="text"
+                                                    pInputText
+                                                    formControlName="numeroEmpleadoAdministrativo"
+                                                    placeholder="Ingresa tu número de empleado">
+
+                                                @if (
+                                                    registroForm.get('numeroEmpleadoAdministrativo')?.invalid &&
+                                                    registroForm.get('numeroEmpleadoAdministrativo')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        El número de empleado es obligatorio.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="unidadOrganizacional">
+                                                    Unidad organizacional
+                                                </label>
+
+                                                <p-select
+                                                    id="unidadOrganizacional"
+                                                    formControlName="unidadOrganizacional"
+                                                    [options]="unidadesOrganizacionales"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona una unidad organizacional"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('unidadOrganizacional')?.invalid &&
+                                                    registroForm.get('unidadOrganizacional')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona una unidad organizacional.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                            <div class="checkbox-user-option">
+
+                                <div class="checkbox-option">
+
+                                    <p-checkbox
+                                        inputId="usuarioExterno"
+                                        name="tipoUsuario"
+                                        value="externo"
+                                        formControlName="tipoUsuario">
+                                    </p-checkbox>
+
+                                    <label for="usuarioExterno">
+                                        Usuario externo
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            <div class="checkbox-user-option">
+
+                                <div class="checkbox-option">
+
+                                    <p-checkbox
+                                        inputId="responsableEscuelaUas"
+                                        name="tipoUsuario"
+                                        value="responsable_escuela_uas"
+                                        formControlName="tipoUsuario">
+                                    </p-checkbox>
+
+                                    <label for="responsableEscuelaUas">
+                                        Responsable Escuela UAS
+                                    </label>
+
+                                </div>
+
+                                @if (
+                                    registroForm.get('tipoUsuario')?.value?.includes('responsable_escuela_uas')
+                                ) {
+
+                                    <div class="user-detail-form">
+
+                                        <div class="form-grid">
+
+                                            <div class="form-field">
+
+                                                <label for="numeroEmpleadoResponsableUas">
+                                                    Número de empleado
+                                                </label>
+
+                                                <input
+                                                    id="numeroEmpleadoResponsableUas"
+                                                    type="text"
+                                                    pInputText
+                                                    formControlName="numeroEmpleadoResponsableUas"
+                                                    placeholder="Ingresa tu número de empleado">
+
+                                                @if (
+                                                    registroForm.get('numeroEmpleadoResponsableUas')?.invalid &&
+                                                    registroForm.get('numeroEmpleadoResponsableUas')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        El número de empleado es obligatorio.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="nivelResponsableUas">
+                                                    Nivel
+                                                </label>
+
+                                                <p-select
+                                                    id="nivelResponsableUas"
+                                                    formControlName="nivelResponsableUas"
+                                                    [options]="niveles"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona un nivel"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('nivelResponsableUas')?.invalid &&
+                                                    registroForm.get('nivelResponsableUas')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona un nivel.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="unidadAcademicaResponsableUas">
+                                                    Unidad académica
+                                                </label>
+
+                                                <p-select
+                                                    id="unidadAcademicaResponsableUas"
+                                                    formControlName="unidadAcademicaResponsableUas"
+                                                    [options]="unidadesAcademicas"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    placeholder="Selecciona una unidad académica"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true">
+                                                </p-select>
+
+                                                @if (
+                                                    registroForm.get('unidadAcademicaResponsableUas')?.invalid &&
+                                                    registroForm.get('unidadAcademicaResponsableUas')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Selecciona una unidad académica.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                            <div class="checkbox-user-option">
+
+                                <div class="checkbox-option">
+
+                                    <p-checkbox
+                                        inputId="responsableEscuelaExterna"
+                                        name="tipoUsuario"
+                                        value="responsable_escuela_externa"
+                                        formControlName="tipoUsuario">
+                                    </p-checkbox>
+
+                                    <label for="responsableEscuelaExterna">
+                                        Responsable Escuela Externa
+                                    </label>
+
+                                </div>
+
+                                @if (
+                                    registroForm.get('tipoUsuario')?.value?.includes('responsable_escuela_externa')
+                                ) {
+
+                                    <div class="user-detail-form">
+
+                                        <div class="form-grid">
+
+                                            <div class="form-field">
+
+                                                <label for="nombreEscuelaInstitucion">
+                                                    Nombre de la Escuela o Institución
+                                                </label>
+
+                                                <input
+                                                    id="nombreEscuelaInstitucion"
+                                                    type="text"
+                                                    pInputText
+                                                    formControlName="nombreEscuelaInstitucion"
+                                                    placeholder="Ingresa el nombre de la escuela o institución">
+
+                                                @if (
+                                                    registroForm.get('nombreEscuelaInstitucion')?.invalid &&
+                                                    registroForm.get('nombreEscuelaInstitucion')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        El nombre de la escuela o institución es obligatorio.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field">
+
+                                                <label for="telefonoContactoExterna">
+                                                    Teléfono de contacto
+                                                </label>
+
+                                                <input
+                                                    id="telefonoContactoExterna"
+                                                    type="tel"
+                                                    pInputText
+                                                    formControlName="telefonoContactoExterna"
+                                                    placeholder="Ingresa el teléfono de contacto">
+
+                                                @if (
+                                                    registroForm.get('telefonoContactoExterna')?.invalid &&
+                                                    registroForm.get('telefonoContactoExterna')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        Ingresa un teléfono de contacto válido.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                            <div class="form-field form-field-full">
+
+                                                <label for="direccionEscuelaExterna">
+                                                    Dirección
+                                                </label>
+
+                                                <textarea
+                                                    id="direccionEscuelaExterna"
+                                                    pTextarea
+                                                    formControlName="direccionEscuelaExterna"
+                                                    rows="3"
+                                                    placeholder="Ingresa la dirección de la escuela o institución">
+                                                </textarea>
+
+                                                @if (
+                                                    registroForm.get('direccionEscuelaExterna')?.invalid &&
+                                                    registroForm.get('direccionEscuelaExterna')?.touched
+                                                ) {
+
+                                                    <small class="field-error">
+                                                        La dirección es obligatoria.
+                                                    </small>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                        </div>
+
+                        @if (
+                            registroForm.get('tipoUsuario')?.invalid &&
+                            registroForm.get('tipoUsuario')?.touched
+                        ) {
+
+                            <small class="field-error">
+                                Selecciona al menos un tipo de usuario.
+                            </small>
+
+                        }
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            <div class="registro-actions">
+
+                <button
+                    pButton
+                    type="button"
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    class="cancel-button"
+                    routerLink="/">
+                </button>
+
+                <button
+                    pButton
+                    type="submit"
+                    label="Registrarse"
+                    icon="pi pi-user-plus"
+                    class="register-button"
+                    [disabled]="registroForm.invalid">
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

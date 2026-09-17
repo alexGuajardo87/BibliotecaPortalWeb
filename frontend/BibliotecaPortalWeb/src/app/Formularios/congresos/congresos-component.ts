@@ -1,0 +1,629 @@
+import { Component, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormControl, FormArray, FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { InputMaskModule } from 'primeng/inputmask';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { DataServices } from '../../Services/data-services';
+import { AUTH_URL, COOKIE, PUBLIC } from '../../Core/Constants/api.constants';
+
+interface pec {
+    label: string;
+    value: string;
+    code: string;
+}
+
+@Component({
+    selector: 'app-congresos-component',
+    standalone: true,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        CardModule,
+        SelectButtonModule,
+        InputTextModule,
+        SelectModule,
+        CheckboxModule,
+        ButtonModule,
+        InputMaskModule,
+        KeyFilterModule,
+        RadioButtonModule,
+        FieldsetModule,
+        ToastModule
+    ],
+    templateUrl: './congresos-component.html',
+    styleUrl: './congresos-component.css'
+})
+export class CongresosComponent {
+
+    protected readonly title = signal('biblioteca-portal-web');
+
+    private readonly http = inject(HttpClient);
+    public dataService = inject(DataServices);
+    private readonly fb = inject(FormBuilder);
+    readonly messageService = inject(MessageService);
+
+    registroForm!: FormGroup;
+
+    divAsistentes = true;
+    divPonentes = false;
+    divPressLibro = false;
+    divPressRevista = false;
+
+    selectEstado = false;
+    selectCiudad = false;
+    txtEstado = false;
+    txtCiudad = false;
+
+    valoresDelFormulario: any;
+
+    value = '1';
+
+    stateOptions: any[] = [
+        { label: 'Asistente', value: '1' },
+        { label: 'Ponente', value: '2' },
+        { label: 'Pres. Libro', value: '3' },
+        { label: 'Pres. Revista', value: '4' }
+    ];
+
+    selectedState = '1';
+
+    paises: pec[] = this.dataService.getPaises();
+    estados: pec[] = this.dataService.getEstadosMexico();
+    ciudades: pec[] = this.dataService.getCiudadesSinaloa();
+
+    libroPublicacion: any[] = [
+        { label: '2025', value: '2025' },
+        { label: '2026', value: '2026' }
+    ];
+
+    revistaPeridiocidad: any[] = [
+        { label: 'Bimestral', value: '1' },
+        { label: 'Trimestral', value: '2' },
+        { label: 'Cuatrimestral', value: '3' },
+        { label: 'Semestral', value: '4' },
+        { label: 'Anual', value: '5' },
+        { label: 'Continua', value: '6' }
+    ];
+
+    revistaFormato: any[] = [
+        { label: 'Impreso', value: '1' },
+        { label: 'Electrónico', value: '2' }
+    ];
+
+    libroFormato: any[] = [
+        { label: 'Impreso', value: '1' },
+        { label: 'Electrónico', value: '2' }
+    ];
+
+    ngOnInit(): void {
+
+        this.http.get(`${COOKIE}/sanctum/csrf-cookie`, {
+            withCredentials: true
+        }).subscribe({
+            next: () => {
+
+                const body = {};
+
+                this.http.post(`${AUTH_URL}/web`, body, {
+                    withCredentials: true
+                }).subscribe({
+                    next: (respuesta: any) => {
+                        console.log(respuesta.message);
+                    },
+                    error: (err) => {
+                        console.log(err.error?.message);
+                    }
+                });
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        });
+
+        this.registroForm = this.fb.group({
+            tipoRegistro: ['1'],
+            genero: ['', Validators.required],
+            gradoAcademico: ['', Validators.required],
+            nombre: ['', Validators.required],
+            primerApellido: [''],
+            segundoApellido: [''],
+            email: ['', [Validators.required, Validators.email]],
+            confirmarEmail: ['', [Validators.required, Validators.email]],
+            telefono: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+            pais: ['', Validators.required],
+            estado: ['', Validators.required],
+            ciudad: ['', Validators.required],
+            estadoCodigo: ['', Validators.required],
+            ciudadCodigo: ['', Validators.required],
+            instiadscripcion: ['', Validators.required],
+            profeIndependiente: [''],
+            cargo: ['', Validators.required],
+            area: ['', Validators.required],
+            tituloPonencia: ['', Validators.required],
+            autoresPonencia: this.fb.array([
+                this.fb.control('')
+            ]),
+            aceptoPublicarconISBN: ['', Validators.required],
+            aceptoTrabajoOriginal: ['', Validators.required],
+            aceptoPropuestaRevision: ['', Validators.required],
+            tituloLibro: ['', Validators.required],
+            autores: this.fb.array([
+                this.fb.control('')
+            ]),
+            aniopublicacion: ['', Validators.required],
+            editorial: ['', Validators.required],
+            paisPublicacionLibro: ['', Validators.required],
+            ISBN: ['', Validators.required],
+            formatoLibro: ['', Validators.required],
+            relacionRevista: ['', Validators.required],
+            tituloRevista: ['', Validators.required],
+            nombreEditorJefe: ['', Validators.required],
+            entidadEditora: ['', Validators.required],
+            revistaAccesoAbierto: ['', Validators.required],
+            areaCienciasSociales: ['', Validators.required],
+            peridiocidad: ['', Validators.required],
+            paisPublicacionRevista: ['', Validators.required],
+            ISSNImpreso: [''],
+            ISSNElectronico: [''],
+            formatoRevista: ['', Validators.required],
+            urlRevista: [''],
+            NombreCompletoPresentador: ['', Validators.required],
+            editorIndependiente: [''],
+            ejeTematico: ['', Validators.required],
+            numeroAutores: ['', Validators.required],
+            AceptoRecibirNotificacion: ['', Validators.required],
+            AceptoTratamiento: ['', Validators.required],
+            comoEntero: ['', Validators.required]
+        }, {
+            validators: this.emailCoincideValidator('email', 'confirmarEmail')
+        });
+
+        this.registroForm.get('urlRevista')?.disable();
+
+        this.registroForm.get('tipoRegistro')?.valueChanges.subscribe(valor => {
+
+            this.divAsistentes = false;
+            this.divPonentes = false;
+            this.divPressLibro = false;
+            this.divPressRevista = false;
+
+            if (valor == 1) {
+                this.divAsistentes = true;
+            } else if (valor == 2) {
+                this.divPonentes = true;
+            } else if (valor == 3) {
+                this.divPressLibro = true;
+            } else if (valor == 4) {
+                this.divPressRevista = true;
+            }
+        });
+
+        this.registroForm.get('pais')?.valueChanges.subscribe(valor => {
+
+            this.selectEstado = false;
+            this.txtEstado = false;
+            this.selectCiudad = false;
+            this.txtCiudad = false;
+
+            this.registroForm.get('estado')?.clearValidators();
+            this.registroForm.get('estadoCodigo')?.clearValidators();
+
+            if (valor == 42) {
+                this.selectEstado = true;
+                this.registroForm.get('estadoCodigo')?.setValidators([
+                    Validators.required
+                ]);
+            } else {
+                this.registroForm.get('estadoCodigo')?.setValue(null);
+                this.registroForm.get('estado')?.setValidators([
+                    Validators.required
+                ]);
+                this.txtEstado = true;
+                this.txtCiudad = true;
+            }
+
+            this.registroForm.get('estado')?.updateValueAndValidity();
+            this.registroForm.get('estadoCodigo')?.updateValueAndValidity();
+        });
+
+        this.registroForm.get('estadoCodigo')?.valueChanges.subscribe(valor => {
+
+            this.selectCiudad = false;
+            this.txtCiudad = false;
+
+            this.registroForm.get('ciudad')?.clearValidators();
+            this.registroForm.get('ciudadCodigo')?.clearValidators();
+
+            if (valor == 25) {
+                this.selectCiudad = true;
+                this.registroForm.get('ciudadCodigo')?.setValidators([
+                    Validators.required
+                ]);
+            } else {
+                this.registroForm.get('ciudadCodigo')?.setValue(null);
+                this.registroForm.get('ciudad')?.setValidators([
+                    Validators.required
+                ]);
+                this.txtCiudad = true;
+            }
+
+            this.registroForm.get('ciudad')?.updateValueAndValidity();
+            this.registroForm.get('ciudadCodigo')?.updateValueAndValidity();
+        });
+
+        this.registroForm.get('profeIndependiente')?.valueChanges.subscribe(valor => {
+
+            this.registroForm.get('instiadscripcion')?.reset();
+
+            if (valor) {
+                this.registroForm.get('instiadscripcion')?.disable();
+                this.registroForm.get('instiadscripcion')?.setValue(
+                    'Soy profesional independiente'
+                );
+            } else {
+                this.registroForm.get('instiadscripcion')?.enable();
+            }
+        });
+
+        this.registroForm.get('editorIndependiente')?.valueChanges.subscribe(valor => {
+
+            this.registroForm.get('entidadEditora')?.reset();
+
+            if (valor) {
+                this.registroForm.get('entidadEditora')?.disable();
+                this.registroForm.get('entidadEditora')?.setValue(
+                    'Es edición independiente'
+                );
+                this.registroForm.get('entidadEditora')?.clearValidators();
+                this.registroForm.get('entidadEditora')?.updateValueAndValidity();
+            } else {
+                this.registroForm.get('entidadEditora')?.enable();
+                this.registroForm.get('entidadEditora')?.setValidators([
+                    Validators.required
+                ]);
+                this.registroForm.get('entidadEditora')?.updateValueAndValidity();
+            }
+        });
+
+        this.registroForm.get('formatoRevista')?.valueChanges.subscribe(valor => {
+
+            if (valor == 2) {
+                this.registroForm.get('urlRevista')?.enable();
+                this.registroForm.get('urlRevista')?.setValidators([
+                    Validators.required
+                ]);
+                this.registroForm.get('urlRevista')?.updateValueAndValidity();
+            } else {
+                this.registroForm.get('urlRevista')?.setValue('');
+                this.registroForm.get('urlRevista')?.disable();
+                this.registroForm.get('urlRevista')?.clearValidators();
+                this.registroForm.get('urlRevista')?.updateValueAndValidity();
+            }
+        });
+    }
+
+    emailCoincideValidator(
+        emailKey: string,
+        confirmarEmailKey: string
+    ): ValidatorFn {
+        return (group: AbstractControl): ValidationErrors | null => {
+
+            const email = group.get(emailKey)?.value;
+            const confirmarEmail = group.get(confirmarEmailKey)?.value;
+
+            return email === confirmarEmail
+                ? null
+                : { emailNoCoincide: true };
+        };
+    }
+
+    onSubmit(): void {
+
+        this.registroForm.get('cargo')?.clearValidators();
+        this.registroForm.get('area')?.clearValidators();
+        this.registroForm.get('relacionRevista')?.clearValidators();
+        this.registroForm.get('tituloPonencia')?.clearValidators();
+        this.registroForm.get('aceptoPublicarconISBN')?.clearValidators();
+        this.registroForm.get('aceptoTrabajoOriginal')?.clearValidators();
+        this.registroForm.get('aceptoPropuestaRevision')?.clearValidators();
+        this.registroForm.get('tituloLibro')?.clearValidators();
+        this.registroForm.get('autores')?.clearValidators();
+        this.registroForm.get('aniopublicacion')?.clearValidators();
+        this.registroForm.get('editorial')?.clearValidators();
+        this.registroForm.get('paisPublicacionLibro')?.clearValidators();
+        this.registroForm.get('ISBN')?.clearValidators();
+        this.registroForm.get('formatoLibro')?.clearValidators();
+        this.registroForm.get('tituloRevista')?.clearValidators();
+        this.registroForm.get('nombreEditorJefe')?.clearValidators();
+        this.registroForm.get('entidadEditora')?.clearValidators();
+        this.registroForm.get('revistaAccesoAbierto')?.clearValidators();
+        this.registroForm.get('areaCienciasSociales')?.clearValidators();
+        this.registroForm.get('peridiocidad')?.clearValidators();
+        this.registroForm.get('paisPublicacionRevista')?.clearValidators();
+        this.registroForm.get('formatoRevista')?.clearValidators();
+        this.registroForm.get('NombreCompletoPresentador')?.clearValidators();
+        this.registroForm.get('numeroAutores')?.clearValidators();
+
+        const tipoRegistro = this.registroForm.get('tipoRegistro')?.value;
+
+        if (tipoRegistro == 1) {
+
+            this.registroForm.get('area')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('cargo')?.setValidators([
+                Validators.required
+            ]);
+
+        } else if (tipoRegistro == 2) {
+
+            this.registroForm.get('cargo')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('tituloPonencia')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('aceptoPublicarconISBN')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('aceptoTrabajoOriginal')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('aceptoPropuestaRevision')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('numeroAutores')?.setValidators([
+                Validators.required
+            ]);
+
+        } else if (tipoRegistro == 3) {
+
+            this.registroForm.get('cargo')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('tituloLibro')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('autores')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('aniopublicacion')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('editorial')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('paisPublicacionLibro')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('ISBN')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('formatoLibro')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('numeroAutores')?.setValidators([
+                Validators.required
+            ]);
+
+        } else if (tipoRegistro == 4) {
+
+            this.registroForm.get('relacionRevista')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('tituloRevista')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('nombreEditorJefe')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('entidadEditora')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('revistaAccesoAbierto')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('areaCienciasSociales')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('peridiocidad')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('paisPublicacionRevista')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('formatoRevista')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('NombreCompletoPresentador')?.setValidators([
+                Validators.required
+            ]);
+
+            this.registroForm.get('ejeTematico')?.setValue('7');
+        }
+
+        const camposValidacion = [
+            'cargo',
+            'area',
+            'relacionRevista',
+            'tituloPonencia',
+            'aceptoPublicarconISBN',
+            'aceptoTrabajoOriginal',
+            'aceptoPropuestaRevision',
+            'tituloLibro',
+            'autores',
+            'aniopublicacion',
+            'editorial',
+            'paisPublicacionLibro',
+            'ISBN',
+            'formatoLibro',
+            'tituloRevista',
+            'nombreEditorJefe',
+            'entidadEditora',
+            'revistaAccesoAbierto',
+            'areaCienciasSociales',
+            'peridiocidad',
+            'paisPublicacionRevista',
+            'formatoRevista',
+            'NombreCompletoPresentador',
+            'numeroAutores'
+        ];
+
+        camposValidacion.forEach(campo => {
+            this.registroForm.get(campo)?.updateValueAndValidity();
+        });
+
+        if (this.registroForm.valid) {
+
+            this.valoresDelFormulario = this.registroForm.value;
+
+            const body = this.registroForm.value;
+
+            this.http.post(
+                `${PUBLIC}/registrar-m`,
+                body,
+                {
+                    withCredentials: true
+                }
+            ).subscribe({
+                next: (respuesta: any) => {
+
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Registro guardado',
+                        detail: respuesta.message,
+                        life: 3000
+                    });
+
+                    this.registroForm.reset();
+
+                    this.registroForm.get('tipoRegistro')?.setValue('1');
+
+                    while (this.autoresPonencia.length !== 1) {
+                        this.autoresPonencia.removeAt(0);
+                    }
+
+                    while (this.autores.length !== 1) {
+                        this.autores.removeAt(0);
+                    }
+
+                    this.selectEstado = false;
+                    this.txtEstado = false;
+                    this.selectCiudad = false;
+                    this.txtCiudad = false;
+                },
+                error: (err) => {
+
+                    this.messageService.add({
+                        severity: 'warn',
+                        summary: 'Algo salió mal',
+                        detail: err.error?.message,
+                        life: 3000
+                    });
+                }
+            });
+
+        } else {
+
+            this.registroForm.markAllAsTouched();
+
+            const campos = this.getCamposInvalidos();
+
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Atención',
+                detail: 'Campos faltantes o inválidos',
+                life: 3000
+            });
+
+            console.log('Campos faltantes o inválidos:', campos);
+        }
+    }
+
+    getCamposInvalidos(): string[] {
+
+        const invalidos: string[] = [];
+        const controles = this.registroForm.controls;
+
+        for (const nombre in controles) {
+
+            if (controles[nombre].invalid) {
+                invalidos.push(nombre);
+            }
+        }
+
+        return invalidos;
+    }
+
+    get autoresPonencia(): FormArray {
+        return this.registroForm.get('autoresPonencia') as FormArray;
+    }
+
+    agregarAutorPonencia(): void {
+
+        if (this.autoresPonencia.length < 3) {
+            this.autoresPonencia.push(
+                new FormControl('')
+            );
+        }
+    }
+
+    eliminarAutorPonencia(index: number): void {
+
+        if (this.autoresPonencia.length > 1) {
+            this.autoresPonencia.removeAt(index);
+        }
+    }
+
+    get autores(): FormArray {
+        return this.registroForm.get('autores') as FormArray;
+    }
+
+    agregarAutor(): void {
+        this.autores.push(
+            new FormControl('')
+        );
+    }
+
+    eliminarAutor(index: number): void {
+
+        if (this.autores.length > 1) {
+            this.autores.removeAt(index);
+        }
+    }
+}

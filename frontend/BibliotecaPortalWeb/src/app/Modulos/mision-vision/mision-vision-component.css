@@ -1,0 +1,342 @@
+.mision-vision {
+    width: 100%;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 20px 30px 60px;
+    box-sizing: border-box;
+}
+
+.mision-vision-header {
+    text-align: center;
+    max-width: 850px;
+    margin: 0 auto 45px;
+}
+
+.mision-vision-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    background: rgba(135, 117, 20, 0.1);
+    color: var(--primary-color);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.mision-vision-header h1 {
+    margin: 0;
+    color: #1e293b;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.mision-vision-header p {
+    margin: 15px auto 0;
+    max-width: 720px;
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.mision-vision-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+    align-items: stretch;
+}
+
+.mision-vision-card {
+    position: relative;
+    display: flex;
+    gap: 22px;
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 22px;
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.07);
+    box-sizing: border-box;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.mision-vision-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--primary-color);
+}
+
+.mision-vision-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(135, 117, 20, 0.35);
+    box-shadow:
+        0 15px 35px rgba(15, 23, 42, 0.12);
+}
+
+.mision-vision-icon {
+    width: 58px;
+    min-width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: var(--primary-color);
+    color: #ffffff;
+    font-size: 1.55rem;
+    box-shadow:
+        0 6px 15px rgba(135, 117, 20, 0.25);
+}
+
+.mision-vision-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.mision-vision-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.mision-vision-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.mision-vision-title h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.mision-vision-year {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 65px;
+    padding: 7px 12px;
+    border: 1px solid rgba(135, 117, 20, 0.25);
+    border-radius: 20px;
+    background: rgba(135, 117, 20, 0.08);
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.mision-vision-line {
+    width: 55px;
+    height: 3px;
+    margin: 16px 0 22px;
+    border-radius: 10px;
+    background: var(--primary-color);
+}
+
+.mision-vision-content p {
+    margin: 0 0 17px;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.mision-vision-content p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+
+    .mision-vision {
+        padding:
+            20px 20px 50px;
+    }
+
+    .mision-vision-grid {
+        gap: 20px;
+    }
+
+    .mision-vision-card {
+        padding: 28px;
+        gap: 18px;
+    }
+
+    .mision-vision-icon {
+        width: 52px;
+        min-width: 52px;
+        height: 52px;
+        font-size: 1.35rem;
+    }
+
+    .mision-vision-title h2 {
+        font-size: 1.6rem;
+    }
+
+    .mision-vision-content p {
+        font-size: 0.92rem;
+        line-height: 1.7;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .mision-vision {
+        padding:
+            15px 15px 40px;
+    }
+
+    .mision-vision-header {
+        margin-bottom: 30px;
+    }
+
+    .mision-vision-header h1 {
+        font-size: 2rem;
+    }
+
+    .mision-vision-header p {
+        font-size: 0.92rem;
+    }
+
+    .mision-vision-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .mision-vision-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .mision-vision {
+        padding:
+            10px 10px 35px;
+    }
+
+    .mision-vision-header {
+        margin-bottom: 25px;
+    }
+
+    .mision-vision-eyebrow {
+        font-size: 0.7rem;
+        padding: 5px 13px;
+    }
+
+    .mision-vision-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .mision-vision-header p {
+        font-size: 0.88rem;
+        line-height: 1.6;
+    }
+
+    .mision-vision-card {
+        display: block;
+        padding: 25px 22px 25px 25px;
+        border-radius: 18px;
+    }
+
+    .mision-vision-icon {
+        margin-bottom: 18px;
+    }
+
+    .mision-vision-title h2 {
+        font-size: 1.5rem;
+    }
+
+    .mision-vision-content p {
+        font-size: 0.9rem;
+        line-height: 1.7;
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .mision-vision {
+        padding:
+            5px 5px 30px;
+    }
+
+    .mision-vision-header h1 {
+        font-size: 1.55rem;
+    }
+
+    .mision-vision-header p {
+        font-size: 0.84rem;
+    }
+
+    .mision-vision-card {
+        padding:
+            22px 18px 22px 22px;
+    }
+
+    .mision-vision-icon {
+        width: 48px;
+        min-width: 48px;
+        height: 48px;
+        border-radius: 13px;
+        font-size: 1.2rem;
+    }
+
+    .mision-vision-title h2 {
+        font-size: 1.35rem;
+    }
+
+    .mision-vision-label {
+        font-size: 0.68rem;
+    }
+
+    .mision-vision-year {
+        min-width: 55px;
+        padding: 6px 9px;
+        font-size: 0.72rem;
+    }
+
+    .mision-vision-content p {
+        font-size: 0.86rem;
+        line-height: 1.65;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .mision-vision-card {
+        padding:
+            20px 16px 20px 20px;
+    }
+
+    .mision-vision-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .mision-vision-title h2 {
+        font-size: 1.25rem;
+    }
+
+    .mision-vision-content p {
+        font-size: 0.82rem;
+    }
+}

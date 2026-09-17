@@ -1,521 +1,560 @@
-import { Component, signal, inject } from '@angular/core';
-import { HttpClient,HttpParams } from '@angular/common/http';
-import { RouterOutlet } from '@angular/router';
-import { FormControl,FormArray,FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { CardModule } from 'primeng/card';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ButtonModule } from 'primeng/button';
-import { InputMaskModule } from 'primeng/inputmask';
-import { KeyFilterModule } from 'primeng/keyfilter';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { DataServices } from './Services/data-services';
-import { FieldsetModule } from 'primeng/fieldset';
+import { Component,signal,inject  } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { MenubarModule } from 'primeng/menubar';
+import { MegaMenuModule } from 'primeng/megamenu';
 
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MegaMenuItem } from 'primeng/api';
 
+import { ChatbotComponent } from './Chatbot/chatbot-component';
+import { SitiosInteresComponent } from './Modulos/sitios-interes/sitios-interes-component';
 
-import { AUTH_URL,COOKIE,API,PUBLIC } from '../app/Core/Constants/api.constants';
-
-interface pec {
-    label: string;
-    value: string;
-    code: string;
-}
+import { AUTH_URL, COOKIE } from './Core/Constants/api.constants';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CommonModule,ReactiveFormsModule,FormsModule,CardModule,SelectButtonModule,InputTextModule,SelectModule,CheckboxModule,ButtonModule,InputMaskModule,KeyFilterModule,RadioButtonModule,FieldsetModule,ToastModule],
-  templateUrl: './app.html',
+  imports: [RouterModule,ChatbotComponent,MenubarModule,MegaMenuModule,SitiosInteresComponent],
+  templateUrl: './app.html',  
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('biblioteca-portal-web');
-  public dataService = inject(DataServices);
-  private fb = inject(FormBuilder);
-  messageService = inject(MessageService);
-  registroForm!: FormGroup;
-
-  divAsistentes:boolean=true;
-  divPonentes:boolean=false;
-  divPressLibro:boolean=false;
-  divPressRevista:boolean=false;
-
-  selectEstado:boolean=false;
-  selectCiudad:boolean=false;
-  txtEstado:boolean=false;
-  txtCiudad:boolean=false;
-
-  valoresDelFormulario:any;
-
-  value: string = '1';
-
-  stateOptions: any[] = [
-    { label: 'Asistente', value: '1' },
-    { label: 'Ponente', value: '2' },
-    { label: 'Pres. Libro', value: '3' },
-    { label: 'Pres. Revista', value: '4' }
-  ];
-  selectedState: string = '1';
-
-  paises: pec[] = this.dataService.getPaises();
-  estados: pec[] = this.dataService.getEstadosMexico();
-  ciudades: pec[] = this.dataService.getCiudadesSinaloa(); 
+    
+private readonly http = inject(HttpClient);
+imagenHover = signal<string | null>(null);
 
 
-  libroPublicacion: any[] = [
-        { label: '2025', value: '2025' },
-        { label: '2026', value: '2026' },
-  ];
+items: MenuItem[] = [
+    {
+        label: 'Inicio',
+        icon: 'pi pi-home',
+        routerLink: ['']
+    },
+
+    {
+        label: 'Acerca De',
+        icon: 'pi pi-info-circle',
+        items: [
+            {
+                label: 'Misión y Visión',
+                icon: 'pi pi-eye',
+                routerLink: ['/mision-vision']
+            },
+            {
+                label: 'Breve historia de la Universidad Autónoma de Sinaloa',
+                icon: 'pi pi-history',
+                routerLink: ['/historia-universidad']
+            },
+            {
+                label: 'Galería de Rectores',
+                icon: 'pi pi-users',
+                routerLink: ['/galeria-rectores']
+            },
+            {
+                label: 'Galería de Doctores Honoris Causa',
+                icon: 'pi pi-star',
+                routerLink: ['/galeria-honoris-causa']
+            },
+            {
+                label: 'Organigrama',
+                icon: 'pi pi-sitemap',
+                routerLink: ['/organigrama']
+            }
+        ]
+    },    
+    {
+        label: 'SIBIUAS',
+        icon: 'pi pi-database',
+        items: [
+            {
+                label: 'Biblioteca Central "Lic. Eustaquio Buelna Pérez"',
+                icon: 'pi pi-building',
+                routerLink: ['/biblioteca-central']
+            },
+            {
+                label: 'Coordinación de Desarrollo de Colecciones',
+                icon: 'pi pi-book',
+                items: [
+                    {
+                        label: 'Selección y adquisición',
+                        icon: 'pi pi-shopping-cart',
+                        routerLink: ['/colecciones-selección-adquisición']
+                    },
+                    {
+                        label: 'Donaciones',
+                        icon: 'pi pi-gift',
+                        routerLink: ['/colecciones-donaciones']
+                    }
+                ]
+            },
+            {
+                label: 'Coordinación de Procesos Técnicos',
+                icon: 'pi pi-cog',
+                items: [
+                    {
+                        label: 'Bibliotecas Departamentales',
+                        icon: 'pi pi-building',
+                        routerLink: ['/procesos-bibliotecas']
+                    },
+                    {
+                        label: 'Sistemas y soporte técnico',
+                        icon: 'pi pi-desktop',
+                        routerLink: ['/procesos-sistemas']
+                    },
+                    {
+                        label: 'Análisis Bibliográfico',
+                        icon: 'pi pi-search',
+                        routerLink: ['/procesos-análisis']
+                    },
+                    {
+                        label: 'Restauración Bibliográfica',
+                        icon: 'pi pi-wrench',
+                        routerLink: ['/procesos-restauración']
+                    }
+                ]
+            },
+            {
+                label: 'Coordinación de Servicios al Público',
+                icon: 'pi pi-users',
+                items: [
+                    {
+                        label: 'Área de Consulta',
+                        icon: 'pi pi-book',
+                        routerLink: ['/servicios-consulta']
+                    },
+                    {
+                        label: 'Hemeroteca',
+                        icon: 'pi pi-folder',
+                        routerLink: ['/servicios-hemeroteca']
+                    },
+                    {
+                        label: 'Cubículos',
+                        icon: 'pi pi-users',
+                        routerLink: ['/servicios-cubículos']
+                    },
+                    {
+                        label: 'Área Infantil',
+                        icon: 'pi pi-heart',
+                        routerLink: ['/servicios-infantil']
+                    },
+                    {
+                        label: 'Auditorio',
+                        icon: 'pi pi-microphone',
+                        routerLink: ['/servicios-auditorio']
+                    },
+                    {
+                        label: 'Tratado de Marrakech',
+                        icon: 'pi pi-globe',
+                        routerLink: ['/servicios-marrakech']
+                    },
+                    {
+                        label: 'Área Virtual',
+                        icon: 'pi pi-desktop',
+                        routerLink: ['/servicios-virtual']
+                    },
+                    {
+                        label: 'Formación de Usuario',
+                        icon: 'pi pi-graduation-cap',
+                        routerLink: ['/servicios-formación']
+                    },
+                    {
+                        label: 'Visitas Guiadas',
+                        icon: 'pi pi-map',
+                        routerLink: ['/servicios-visitas']
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'Repositorios Institucionales',
+        icon: 'pi pi-database',
+        items: [
+            {
+                label: 'Repositorio de Tesis',
+                icon: 'pi pi-external-link',
+                url: 'https://tesis.uas.edu.mx/home',
+                target: '_blank'
+            },
+            {
+                label: 'Repositorio de Revistas',
+                icon: 'pi pi-external-link',
+                url: 'https://revistas.uas.edu.mx/index.php',
+                target: '_blank'
+            }
+        ]
+    },
+
+    {
+        label: 'Servicios para usuarios',
+        icon: 'pi pi-users',
+        items: [
+            {
+                label: 'Solicitud de cursos',
+                icon: 'pi pi-book',
+                routerLink: ['/servicios-usuarios-cursos']
+            },
+            {
+                label: 'Solicitud de auditorio',
+                icon: 'pi pi-microphone',
+                routerLink: ['/servicios-usuarios-auditorio']
+            }    
+        ]
+    },
+    {
+    label: 'Administración',
+    icon: 'pi pi-cog',
+    items: [
+        {
+            label: 'Catálogos',
+            icon: 'pi pi-database',
+            items: [
+                {
+                    label: 'Campos',
+                    icon: 'pi pi-list',
+                    routerLink: ['/catalogos/campos']
+                },
+                {
+                    label: 'Categorías',
+                    icon: 'pi pi-tags',
+                    routerLink: ['/catalogos/categorias']
+                },
+                {
+                    label: 'Tipos',
+                    icon: 'pi pi-table',
+                    routerLink: ['/catalogos/tipos']
+                }
+            ]
+        },
+        {
+            label: 'Reportes',
+            icon: 'pi pi-chart-bar',
+            items: [
+                {
+                    label: 'Reporte general',
+                    icon: 'pi pi-file',
+                    routerLink: ['/reportes/general']
+                },
+                {
+                    label: 'Estadísticas',
+                    icon: 'pi pi-chart-line',
+                    routerLink: ['/reportes/estadisticas']
+                }
+            ]
+        },
+        {
+            label: 'Usuarios',
+            icon: 'pi pi-users',
+            routerLink: ['/admin/usuarios']
+        },
+        {
+            label: 'Roles',
+            icon: 'pi pi-shield',
+            routerLink: ['/admin/roles']
+        },
+        {
+            label: 'Permisos',
+            icon: 'pi pi-lock',
+            routerLink: ['/admin/permisos']
+        }
+    ]
+}
+];
 
 
-  revistaPeridiocidad: any[] = [
-        { label: 'Bimestral', value: '1' },
-        { label: 'Trimestral', value: '2' },
-        { label: 'Cuatrimestral', value: '3' },
-        { label: 'Semestral', value: '4' },
-        { label: 'Anual', value: '5' },
-        { label: 'Continua', value: '6' }
-  ];
+itemsV: MegaMenuItem[] = [
 
-  revistaFormato: any[] = [
-        { label: 'Impreso', value: '1' },
-        { label: 'Electrónico', value: '2' }
-  ];
+    {
+        label: 'SIBIUAS',
+        image: '/cover_issue_204_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/SIBIUAS',
+        target: '_blank'
+    },
 
-  libroFormato: any[] = [
-        { label: 'Impreso', value: '1' },
-        { label: 'Electrónico', value: '2' }
-  ];
+    {
+        label: 'ACBIOMEX',
+        image: '/cover_issue_208_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/ACBIOMEX',
+        target: '_blank'
+    },
+    {
+        label: 'Buiyya',
+        image: '/cover_issue_205_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/Buiyya',
+        target: '_blank'
+    },
+    {
+        label: 'ESCRIPTA',
+        image: '/cover_issue_193_es.jpg',
+        url: 'https://revistas.uas.edu.mx/index.php/ESCRIPTA',
+        target: '_blank'
+    },
+    {
+        label: 'RI',
+        image: '/cover_issue_190_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/RI',
+        target: '_blank'
+    },
+    {
+        label: 'JUS',
+        image: '/cover_issue_191_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/JUS',
+        target: '_blank'
+    },
+    {
+        label: 'IJISTA',
+        image: '/cover_issue_197_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/IJISTA',
+        target: '_blank'
+    },
+    {
+        label: 'QBU',
+        image: '/cover_issue_121_es.jpg',
+        url: 'https://revistas.uas.edu.mx/index.php/QBU',
+        target: '_blank'
+    },
+    {
+        label: 'CIMAR',
+        image: '/cover_issue_196_es.jpg',
+        url: 'https://revistas.uas.edu.mx/index.php/CIMAR',
+        target: '_blank'
+    },
+    {
+        label: 'FEMUAS',
+        image: '/cover_issue_207_es.jpg',
+        url: 'https://revistas.uas.edu.mx/index.php/FEMUAS',
+        target: '_blank'
+    },
+    {
+        label: 'RITUAS',
+        image: '/journalThumbnail_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/RITUAS',
+        target: '_blank'
+    },
+    {
+        label: 'RECIE',
+        image: '/cover_issue_188_es.jpg',
+        url: 'https://revistas.uas.edu.mx/index.php/RECIE',
+        target: '_blank'
+    },
+    {
+        label: 'REVOUAS',
+        image: '/cover_issue_189_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/REVOUAS',
+        target: '_blank'
+    },
+    {
+        label: 'RECEAUAS',
+        image: '/cover_issue_192_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/RECEAUAS',
+        target: '_blank'
+    },
+    {
+        label: 'CYU',
+        image: '/cover_issue_39_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/CYU',
+        target: '_blank'
+    },
+    {
+        label: 'ARENAS',
+        image: '/journalThumbnail_es.png',
+        url: 'https://revistas.uas.edu.mx/index.php/ARENAS',
+        target: '_blank'
+    },
+    {
+        label: 'ACCED',
+        image: '/journalThumbnail_es (1).png',
+        url: 'https://revistas.uas.edu.mx/index.php/ACCED',
+        target: '_blank'
+    },
+    {
+        label: 'Psico-logos',
+        image: 'journalThumbnail_es (2).png',
+        url: 'https://revistas.uas.edu.mx/index.php/Psico-logos',
+        target: '_blank'
+    },
+    {
+        label: 'RIIBIOS',
+        image: 'journalThumbnail_es (4).png',
+        url: 'https://revistas.uas.edu.mx/index.php/RIIBIOS',
+        target: '_blank'
+    },
+    {
+        label: 'IDEAS',
+        image: 'journalThumbnail_es (5).png',
+        url: 'https://revistas.uas.edu.mx/index.php/IDEAS',
+        target: '_blank'
+    },
+    {
+        label: 'uasjmr',
+        image: 'journalThumbnail_es (6).png',
+        url: 'https://revistas.uas.edu.mx/index.php/uasjmr',
+        target: '_blank'
+    },
+    {
+        label: 'REVOECI',
+        image: 'journalThumbnail_es (7).png',
+        url: 'https://revistas.uas.edu.mx/index.php/REVOECI',
+        target: '_blank'
+    },
+    {
+        label: 'EDUMORPHOSIS',
+        image: 'journalThumbnail_es (8).png',
+        url: 'https://revistas.uas.edu.mx/index.php/EDUMORPHOSIS',
+        target: '_blank'
+    }
 
-  constructor(private http: HttpClient) {}
+];
 
-  ngOnInit() {
+itemsVRight: MegaMenuItem[] = [
 
-    this.http.get(`${COOKIE}/sanctum/csrf-cookie`, { withCredentials: true })
-      .subscribe({
+    {
+        label: 'SIBIUAS',
+        image: '/AURA-MAR.png',
+        url: 'https://aura.amelica.org/index.html ',
+        target: '_blank'
+    },
+
+    {
+        label: 'ACBIOMEX',
+        image: '/CC-MAR.png',
+        url: 'https://creativecommons.org/ ',
+        target: '_blank'
+    },
+    {
+        label: 'Buiyya',
+        image: '/DOA_Logo3-MAR.png',
+        url: '',
+        target: '_blank'
+    },
+    {
+        label: 'ESCRIPTA',
+        image: '/DOAJ-MAR.png',
+        url: 'https://doaj.org/ ',
+        target: '_blank'
+    },
+    {
+        label: 'RI',
+        image: '/Facebook-Logo-2019-MAR.png',
+        url: 'https://www.facebook.com/ ',
+        target: '_blank'
+    },
+    {
+        label: 'JUS',
+        image: '/Google Scholar-MAR.png',
+        url: 'https://scholar.google.com/ ',
+        target: '_blank'
+    },
+    {
+        label: 'IJISTA',
+        image: '/lacli-index-MAR.webp',
+        url: ' https://lacli.info/library.html?q=Universidad+Auton%C3%B3noma+de+Sinaloa ',
+        target: '_blank'
+    },
+    {
+        label: 'QBU',
+        image: '/Latindex-MAR.png',
+        url: 'https://latindex.org/latindex/inicio ',
+        target: '_blank'
+    },
+    {
+        label: 'CIMAR',
+        image: '/LatinRev-MAR.png',
+        url: 'https://latinrev.flacso.org.ar/ ',
+        target: '_blank'
+    },
+    {
+        label: 'FEMUAS',
+        image: '/LivRe-MAR.png',
+        url: 'https://livre.cnen.gov.br/Inicial.asp ',
+        target: '_blank'
+    },
+    {
+        label: 'RITUAS',
+        image: '/Logo AmeliCA-MAR.png',
+        url: 'https://amelica.org/ ',
+        target: '_blank'
+    },
+    {
+        label: 'RECIE',
+        image: '/Logo-blue Vlex-MAR.png',
+        url: 'https://vlex.com.mx/ ',
+        target: '_blank'
+    },
+    {
+        label: 'REVOUAS',
+        image: '/miar-MAR.png',
+        url: 'https://miar.ub.edu/ ',
+        target: '_blank'
+    },
+    {
+        label: 'RECEAUAS',
+        image: '/new-instagram-text-logo-MAR.png',
+        url: 'https://www.instagram.com/ ',
+        target: '_blank'
+    },
+    {
+        label: 'CYU',
+        image: '/REDIB-MAR.png',
+        url: 'https://static.redib.org/ ',
+        target: '_blank'
+    },
+    {
+        label: 'ARENAS',
+        image: '/Road-MAR.png',
+        url: 'https://road.issn.org/ ',
+        target: '_blank'
+    },
+    {
+        label: 'Psico-logos',
+        image: 'zenodo_in_blue-MAR.png',
+        url: 'https://zenodo.org/',
+        target: '_blank'
+    }
+
+];
+
+ngOnInit(): void {
+    this.http.get(`${COOKIE}/sanctum/csrf-cookie`, {
+        withCredentials: true
+    }).subscribe({
         next: () => {
 
-              const body = {};
-              this.http.post(`${AUTH_URL}/web`, body,{ withCredentials: true })
-                .subscribe({
-                  next: ($respuesta: any) => {
-                    console.log($respuesta.message);
+            const body = {};
 
-                    /*const url = `${AUTH_URL}/me`;
-                    this.http.get(url, { withCredentials: true }).subscribe({
-                    next: (respuesta) => {
-                        console.log('Datos recibidos:', respuesta);
-                    },
-                    error: (err) => {
-                        console.error('Error al obtener los datos:', err);
-                    }
-                    });*/
-
-                  },
-                  error: (err) =>  { 
-                    console.log(err.error["message"]);
-                  }
-                });
+            this.http.post(`${AUTH_URL}/web`, body, {
+                withCredentials: true
+            }).subscribe({
+                next: (respuesta: any) => {
+                    console.log(respuesta.message);
+                },
+                error: (err) => {
+                    console.log(err.error?.message);
+                }
+            });
         },
         error: (err) => {
-          console.log(err);
-        } 
-    })
-
-    this.registroForm = this.fb.group({
-        tipoRegistro: ['1'],
-        genero: ['',Validators.required],
-        gradoAcademico: ['',Validators.required],
-        nombre: ['',Validators.required],
-        primerApellido: [''],
-        segundoApellido: [''],
-        email: ['', [Validators.required, Validators.email]],
-        confirmarEmail: ['', [Validators.required, Validators.email]],
-        telefono: ['', [Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        pais: ['',Validators.required],
-        estado: ['',Validators.required],
-        ciudad: ['',Validators.required],
-        estadoCodigo: ['',Validators.required],
-        ciudadCodigo: ['',Validators.required],
-        instiadscripcion: ['',Validators.required],
-        profeIndependiente: [''],
-        cargo: ['',Validators.required],
-        area: ['',Validators.required],
-
-        
-
-        tituloPonencia: ['',Validators.required],
-        autoresPonencia: this.fb.array([this.fb.control('')]),
-        //nombrePonenteResponsable: ['',Validators.required],
-        //ORCIDResponsable: ['',Validators.required],
-        aceptoPublicarconISBN : ['',Validators.required],
-        aceptoTrabajoOriginal : ['',Validators.required],
-        aceptoPropuestaRevision : ['',Validators.required],
-
-
-        tituloLibro : ['',Validators.required],
-        //autores : ['',Validators.required],
-        autores: this.fb.array([this.fb.control('')]),
-        aniopublicacion: ['',Validators.required],
-        editorial: ['',Validators.required],
-        paisPublicacionLibro: ['',Validators.required],
-        ISBN: ['',Validators.required],
-        formatoLibro: ['',Validators.required],
-
-        relacionRevista: ['',Validators.required],
-        tituloRevista: ['',Validators.required],
-        nombreEditorJefe: ['',Validators.required],
-        entidadEditora: ['',Validators.required],
-        revistaAccesoAbierto: ['',Validators.required],
-        areaCienciasSociales: ['',Validators.required],
-        peridiocidad: ['',Validators.required],
-        paisPublicacionRevista: ['',Validators.required],
-        ISSNImpreso: [''],
-        ISSNElectronico: [''],
-        formatoRevista: ['',Validators.required],
-        urlRevista: [''],
-        NombreCompletoPresentador: ['',Validators.required],
-        editorIndependiente: [''],
-
-
-        ejeTematico : ['',Validators.required],
-        numeroAutores : ['',Validators.required],
-        AceptoRecibirNotificacion : ['',Validators.required],
-        AceptoTratamiento : ['',Validators.required],
-        comoEntero : ['',Validators.required]
-    }, { validators: this.emailCoincideValidator('email', 'confirmarEmail') });
-
-    this.registroForm.get('urlRevista')?.disable(); 
-
-    this.registroForm.get('tipoRegistro')?.valueChanges.subscribe(valor => {
-
-      this.divAsistentes = false;
-      this.divPonentes = false
-      this.divPressLibro = false;
-      this.divPressRevista = false;
-
-      if(valor == 1)
-        this.divAsistentes = true;
-      else if(valor == 2)
-        this.divPonentes = true
-      else if(valor == 3)
-        this.divPressLibro = true;
-      else if(valor == 4)
-        this.divPressRevista = true;
-        
-    });
-
-
-    this.registroForm.get('pais')?.valueChanges.subscribe(valor => {
-      this.selectEstado = false;
-      this.txtEstado = false; 
-      this.selectCiudad = false;
-      this.txtCiudad = false; 
-
-      this.registroForm.get('estado')?.clearValidators();
-      this.registroForm.get('estadoCodigo')?.clearValidators();
-      
-      
-      if(valor == 42){
-        this.selectEstado = true;
-        this.registroForm.get('estadoCodigo')?.setValidators([Validators.required]);
-      }
-      else{  
-        this.registroForm.get('estadoCodigo')?.setValue(null);
-        this.registroForm.get('estado')?.setValidators([Validators.required]);
-        this.txtEstado = true;
-        this.txtCiudad = true;
-      }
-
-      this.registroForm.get('estado')?.updateValueAndValidity();
-      this.registroForm.get('estadoCodigo')?.updateValueAndValidity();
-      
-    });
-
-    this.registroForm.get('estadoCodigo')?.valueChanges.subscribe(valor => {
-      this.selectCiudad = false;
-      this.txtCiudad = false; 
-
-      this.registroForm.get('ciudad')?.clearValidators();
-      this.registroForm.get('ciudadCodigo')?.clearValidators();
-
-      if(valor == 25){
-        this.selectCiudad = true;
-        this.registroForm.get('ciudadCodigo')?.setValidators([Validators.required]);
-      }else{  
-        this.registroForm.get('ciudadCodigo')?.setValue(null);
-        this.registroForm.get('ciudad')?.setValidators([Validators.required]);
-        this.txtCiudad = true;
-      }
-
-
-      this.registroForm.get('ciudad')?.updateValueAndValidity();
-      this.registroForm.get('ciudadCodigo')?.updateValueAndValidity();
-
-    });
-
-
-    this.registroForm.get('profeIndependiente')?.valueChanges.subscribe(valor => {
-        this.registroForm.get('instiadscripcion')?.reset();
-        if(valor){
-          this.registroForm.get('instiadscripcion')?.disable(); 
-          this.registroForm.get('instiadscripcion')?.setValue('Soy profesional independiente');
-        }else
-        {
-          this.registroForm.get('instiadscripcion')?.enable(); 
+            console.log(err);
         }
     });
+}
 
-    this.registroForm.get('editorIndependiente')?.valueChanges.subscribe(valor => {
-        this.registroForm.get('entidadEditora')?.reset();
-        if(valor){
-          this.registroForm.get('entidadEditora')?.disable(); 
-          this.registroForm.get('instiadscripcion')?.setValue('Es edición independiente');
-          this.registroForm.get('entidadEditora')?.clearValidators();
-          this.registroForm.get('entidadEditora')?.updateValueAndValidity();
-        }else{
-          this.registroForm.get('entidadEditora')?.enable();
-          this.registroForm.get('entidadEditora')?.setValidators([Validators.required]);
-          this.registroForm.get('entidadEditora')?.updateValueAndValidity();
-        }
-          
-    });
-    
-
-
-    this.registroForm.get('formatoRevista')?.valueChanges.subscribe(valor => {
-        if(valor == 2){
-            this.registroForm.get('urlRevista')?.enable();
-            this.registroForm.get('urlRevista')?.setValidators([Validators.required]);
-            this.registroForm.get('urlRevista')?.updateValueAndValidity();
-        }else{
-          this.registroForm.get('urlRevista')?.setValue('');
-          this.registroForm.get('urlRevista')?.disable();
-          this.registroForm.get('urlRevista')?.clearValidators();
-          this.registroForm.get('urlRevista')?.updateValueAndValidity();
-        }
-          
-    });
-  }
-
-
-
-  emailCoincideValidator(emailKey: string, confirmarEmailKey: string): ValidatorFn {
-    return (group: AbstractControl): ValidationErrors | null => {
-      const email = group.get(emailKey)?.value;
-      const confirmarEmail = group.get(confirmarEmailKey)?.value;
-
-      return email === confirmarEmail ? null : { emailNoCoincide: true };
-    };
-  }
-
-
-  onSubmit() {
-
-    this.registroForm.get('cargo')?.clearValidators();
-    this.registroForm.get('area')?.clearValidators();
-    this.registroForm.get('relacionRevista')?.clearValidators();
-    this.registroForm.get('tituloPonencia')?.clearValidators();
-    //this.registroForm.get('nombrePonenteResponsable')?.clearValidators();
-    //this.registroForm.get('ORCIDResponsable')?.clearValidators();
-    this.registroForm.get('aceptoPublicarconISBN')?.clearValidators();
-    this.registroForm.get('aceptoTrabajoOriginal')?.clearValidators();
-    this.registroForm.get('aceptoPropuestaRevision')?.clearValidators();
-
-    this.registroForm.get('tituloLibro')?.clearValidators();
-    this.registroForm.get('autores')?.clearValidators();
-    this.registroForm.get('aniopublicacion')?.clearValidators();
-    this.registroForm.get('editorial')?.clearValidators();
-    this.registroForm.get('paisPublicacionLibro')?.clearValidators();
-    this.registroForm.get('ISBN')?.clearValidators(); 
-    this.registroForm.get('formatoLibro')?.clearValidators();
-
-    this.registroForm.get('tituloRevista')?.clearValidators();
-    this.registroForm.get('nombreEditorJefe')?.clearValidators();
-    this.registroForm.get('entidadEditora')?.clearValidators();
-    this.registroForm.get('revistaAccesoAbierto')?.clearValidators();
-    this.registroForm.get('areaCienciasSociales')?.clearValidators();
-    this.registroForm.get('peridiocidad')?.clearValidators();
-    this.registroForm.get('paisPublicacionRevista')?.clearValidators();
-    this.registroForm.get('formatoRevista')?.clearValidators();
-    this.registroForm.get('NombreCompletoPresentador')?.clearValidators();
-
-    this.registroForm.get('numeroAutores')?.clearValidators();
-
-    if(this.registroForm.get('tipoRegistro')?.value == 1)
-    {
-      this.registroForm.get('area')?.setValidators([Validators.required]);
-      this.registroForm.get('cargo')?.setValidators([Validators.required]);
-
-    }else if(this.registroForm.get('tipoRegistro')?.value == 2)
-    {
-      this.registroForm.get('cargo')?.setValidators([Validators.required]);
-      this.registroForm.get('tituloPonencia')?.setValidators([Validators.required]);
-      //this.registroForm.get('nombrePonenteResponsable')?.setValidators([Validators.required]);
-      //this.registroForm.get('ORCIDResponsable')?.setValidators([Validators.required]);
-      this.registroForm.get('aceptoPublicarconISBN')?.setValidators([Validators.required]);
-      this.registroForm.get('aceptoTrabajoOriginal')?.setValidators([Validators.required]);
-      this.registroForm.get('aceptoPropuestaRevision')?.setValidators([Validators.required]);
-
-      this.registroForm.get('numeroAutores')?.setValidators([Validators.required]);
-
-    }else if(this.registroForm.get('tipoRegistro')?.value == 3) {
-      this.registroForm.get('cargo')?.setValidators([Validators.required]);
-      this.registroForm.get('tituloLibro')?.setValidators([Validators.required]);
-      this.registroForm.get('autores')?.setValidators([Validators.required]);
-      this.registroForm.get('aniopublicacion')?.setValidators([Validators.required]);
-      this.registroForm.get('editorial')?.setValidators([Validators.required]);
-      this.registroForm.get('paisPublicacionLibro')?.setValidators([Validators.required]);
-      this.registroForm.get('ISBN')?.setValidators([Validators.required]);
-      this.registroForm.get('formatoLibro')?.setValidators([Validators.required]);
-
-      this.registroForm.get('numeroAutores')?.setValidators([Validators.required]);
-
-    }else if(this.registroForm.get('tipoRegistro')?.value == 4) {
-      this.registroForm.get('relacionRevista')?.setValidators([Validators.required]);
-      this.registroForm.get('tituloRevista')?.setValidators([Validators.required]);
-      this.registroForm.get('nombreEditorJefe')?.setValidators([Validators.required]);
-      this.registroForm.get('entidadEditora')?.setValidators([Validators.required]);
-      this.registroForm.get('revistaAccesoAbierto')?.setValidators([Validators.required]);
-      this.registroForm.get('areaCienciasSociales')?.setValidators([Validators.required]);
-      this.registroForm.get('peridiocidad')?.setValidators([Validators.required]);
-      this.registroForm.get('paisPublicacionRevista')?.setValidators([Validators.required]);
-      this.registroForm.get('formatoRevista')?.setValidators([Validators.required]);
-      this.registroForm.get('NombreCompletoPresentador')?.setValidators([Validators.required]);
-
-      this.registroForm.get('ejeTematico')?.setValue('7');
-
+mostrarImagenGrande(item: any): void {
+    if (!item?.image) {
+        return;
     }
 
-    
-    this.registroForm.get('cargo')?.updateValueAndValidity();
-    this.registroForm.get('area')?.updateValueAndValidity();
-    this.registroForm.get('relacionRevista')?.updateValueAndValidity();
+    this.imagenHover.set(item.image);
+}
 
+mantenerImagenGrande(): void {
+    // Mantiene la imagen visible mientras el mouse
+    // esté sobre el preview.
+}
 
-    this.registroForm.get('tituloPonencia')?.updateValueAndValidity();
-    //this.registroForm.get('nombrePonenteResponsable')?.updateValueAndValidity();
-    //this.registroForm.get('ORCIDResponsable')?.updateValueAndValidity();
-    this.registroForm.get('aceptoPublicarconISBN')?.updateValueAndValidity();
-    this.registroForm.get('aceptoTrabajoOriginal')?.updateValueAndValidity();
-    this.registroForm.get('aceptoPropuestaRevision')?.updateValueAndValidity();
+ocultarImagenGrande(): void {
+    this.imagenHover.set(null);
+}
 
-    this.registroForm.get('tituloLibro')?.updateValueAndValidity();
-    this.registroForm.get('autores')?.updateValueAndValidity();
-    this.registroForm.get('aniopublicacion')?.updateValueAndValidity();
-    this.registroForm.get('editorial')?.updateValueAndValidity();
-    this.registroForm.get('paisPublicacionLibro')?.updateValueAndValidity();
-    this.registroForm.get('ISBN')?.updateValueAndValidity();
-    this.registroForm.get('formatoLibro')?.updateValueAndValidity();
-
-
-    this.registroForm.get('tituloRevista')?.updateValueAndValidity();
-    this.registroForm.get('nombreEditorJefe')?.updateValueAndValidity();
-    this.registroForm.get('entidadEditora')?.updateValueAndValidity();
-    this.registroForm.get('revistaAccesoAbierto')?.updateValueAndValidity();
-    this.registroForm.get('areaCienciasSociales')?.updateValueAndValidity();
-    this.registroForm.get('peridiocidad')?.updateValueAndValidity();
-    this.registroForm.get('paisPublicacionRevista')?.updateValueAndValidity();
-    this.registroForm.get('formatoRevista')?.updateValueAndValidity();
-    this.registroForm.get('NombreCompletoPresentador')?.updateValueAndValidity();
-
-    this.registroForm.get('numeroAutores')?.updateValueAndValidity();
-  
-    if (this.registroForm.valid) {
-
-      this.valoresDelFormulario = this.registroForm.value;
-
-      const body = this.registroForm.value;
-      this.http.post(`${PUBLIC}/registrar-m`, body,{ withCredentials: true })
-      .subscribe({
-        next: ($respuesta: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Registro guardado' , detail: $respuesta.message, life: 3000 });
-          this.registroForm.reset();
-          this.registroForm.get('tipoRegistro')?.setValue('1');
-
-          while (this.autoresPonencia.length !== 1) {
-            this.autoresPonencia.removeAt(0);
-          }
-
-          while (this.autores.length !== 1) {
-            this.autores.removeAt(0);
-          }
-
-          this.selectEstado = false;
-          this.txtEstado = false; 
-          this.selectCiudad = false;
-          this.txtCiudad = false; 
-        },
-        error: (err) =>  { 
-          this.messageService.add({ severity: 'warn', summary: 'Algo salió mal' , detail: err.error["message"], life: 3000  });
-        }
-      });
-
-      
-
-
-
-    } else {
-      this.registroForm.markAllAsTouched();
-      const campos = this.getCamposInvalidos();
-      this.messageService.add({ severity: 'warn', summary: 'Atención' , detail: 'Campos faltantes o inválidos', life: 3000  });
-      console.log('Campos faltantes o inválidos:', campos);
-    }
-  } 
-
-
-  getCamposInvalidos(): string[] {
-    const invalidos: string[] = [];
-    const controles = this.registroForm.controls;
-
-    for (const nombre in controles) {
-      if (controles[nombre].invalid) {
-        invalidos.push(nombre);
-      }
-    }
-    return invalidos;
-  }
-
-
-  get autoresPonencia(): FormArray {
-      return this.registroForm.get('autoresPonencia') as FormArray;
-  }
-
-  agregarAutorPonencia() {
-      if (this.autoresPonencia.length < 3) {
-      this.autoresPonencia.push(
-          new FormControl('')
-      );
-    }
-  }
-
-  eliminarAutorPonencia(index: number) {
-      if (this.autoresPonencia.length > 1) {
-          this.autoresPonencia.removeAt(index);
-      }
-  }
-
-
-  get autores(): FormArray {
-      return this.registroForm.get('autores') as FormArray;
-  }
-
-  agregarAutor() {
-      this.autores.push(
-          new FormControl('')
-      );
-  }
-
-  eliminarAutor(index: number) {
-      if (this.autores.length > 1) {
-          this.autores.removeAt(index);
-      }
-  }
 
 }

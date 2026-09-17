@@ -1,0 +1,22 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { MisionVisionComponent } from './mision-vision-component';
+
+describe('MisionVisionComponent', () => {
+  let component: MisionVisionComponent;
+  let fixture: ComponentFixture<MisionVisionComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MisionVisionComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(MisionVisionComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

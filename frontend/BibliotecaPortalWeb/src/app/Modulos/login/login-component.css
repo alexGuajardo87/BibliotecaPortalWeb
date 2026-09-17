@@ -1,0 +1,239 @@
+.login-page {
+    min-height: calc(100vh - var(--content-top));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 440px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.10);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 28px;
+}
+
+.login-header h1 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.login-header p {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-field label {
+    color: #334155;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.input-icon {
+    position: relative;
+    display: block;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    z-index: 1;
+}
+
+.input-icon input {
+    width: 100%;
+    height: 46px;
+    padding-left: 42px;
+    box-sizing: border-box;
+}
+
+
+.login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    width: 100%;
+}
+
+.login-options a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    font-weight: 600;
+}
+
+.login-options a:hover {
+    color: #0a2f7a;
+}
+
+.login-options .register-link {
+    color: #0a2f7a !important;
+    font-weight: 600;
+}
+
+.login-options .register-link:hover {
+    color: var(--primary-color) !important;
+}
+
+
+
+
+
+.login-button {
+    width: 100%;
+    height: 46px;
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.recovery-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.recovery-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 20px;
+}
+
+.recovery-header h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.recovery-header span {
+    display: block;
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+.recovery-content {
+    padding: 8px 0 5px;
+}
+
+.recovery-content p {
+    margin: 0 0 22px;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.recovery-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.field-error {
+    color: #dc2626;
+    font-size: 0.78rem;
+}
+
+.recovery-success {
+    padding: 15px 5px 10px;
+    text-align: center;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    font-size: 28px;
+}
+
+.recovery-success h3 {
+    margin: 0 0 10px;
+    color: #1e293b;
+    font-size: 1.2rem;
+}
+
+.recovery-success p {
+    margin: 0 auto 24px;
+    max-width: 340px;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+
+    .login-page {
+        padding: 25px 12px;
+    }
+
+    .login-card {
+        padding: 30px 22px;
+        border-radius: 16px;
+    }
+
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .recovery-footer {
+        flex-direction: column-reverse;
+    }
+
+    .recovery-footer button {
+        width: 100%;
+    }
+
+}

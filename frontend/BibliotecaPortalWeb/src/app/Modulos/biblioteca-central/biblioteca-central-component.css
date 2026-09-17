@@ -1,0 +1,863 @@
+.biblioteca-historia {
+    width: 100%;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 20px 30px 70px;
+    box-sizing: border-box;
+}
+
+.biblioteca-historia-hero {
+    position: relative;
+    min-height: 330px;
+    display: flex;
+    align-items: flex-end;
+    padding: 45px;
+    margin-bottom: 35px;
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #1e293b 55%,
+            #334155 100%
+        );
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.biblioteca-historia-hero::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    right: -130px;
+    top: -150px;
+    border-radius: 50%;
+    border: 70px solid rgba(135, 117, 20, 0.18);
+}
+
+.biblioteca-historia-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: 80px;
+    bottom: -130px;
+    border-radius: 50%;
+    background: rgba(135, 117, 20, 0.12);
+}
+
+.biblioteca-historia-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+}
+
+.biblioteca-historia-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.biblioteca-historia-hero h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.biblioteca-historia-hero h2 {
+    margin: 8px 0 0;
+    color: #e2e8f0;
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    font-weight: 500;
+}
+
+.biblioteca-historia-subtitle {
+    max-width: 700px;
+    margin: 20px 0 0;
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.biblioteca-historia-intro {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 25px;
+    align-items: start;
+    padding: 35px;
+    margin-bottom: 30px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 22px;
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.06);
+    box-sizing: border-box;
+}
+
+.biblioteca-historia-intro-icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: var(--primary-color);
+    color: #ffffff;
+    font-size: 1.8rem;
+}
+
+.biblioteca-historia-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.biblioteca-historia-intro h2 {
+    margin: 0 0 15px;
+    color: #1e293b;
+    font-size: 1.65rem;
+    line-height: 1.3;
+}
+
+.biblioteca-historia-intro p {
+    margin: 0;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.biblioteca-historia-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 50px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow:
+        0 6px 20px rgba(15, 23, 42, 0.05);
+}
+
+.biblioteca-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 125px;
+    padding: 20px;
+    border-right: 1px solid #e5e7eb;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.biblioteca-stat:last-child {
+    border-right: none;
+}
+
+.biblioteca-stat strong {
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.biblioteca-stat span {
+    margin-top: 10px;
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+.biblioteca-historia-section {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 40px;
+    padding: 45px 0;
+    border-top: 1px solid #e5e7eb;
+}
+
+.biblioteca-historia-section-alt {
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.biblioteca-historia-section-title {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.biblioteca-historia-section-title > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(135, 117, 20, 0.1);
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.biblioteca-historia-section-title small {
+    display: block;
+    margin-bottom: 7px;
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.biblioteca-historia-section-title h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.biblioteca-historia-text {
+    padding-right: 20px;
+}
+
+.biblioteca-historia-text p {
+    margin: 0 0 18px;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.85;
+    text-align: justify;
+}
+
+.biblioteca-historia-text p:last-child {
+    margin-bottom: 0;
+}
+
+.biblioteca-acervo {
+    position: relative;
+    padding: 40px;
+    margin: 10px 0 40px;
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #ffffff
+        );
+    border: 1px solid #e5e7eb;
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.05);
+}
+
+.biblioteca-acervo-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.biblioteca-acervo-header span {
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.biblioteca-acervo-header h2 {
+    margin: 7px 0 0;
+    color: #1e293b;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+.biblioteca-acervo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.biblioteca-acervo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 145px;
+    padding: 20px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.biblioteca-acervo-item:last-child {
+    border-right: none;
+}
+
+.biblioteca-acervo-item i {
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.biblioteca-acervo-item strong {
+    color: #1e293b;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.biblioteca-acervo-item span {
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.biblioteca-linea-tiempo {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin: 15px 0 55px;
+    padding: 20px 0;
+}
+
+.biblioteca-linea-tiempo::before {
+    content: "";
+    position: absolute;
+    top: 42px;
+    left: 7%;
+    right: 7%;
+    height: 2px;
+    background: #e5e7eb;
+    z-index: 0;
+}
+
+.biblioteca-timeline-item {
+    position: relative;
+    z-index: 1;
+    padding: 25px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #ffffff;
+    text-align: center;
+    box-shadow:
+        0 5px 15px rgba(15, 23, 42, 0.05);
+}
+
+.biblioteca-timeline-item::before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: -33px auto 17px;
+    border: 4px solid #ffffff;
+    border-radius: 50%;
+    background: var(--primary-color);
+    box-shadow:
+        0 0 0 1px #e5e7eb;
+}
+
+.biblioteca-timeline-item span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.biblioteca-timeline-item h3 {
+    margin: 0;
+    color: #334155;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.biblioteca-timeline-item-active {
+    border-color: rgba(135, 117, 20, 0.4);
+    box-shadow:
+        0 8px 25px rgba(135, 117, 20, 0.12);
+}
+
+.biblioteca-inauguracion {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 28px;
+    align-items: start;
+    padding: 40px;
+    margin: 20px 0 45px;
+    border-radius: 22px;
+    background: var(--primary-color);
+    color: #ffffff;
+    box-shadow:
+        0 12px 30px rgba(135, 117, 20, 0.2);
+}
+
+.biblioteca-inauguracion-icon {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+.biblioteca-inauguracion-content > span {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.biblioteca-inauguracion-content h2 {
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.biblioteca-inauguracion-content p {
+    margin: 0 0 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+.biblioteca-inauguracion-content p:last-child {
+    margin-bottom: 0;
+}
+
+.biblioteca-futuro {
+    padding: 50px;
+    margin-top: 20px;
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e293b
+        );
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.biblioteca-futuro .biblioteca-historia-eyebrow {
+    margin-bottom: 15px;
+}
+
+.biblioteca-futuro h2 {
+    max-width: 750px;
+    margin: 0 auto 20px;
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.biblioteca-futuro > p {
+    max-width: 850px;
+    margin: 0 auto 18px;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.85;
+    text-align: justify;
+}
+
+.biblioteca-futuro-frase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 750px;
+    margin: 30px auto 0;
+    padding: 18px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    text-align: left;
+}
+
+.biblioteca-futuro-frase i {
+    color: #d4bd4b;
+    font-size: 1.2rem;
+}
+
+.biblioteca-futuro-frase span {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+
+    .biblioteca-historia {
+        padding:
+            20px 20px 55px;
+    }
+
+    .biblioteca-historia-section {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .biblioteca-historia-text {
+        padding-right: 0;
+    }
+
+    .biblioteca-linea-tiempo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .biblioteca-linea-tiempo::before {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .biblioteca-historia {
+        padding:
+            15px 15px 45px;
+    }
+
+    .biblioteca-historia-hero {
+        min-height: 300px;
+        padding: 32px;
+        border-radius: 20px;
+    }
+
+    .biblioteca-historia-intro {
+        grid-template-columns: 1fr;
+        padding: 28px;
+    }
+
+    .biblioteca-historia-intro-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 1.5rem;
+    }
+
+    .biblioteca-historia-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .biblioteca-stat:nth-child(2) {
+        border-right: none;
+    }
+
+    .biblioteca-stat:nth-child(-n + 2) {
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .biblioteca-historia-section {
+        padding: 35px 0;
+    }
+
+    .biblioteca-historia-section-alt {
+        padding:
+            30px 20px;
+    }
+
+    .biblioteca-acervo {
+        padding: 30px 20px;
+    }
+
+    .biblioteca-linea-tiempo {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .biblioteca-inauguracion {
+        grid-template-columns: 1fr;
+        padding: 30px;
+    }
+
+    .biblioteca-inauguracion-icon {
+        width: 65px;
+        height: 65px;
+        border-radius: 16px;
+        font-size: 1.5rem;
+    }
+
+    .biblioteca-futuro {
+        padding: 35px 25px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .biblioteca-historia {
+        padding:
+            10px 10px 35px;
+    }
+
+    .biblioteca-historia-hero {
+        min-height: 270px;
+        padding: 25px;
+        border-radius: 18px;
+    }
+
+    .biblioteca-historia-hero h1 {
+        font-size: 1.9rem;
+    }
+
+    .biblioteca-historia-hero h2 {
+        font-size: 1.15rem;
+    }
+
+    .biblioteca-historia-subtitle {
+        font-size: 0.88rem;
+        line-height: 1.6;
+    }
+
+    .biblioteca-historia-intro {
+        padding: 23px;
+        gap: 18px;
+        border-radius: 18px;
+    }
+
+    .biblioteca-historia-intro h2 {
+        font-size: 1.35rem;
+    }
+
+    .biblioteca-historia-intro p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .biblioteca-stat {
+        min-height: 105px;
+        padding: 15px;
+    }
+
+    .biblioteca-stat strong {
+        font-size: 1.65rem;
+    }
+
+    .biblioteca-stat span {
+        font-size: 0.75rem;
+    }
+
+    .biblioteca-historia-section-title h2 {
+        font-size: 1.4rem;
+    }
+
+    .biblioteca-historia-text p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .biblioteca-acervo-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .biblioteca-acervo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .biblioteca-acervo-item {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .biblioteca-acervo-item:last-child {
+        border-bottom: none;
+    }
+
+    .biblioteca-inauguracion {
+        padding: 25px;
+        border-radius: 18px;
+    }
+
+    .biblioteca-inauguracion-content h2 {
+        font-size: 1.45rem;
+    }
+
+    .biblioteca-inauguracion-content p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+    }
+
+    .biblioteca-futuro {
+        padding: 30px 20px;
+        border-radius: 18px;
+    }
+
+    .biblioteca-futuro h2 {
+        font-size: 1.5rem;
+    }
+
+    .biblioteca-futuro > p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .biblioteca-futuro-frase {
+        align-items: flex-start;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .biblioteca-historia {
+        padding:
+            5px 5px 30px;
+    }
+
+    .biblioteca-historia-hero {
+        min-height: 250px;
+        padding: 22px;
+    }
+
+    .biblioteca-historia-hero h1 {
+        font-size: 1.65rem;
+    }
+
+    .biblioteca-historia-hero h2 {
+        font-size: 1rem;
+    }
+
+    .biblioteca-historia-eyebrow {
+        font-size: 0.66rem;
+        padding: 5px 11px;
+    }
+
+    .biblioteca-historia-stats {
+        border-radius: 16px;
+    }
+
+    .biblioteca-stat strong {
+        font-size: 1.45rem;
+    }
+
+    .biblioteca-historia-section-alt {
+        padding:
+            25px 16px;
+    }
+
+    .biblioteca-historia-section-title {
+        gap: 12px;
+    }
+
+    .biblioteca-historia-section-title > span {
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 0.7rem;
+    }
+
+    .biblioteca-historia-section-title h2 {
+        font-size: 1.25rem;
+    }
+
+    .biblioteca-acervo {
+        padding: 25px 15px;
+    }
+
+    .biblioteca-acervo-item strong {
+        font-size: 1.7rem;
+    }
+
+    .biblioteca-inauguracion {
+        padding: 22px;
+    }
+
+    .biblioteca-futuro {
+        padding: 25px 16px;
+    }
+
+    .biblioteca-futuro h2 {
+        font-size: 1.35rem;
+    }
+
+    .biblioteca-futuro-frase {
+        text-align: left;
+    }
+
+    .biblioteca-futuro-frase span {
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .biblioteca-historia-hero {
+        min-height: 230px;
+        padding: 18px;
+    }
+
+    .biblioteca-historia-hero h1 {
+        font-size: 1.45rem;
+    }
+
+    .biblioteca-historia-hero h2 {
+        font-size: 0.9rem;
+    }
+
+    .biblioteca-historia-intro {
+        padding: 20px;
+    }
+
+    .biblioteca-historia-intro h2 {
+        font-size: 1.2rem;
+    }
+
+    .biblioteca-stat {
+        min-height: 95px;
+    }
+
+    .biblioteca-stat strong {
+        font-size: 1.3rem;
+    }
+
+    .biblioteca-stat span {
+        font-size: 0.7rem;
+    }
+
+    .biblioteca-historia-section-title h2 {
+        font-size: 1.15rem;
+    }
+
+    .biblioteca-historia-text p {
+        font-size: 0.82rem;
+    }
+
+    .biblioteca-inauguracion-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .biblioteca-futuro h2 {
+        font-size: 1.25rem;
+    }
+}

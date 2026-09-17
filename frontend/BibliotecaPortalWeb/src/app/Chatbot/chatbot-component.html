@@ -1,0 +1,110 @@
+@if (abierto()) {
+    <div class="chatbot-window">
+
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+
+                <div class="chatbot-avatar">
+                    <i class="pi pi-comments"></i>
+                </div>
+
+                <div>
+                    <div class="chatbot-title">
+                        Asistente virtual
+                    </div>
+
+                    <div class="chatbot-status">
+                        <span class="chatbot-status-dot"></span>
+                        En línea
+                    </div>
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="chatbot-close"
+                (click)="cerrarChat()">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+
+        <div #chatbotMessages class="chatbot-messages">
+
+            @for (item of mensajes(); track $index) {
+
+                <div
+                    class="chatbot-message-container"
+                    [class.user-message]="item.tipo === 'usuario'"
+                    [class.bot-message]="item.tipo === 'bot'">
+
+                    <div class="chatbot-message">
+                        {{ item.texto }}
+                    </div>
+
+                    <div class="chatbot-time">
+                        {{ item.hora | date:'HH:mm' }}
+                    </div>
+
+                </div>
+
+            }
+
+            @if (cargando()) {
+
+                <div class="chatbot-message-container bot-message">
+
+                    <div class="chatbot-message chatbot-loading">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+        <div class="chatbot-footer">
+
+            <div class="chatbot-input-container">
+
+                <input
+                    pInputText
+                    type="text"
+                    [(ngModel)]="mensaje"
+                    (keydown.enter)="manejarEnter($event)"
+                    placeholder="Escribe tu mensaje..."
+                    [disabled]="cargando()"
+                    class="chatbot-input" />
+
+                <p-button
+                    icon="pi pi-send"
+                    [rounded]="true"
+                    [text]="true"
+                    [disabled]="!mensaje.trim() || cargando()"
+                    (onClick)="enviarMensaje()">
+                </p-button>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<button
+    type="button"
+    class="chatbot-button"
+    (click)="toggleChat()">
+
+    @if (!abierto()) {
+        <i class="pi pi-comments"></i>
+    }
+
+    @if (abierto()) {
+        <i class="pi pi-times"></i>
+    }
+
+</button>
