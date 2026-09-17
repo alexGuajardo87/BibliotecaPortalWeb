@@ -17,7 +17,7 @@ services:
     networks:
       - kong-net
     volumes:
-      - ./frontend/BibliotecaPortalWeb/dist/mi-app/browser:/usr/share/nginx/html
+      - ./frontend/BibliotecaPortalWeb/dist/biblioteca-portal-web/browser:/usr/share/nginx/html
       - ./frontend/BibliotecaPortalWeb/nginx.conf:/etc/nginx/conf.d/default.conf
 
 networks:
