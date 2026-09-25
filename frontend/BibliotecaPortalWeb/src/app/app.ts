@@ -186,6 +186,11 @@ export class App {
                     icon: 'pi pi-external-link',
                     url: 'https://revistas.uas.edu.mx/index.php',
                     target: '_blank'
+                },
+                {
+                    label: 'Generador XML JATS',
+                    icon: 'pi pi-file-edit',
+                    routerLink: ['/generador-jats']
                 }
             ]
         },

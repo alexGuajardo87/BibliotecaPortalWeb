@@ -1,0 +1,1346 @@
+<p-toast />
+
+<div class="w-full min-h-screen bg-surface-50 px-4 py-5">
+    <div class="w-full max-w-[1400px] mx-auto">
+
+        <div class="bg-white border border-surface-200 rounded-2xl shadow-sm overflow-hidden">
+
+            <div class="px-6 py-5 border-b border-surface-200">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0a2f7a] text-white">
+                        <i class="pi pi-file-edit text-xl"></i>
+                    </div>
+
+                    <div class="flex-1">
+                        <h1 class="text-2xl font-bold text-[#0a2f7a]">
+                            Generador XML JATS
+                        </h1>
+                        <p class="text-surface-500 mt-1">
+                            Generación de documentos XML compatibles con JATS
+                        </p>
+                    </div>
+
+                    <span class="px-3 py-2 rounded-lg bg-[#877514] text-white text-sm font-semibold">
+                        JATS 1.4
+                    </span>
+                </div>
+            </div>
+
+            <form
+                [formGroup]="jatsForm"
+                (ngSubmit)="generarXml()"
+                class="p-6 space-y-8"
+            >
+
+                <section formGroupName="journal">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                            <i class="pi pi-book"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                Información de la revista
+                            </h2>
+                            <p class="text-sm text-surface-500">
+                                Datos generales de la publicación
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Journal ID
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="id"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Tipo de Journal ID
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="id_type"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                ISSN
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="issn"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">
+                                Título de la revista
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="title"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Título de la revista en inglés
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="title_en"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Abreviatura español
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="abbrev_es"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Abreviatura inglés
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="abbrev_en"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">
+                                Editorial
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="publisher"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                País
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="country"
+                                maxlength="2"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div class="lg:col-span-3">
+                            <label class="block text-sm font-semibold mb-2">
+                                URL de la revista
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="url"
+                                class="w-full"
+                            />
+                        </div>
+
+                    </div>
+                </section>
+
+                <section formGroupName="article">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                            <i class="pi pi-file"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                Información del artículo
+                            </h2>
+                            <p class="text-sm text-surface-500">
+                                Metadatos bibliográficos del artículo
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                ID del artículo
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="id"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Tipo de artículo
+                            </label>
+                            <p-select
+                                formControlName="type"
+                                [options]="articleTypes"
+                                optionLabel="label"
+                                optionValue="value"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Categoría
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="category"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                DOI
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="doi"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">
+                                Título en español
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="title"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">
+                                Título en inglés
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="title_en"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Volumen
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="volume"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Número
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="issue"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Página inicial
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="first_page"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Página final
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="last_page"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Día de publicación
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="publication_day"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Mes de publicación
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="publication_month"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Año de publicación
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="publication_year"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div class="lg:col-span-3">
+                            <label class="block text-sm font-semibold mb-2">
+                                URL del artículo
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="url"
+                                class="w-full"
+                            />
+                        </div>
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                                <i class="pi pi-users"></i>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                    Autores
+                                </h2>
+                                <p class="text-sm text-surface-500">
+                                    Información de los autores del artículo
+                                </p>
+                            </div>
+                        </div>
+
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            label="Agregar autor"
+                            class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                            (click)="agregarAutor()"
+                        ></button>
+                    </div>
+
+                    <div formArrayName="authors" class="space-y-5">
+
+                        @for (autor of autores.controls; track $index) {
+
+                            <div
+                                [formGroupName]="$index"
+                                class="border border-surface-200 rounded-xl p-5 bg-surface-50"
+                            >
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-[#0a2f7a]">
+                                        Autor {{ $index + 1 }}
+                                    </h3>
+
+                                    @if (autores.length > 1) {
+                                        <button
+                                            pButton
+                                            type="button"
+                                            icon="pi pi-trash"
+                                            severity="danger"
+                                            text
+                                            (click)="eliminarAutor($index)"
+                                        ></button>
+                                    }
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Apellidos
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="surname"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Nombres
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="given_names"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Nombre para mostrar
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="display_name"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Email
+                                        </label>
+                                        <input
+                                            pInputText
+                                            type="email"
+                                            formControlName="email"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ORCID
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="orcid"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ORCID autenticado
+                                        </label>
+                                        <p-select
+                                            formControlName="orcid_authenticated"
+                                            [options]="booleanOptions"
+                                            optionLabel="label"
+                                            optionValue="value"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Autor de correspondencia
+                                        </label>
+                                        <p-select
+                                            formControlName="corresponding"
+                                            [options]="booleanOptions"
+                                            optionLabel="label"
+                                            optionValue="value"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="lg:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Afiliación
+                                        </label>
+                                        <p-select
+                                            formControlName="affiliation_id"
+                                            [options]="afiliaciones"
+                                            optionLabel="label"
+                                            optionValue="value"
+                                            placeholder="Seleccione una afiliación"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                                <i class="pi pi-building"></i>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                    Afiliaciones
+                                </h2>
+                                <p class="text-sm text-surface-500">
+                                    Instituciones asociadas a los autores
+                                </p>
+                            </div>
+                        </div>
+
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            label="Agregar afiliación"
+                            class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                            (click)="agregarAfiliacion()"
+                        ></button>
+                    </div>
+
+                    <div formArrayName="affiliations" class="space-y-5">
+
+                        @for (afiliacion of afiliacionesForm.controls; track $index) {
+
+                            <div
+                                [formGroupName]="$index"
+                                class="border border-surface-200 rounded-xl p-5 bg-surface-50"
+                            >
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-[#0a2f7a]">
+                                        Afiliación {{ $index + 1 }}
+                                    </h3>
+
+                                    <button
+                                        pButton
+                                        type="button"
+                                        icon="pi pi-trash"
+                                        severity="danger"
+                                        text
+                                        (click)="eliminarAfiliacion($index)"
+                                    ></button>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ID
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="id"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Institución
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="institution"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ROR
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="ror"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                            <i class="pi pi-calendar"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                Historial editorial
+                            </h2>
+                            <p class="text-sm text-surface-500">
+                                Fechas de recepción y aceptación
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        formGroupName="publicationHistory"
+                        class="grid grid-cols-1 md:grid-cols-2 gap-5"
+                    >
+
+                        <div class="border border-surface-200 rounded-xl p-5 bg-surface-50">
+                            <h3 class="font-semibold text-[#0a2f7a] mb-4">
+                                Recibido
+                            </h3>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <input
+                                    pInputText
+                                    formControlName="received_day"
+                                    placeholder="Día"
+                                    class="w-full"
+                                />
+
+                                <input
+                                    pInputText
+                                    formControlName="received_month"
+                                    placeholder="Mes"
+                                    class="w-full"
+                                />
+
+                                <input
+                                    pInputText
+                                    formControlName="received_year"
+                                    placeholder="Año"
+                                    class="w-full"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="border border-surface-200 rounded-xl p-5 bg-surface-50">
+                            <h3 class="font-semibold text-[#0a2f7a] mb-4">
+                                Aceptado
+                            </h3>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <input
+                                    pInputText
+                                    formControlName="accepted_day"
+                                    placeholder="Día"
+                                    class="w-full"
+                                />
+
+                                <input
+                                    pInputText
+                                    formControlName="accepted_month"
+                                    placeholder="Mes"
+                                    class="w-full"
+                                />
+
+                                <input
+                                    pInputText
+                                    formControlName="accepted_year"
+                                    placeholder="Año"
+                                    class="w-full"
+                                />
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section formGroupName="permissions">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                            <i class="pi pi-shield"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                Derechos y licencia
+                            </h2>
+                            <p class="text-sm text-surface-500">
+                                Información de copyright y licencia
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">
+                                Derechos de autor
+                            </label>
+                            <textarea
+                                pTextarea
+                                formControlName="copyright_statement"
+                                rows="3"
+                                class="w-full"
+                            ></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Año de copyright
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="copyright_year"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Titular de copyright
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="copyright_holder"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                URL de licencia
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="license_url"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Texto de licencia
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="license_text"
+                                class="w-full"
+                            />
+                        </div>
+
+                    </div>
+                </section>
+
+                <section formGroupName="abstract">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                            <i class="pi pi-align-left"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                Resúmenes
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Resumen en español
+                            </label>
+                            <textarea
+                                pTextarea
+                                formControlName="es"
+                                rows="8"
+                                class="w-full"
+                            ></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Abstract en inglés
+                            </label>
+                            <textarea
+                                pTextarea
+                                formControlName="en"
+                                rows="8"
+                                class="w-full"
+                            ></textarea>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section formGroupName="keywords">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                            <i class="pi pi-tags"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                Palabras clave
+                            </h2>
+                            <p class="text-sm text-surface-500">
+                                Separe las palabras clave con comas
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Español
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="es"
+                                placeholder="Inteligencia artificial, Salud, Tecnología"
+                                class="w-full"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">
+                                Inglés
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="en"
+                                placeholder="Artificial intelligence, Health, Technology"
+                                class="w-full"
+                            />
+                        </div>
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                                <i class="pi pi-align-justify"></i>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                    Secciones del artículo
+                                </h2>
+                                <p class="text-sm text-surface-500">
+                                    Contenido principal del artículo
+                                </p>
+                            </div>
+                        </div>
+
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            label="Agregar sección"
+                            class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                            (click)="agregarSeccion()"
+                        ></button>
+                    </div>
+
+                    <div formArrayName="sections" class="space-y-5">
+
+                        @for (seccion of secciones.controls; track $index) {
+
+                            <div
+                                [formGroupName]="$index"
+                                class="border border-surface-200 rounded-xl p-5 bg-surface-50"
+                            >
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-[#0a2f7a]">
+                                        Sección {{ $index + 1 }}
+                                    </h3>
+
+                                    @if (secciones.length > 1) {
+                                        <button
+                                            pButton
+                                            type="button"
+                                            icon="pi pi-trash"
+                                            severity="danger"
+                                            text
+                                            (click)="eliminarSeccion($index)"
+                                        ></button>
+                                    }
+                                </div>
+
+                                <div class="space-y-5">
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ID de sección
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="id"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Título
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="title"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Párrafos
+                                        </label>
+                                        <textarea
+                                            pTextarea
+                                            formControlName="paragraphs"
+                                            rows="10"
+                                            placeholder="Escriba un párrafo y deje una línea en blanco para comenzar el siguiente."
+                                            class="w-full"
+                                        ></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                                <i class="pi pi-image"></i>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                    Figuras
+                                </h2>
+                                <p class="text-sm text-surface-500">
+                                    Imágenes, títulos y notas de las figuras
+                                </p>
+                            </div>
+                        </div>
+
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            label="Agregar figura"
+                            class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                            (click)="agregarFigura()"
+                        ></button>
+                    </div>
+
+                    <div formArrayName="figures" class="space-y-5">
+
+                        @for (figura of figuras.controls; track $index) {
+
+                            <div
+                                [formGroupName]="$index"
+                                class="border border-surface-200 rounded-xl p-5 bg-surface-50"
+                            >
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-[#0a2f7a]">
+                                        Figura {{ $index + 1 }}
+                                    </h3>
+
+                                    <button
+                                        pButton
+                                        type="button"
+                                        icon="pi pi-trash"
+                                        severity="danger"
+                                        text
+                                        (click)="eliminarFigura($index)"
+                                    ></button>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ID
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="id"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Etiqueta
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="label"
+                                            placeholder="Figura 1"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Título
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="title"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Nota
+                                        </label>
+                                        <textarea
+                                            pTextarea
+                                            formControlName="note"
+                                            rows="4"
+                                            class="w-full"
+                                        ></textarea>
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Imagen
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="w-full border border-surface-300 rounded-lg p-3 bg-white"
+                                            (change)="seleccionarFigura($event, $index)"
+                                        />
+
+                                        @if (figura.get('filename')?.value) {
+                                            <p class="text-sm text-surface-500 mt-2">
+                                                Archivo:
+                                                {{ figura.get('filename')?.value }}
+                                            </p>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                                <i class="pi pi-bookmark"></i>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                    Referencias
+                                </h2>
+                                <p class="text-sm text-surface-500">
+                                    Referencias bibliográficas del artículo
+                                </p>
+                            </div>
+                        </div>
+
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            label="Agregar referencia"
+                            class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                            (click)="agregarReferencia()"
+                        ></button>
+                    </div>
+
+                    <div formArrayName="references" class="space-y-5">
+
+                        @for (referencia of referencias.controls; track $index) {
+
+                            <div
+                                [formGroupName]="$index"
+                                class="border border-surface-200 rounded-xl p-5 bg-surface-50"
+                            >
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-[#0a2f7a]">
+                                        Referencia {{ $index + 1 }}
+                                    </h3>
+
+                                    <button
+                                        pButton
+                                        type="button"
+                                        icon="pi pi-trash"
+                                        severity="danger"
+                                        text
+                                        (click)="eliminarReferencia($index)"
+                                    ></button>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            ID
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="id"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Tipo
+                                        </label>
+                                        <p-select
+                                            formControlName="type"
+                                            [options]="referenceTypes"
+                                            optionLabel="label"
+                                            optionValue="value"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="lg:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Autores
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="authors"
+                                            placeholder="Apellido, Nombre; Apellido, Nombre"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-2 lg:col-span-4">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Título
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="title"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="lg:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Fuente
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="source"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Año
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="year"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Volumen
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="volume"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Número
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="issue"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Página inicial
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="first_page"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">
+                                            Página final
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="last_page"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold mb-2">
+                                            DOI
+                                        </label>
+                                        <input
+                                            pInputText
+                                            formControlName="doi"
+                                            class="w-full"
+                                        />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#0a2f7a] text-white">
+                                <i class="pi pi-cog"></i>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-bold text-[#0a2f7a]">
+                                    Metadatos personalizados
+                                </h2>
+                                <p class="text-sm text-surface-500">
+                                    Metadatos adicionales del documento
+                                </p>
+                            </div>
+                        </div>
+
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            label="Agregar metadato"
+                            class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                            (click)="agregarCustomMeta()"
+                        ></button>
+                    </div>
+
+                    <div formArrayName="customMeta" class="space-y-4">
+
+                        @for (meta of customMeta.controls; track $index) {
+
+                            <div
+                                [formGroupName]="$index"
+                                class="grid grid-cols-1 md:grid-cols-2 gap-4 border border-surface-200 rounded-xl p-4 bg-surface-50"
+                            >
+
+                                <input
+                                    pInputText
+                                    formControlName="name"
+                                    placeholder="Nombre del metadato"
+                                    class="w-full"
+                                />
+
+                                <div class="flex gap-3">
+                                    <input
+                                        pInputText
+                                        formControlName="value"
+                                        placeholder="Valor"
+                                        class="w-full"
+                                    />
+
+                                    <button
+                                        pButton
+                                        type="button"
+                                        icon="pi pi-trash"
+                                        severity="danger"
+                                        text
+                                        (click)="eliminarCustomMeta($index)"
+                                    ></button>
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+                </section>
+
+                <div class="flex flex-col sm:flex-row justify-end gap-3 pt-5 border-t border-surface-200">
+
+                    <button
+                        pButton
+                        type="button"
+                        icon="pi pi-refresh"
+                        label="Limpiar"
+                        severity="secondary"
+                        outlined
+                        (click)="limpiarFormulario()"
+                    ></button>
+
+                    <button
+                        pButton
+                        type="submit"
+                        icon="pi pi-file-export"
+                        label="Generar XML JATS"
+                        class="!bg-[#0a2f7a] !border-[#0a2f7a]"
+                    ></button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

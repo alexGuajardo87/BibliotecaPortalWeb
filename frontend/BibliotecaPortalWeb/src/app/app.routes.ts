@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './Modulos/login/login-component';
+import { JatsGeneratorComponent } from './UserTools/jats-generator/jats-generator-component'
 import { RegistroUsuariosComponent } from './Modulos/registro-usuarios/registro-usuarios-component';
 import { InicioComponent } from './Modulos/inicio/inicio-component';
 import { MisionVisionComponent } from './Modulos/mision-vision/mision-vision-component';
@@ -10,6 +11,7 @@ import { CongresosComponent } from './Formularios/congresos/congresos-component'
 export const routes: Routes = [
     { path: '', component: InicioComponent, title: 'inicio' },
     { path: 'login', component: LoginComponent, title: 'login' },
+    { path: 'generador-jats', component: JatsGeneratorComponent, title: 'generador-jats' },
     { path: 'registro-usuarios', component: RegistroUsuariosComponent, title: 'registro-usuarios' },
     { path: 'mision-vision', component: MisionVisionComponent, title: 'mision-vision' },
     { path: 'historia-universidad', component: HistoriaUniversidadComponent, title: 'historia-universidad' },
