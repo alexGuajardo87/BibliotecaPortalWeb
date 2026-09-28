@@ -42,6 +42,8 @@ interface SeccionForm {
 
 interface FiguraForm {
     id: string;
+    section_id: string;
+    position: number;
     label: string;
     title: string;
     note: string;
@@ -60,6 +62,7 @@ interface ReferenciaForm {
     first_page: string;
     last_page: string;
     doi: string;
+    citation: string;
 }
 
 interface CustomMetaForm {
@@ -91,9 +94,9 @@ interface JatsFormValue {
         issue: string;
         first_page: string;
         last_page: string;
-        publication_day: string | number;
-        publication_month: string | number;
-        publication_year: string | number;
+        publication_day: string;
+        publication_month: string;
+        publication_year: string;
         url: string;
     };
     authors: AutorForm[];
@@ -140,49 +143,49 @@ interface JatsFormValue {
         ButtonModule,
         TooltipModule
     ],
-    providers: [MessageService],
-    templateUrl: './jats-generator-component.html'
+    templateUrl: './jats-generator-component.html',
+    providers: [MessageService]
 })
 export class JatsGeneratorComponent {
 
-    private fb = inject(FormBuilder);
-    private http = inject(HttpClient);
-    private messageService = inject(MessageService);
+    private readonly fb = inject(FormBuilder);
+    private readonly http = inject(HttpClient);
+    private readonly messageService = inject(MessageService);
 
     articleTypes = [
         {
-            label: 'Artículo de investigación',
+            label: 'Research Article',
             value: 'research-article'
         },
         {
-            label: 'Artículo de revisión',
+            label: 'Review Article',
             value: 'review-article'
         },
         {
-            label: 'Comunicación breve',
+            label: 'Brief Report',
             value: 'brief-report'
         },
         {
-            label: 'Reporte de caso',
+            label: 'Case Report',
             value: 'case-report'
         }
     ];
 
     referenceTypes = [
         {
-            label: 'Artículo de revista',
+            label: 'Journal',
             value: 'journal'
         },
         {
-            label: 'Libro',
+            label: 'Book',
             value: 'book'
         },
         {
-            label: 'Capítulo de libro',
+            label: 'Chapter',
             value: 'chapter'
         },
         {
-            label: 'Sitio web',
+            label: 'Web',
             value: 'web'
         }
     ];
@@ -200,21 +203,21 @@ export class JatsGeneratorComponent {
 
     jatsForm = this.fb.group({
         journal: this.fb.group({
-            id: ['SIBIUAS', Validators.required],
-            id_type: ['ojs'],
+            id: [''],
+            id_type: [''],
             title: ['', Validators.required],
             title_en: [''],
             abbrev_es: [''],
             abbrev_en: [''],
-            issn: ['', Validators.required],
-            publisher: ['', Validators.required],
-            country: ['MX'],
+            issn: [''],
+            publisher: [''],
+            country: [''],
             url: ['']
         }),
 
         article: this.fb.group({
-            id: ['', Validators.required],
-            type: ['research-article', Validators.required],
+            id: [''],
+            type: ['research-article'],
             category: [''],
             title: ['', Validators.required],
             title_en: [''],
@@ -225,17 +228,13 @@ export class JatsGeneratorComponent {
             last_page: [''],
             publication_day: [''],
             publication_month: [''],
-            publication_year: [new Date().getFullYear()],
+            publication_year: [''],
             url: ['']
         }),
 
-        authors: this.fb.array([
-            this.crearAutor()
-        ]),
+        authors: this.fb.array([]),
 
-        affiliations: this.fb.array([
-            this.crearAfiliacion()
-        ]),
+        affiliations: this.fb.array([]),
 
         publicationHistory: this.fb.group({
             received_day: [''],
@@ -264,9 +263,7 @@ export class JatsGeneratorComponent {
             en: ['']
         }),
 
-        sections: this.fb.array([
-            this.crearSeccion(1)
-        ]),
+        sections: this.fb.array([]),
 
         figures: this.fb.array([]),
 
@@ -275,23 +272,20 @@ export class JatsGeneratorComponent {
         customMeta: this.fb.array([])
     });
 
+    constructor() {
+        this.autores.push(this.crearAutor(1));
+        this.afiliaciones.push(this.crearAfiliacion(1));
+        this.secciones.push(this.crearSeccion(1));
+        this.figuras.push(this.crearFigura(1));
+        this.referencias.push(this.crearReferencia(1));
+    }
+
     get autores(): FormArray {
         return this.jatsForm.get('authors') as FormArray;
     }
 
-    get afiliacionesForm(): FormArray {
+    get afiliaciones(): FormArray {
         return this.jatsForm.get('affiliations') as FormArray;
-    }
-
-    get afiliaciones(): { label: string; value: string }[] {
-        return this.afiliacionesForm.controls.map((control, index) => {
-            const value = control.value as AfiliacionForm;
-
-            return {
-                label: `${value.id || `aff-${index + 1}`} - ${value.institution || 'Sin institución'}`,
-                value: value.id || `aff-${index + 1}`
-            };
-        });
     }
 
     get secciones(): FormArray {
@@ -310,7 +304,29 @@ export class JatsGeneratorComponent {
         return this.jatsForm.get('customMeta') as FormArray;
     }
 
-    private crearAutor(): FormGroup {
+    get afiliacionesOpciones(): { label: string; value: string }[] {
+        return this.afiliaciones.controls.map((control, index) => {
+            const value = control.value as AfiliacionForm;
+
+            return {
+                label: `${value.id || `aff-${index + 1}`} - ${value.institution || 'Sin institución'}`,
+                value: value.id || `aff-${index + 1}`
+            };
+        });
+    }
+
+    get seccionesOpciones(): { label: string; value: string }[] {
+        return this.secciones.controls.map((control, index) => {
+            const value = control.value as SeccionForm;
+
+            return {
+                label: `${value.id || `sec-${index + 1}`} - ${value.title || 'Sin título'}`,
+                value: value.id || `sec-${index + 1}`
+            };
+        });
+    }
+
+    private crearAutor(index = 1): FormGroup {
         return this.fb.group({
             surname: ['', Validators.required],
             given_names: ['', Validators.required],
@@ -342,6 +358,8 @@ export class JatsGeneratorComponent {
     private crearFigura(index = 1): FormGroup {
         return this.fb.group({
             id: [`fig-${index}`],
+            section_id: [''],
+            position: [1],
             label: [`Figura ${index}`],
             title: [''],
             note: [''],
@@ -352,16 +370,17 @@ export class JatsGeneratorComponent {
     private crearReferencia(index = 1): FormGroup {
         return this.fb.group({
             id: [`ref-${index}`],
-            type: ['journal', Validators.required],
+            type: ['journal'],
             authors: [''],
-            title: ['', Validators.required],
+            title: [''],
             source: [''],
             year: [''],
             volume: [''],
             issue: [''],
             first_page: [''],
             last_page: [''],
-            doi: ['']
+            doi: [''],
+            citation: ['']
         });
     }
 
@@ -374,7 +393,7 @@ export class JatsGeneratorComponent {
 
     agregarAutor(): void {
         this.autores.push(
-            this.crearAutor()
+            this.crearAutor(this.autores.length + 1)
         );
     }
 
@@ -385,70 +404,60 @@ export class JatsGeneratorComponent {
     }
 
     agregarAfiliacion(): void {
-        const index = this.afiliacionesForm.length + 1;
-
-        this.afiliacionesForm.push(
-            this.crearAfiliacion(index)
+        this.afiliaciones.push(
+            this.crearAfiliacion(this.afiliaciones.length + 1)
         );
     }
 
     eliminarAfiliacion(index: number): void {
-        this.afiliacionesForm.removeAt(index);
+        if (this.afiliaciones.length > 1) {
+            this.afiliaciones.removeAt(index);
+        }
     }
 
     agregarSeccion(): void {
-        const index = this.secciones.length + 1;
-
         this.secciones.push(
-            this.crearSeccion(index)
+            this.crearSeccion(this.secciones.length + 1)
         );
     }
 
     eliminarSeccion(index: number): void {
         if (this.secciones.length > 1) {
+            const sectionId =
+                this.secciones.at(index).get('id')?.value;
+
             this.secciones.removeAt(index);
+
+            this.figuras.controls.forEach(control => {
+                if (control.get('section_id')?.value === sectionId) {
+                    control.get('section_id')?.setValue('');
+                }
+            });
         }
     }
 
     agregarFigura(): void {
-        const index = this.figuras.length + 1;
-
         this.figuras.push(
-            this.crearFigura(index)
+            this.crearFigura(this.figuras.length + 1)
         );
     }
 
     eliminarFigura(index: number): void {
-        this.figuras.removeAt(index);
-    }
-
-    seleccionarFigura(
-        event: Event,
-        index: number
-    ): void {
-        const input = event.target as HTMLInputElement;
-        const file = input.files?.[0];
-
-        if (!file) {
-            return;
+        if (this.figuras.length > 1) {
+            this.figuras.removeAt(index);
         }
-
-        this.figuras
-            .at(index)
-            .get('filename')
-            ?.setValue(file.name);
     }
 
     agregarReferencia(): void {
-        const index = this.referencias.length + 1;
-
         this.referencias.push(
-            this.crearReferencia(index)
+            this.crearReferencia(this.referencias.length + 1)
         );
     }
 
     eliminarReferencia(index: number): void {
-        this.referencias.removeAt(index);
+        if (this.referencias.length > 1) {
+            this.referencias.removeAt(index);
+        }
     }
 
     agregarCustomMeta(): void {
@@ -461,6 +470,509 @@ export class JatsGeneratorComponent {
         this.customMeta.removeAt(index);
     }
 
+    seleccionarFigura(event: Event, index: number): void {
+        const input =
+            event.target as HTMLInputElement;
+
+        const file =
+            input.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        this.figuras
+            .at(index)
+            .get('filename')
+            ?.setValue(file.name);
+    }
+
+    importarXml(event: Event): void {
+        const input =
+            event.target as HTMLInputElement;
+
+        const file =
+            input.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.name.toLowerCase().endsWith('.xml')) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Archivo inválido',
+                detail: 'Seleccione un archivo XML JATS.'
+            });
+
+            input.value = '';
+
+            return;
+        }
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            'file',
+            file
+        );
+
+        this.http.post<any>(
+            `${COOKIE}/jats/import`,
+            formData,
+            {
+                withCredentials: true
+            }
+        ).subscribe({
+            next: response => {
+                const data =
+                    response?.data ?? response;
+
+                this.cargarDatosImportados(data);
+
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'XML importado',
+                    detail: 'Los datos del XML JATS fueron cargados correctamente.'
+                });
+
+                input.value = '';
+            },
+
+            error: error => {
+                console.error(error);
+
+                const detail =
+                    error?.error?.message ||
+                    error?.error?.error ||
+                    'No fue posible importar el archivo XML JATS.';
+
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error al importar',
+                    detail
+                });
+
+                input.value = '';
+            }
+        });
+    }
+
+    private cargarDatosImportados(data: any): void {
+        const journal =
+            data?.journal ?? {};
+
+        const article =
+            data?.article ?? {};
+
+        const history =
+            data?.publicationHistory ?? {};
+
+        const received =
+            history?.received ?? {};
+
+        const accepted =
+            history?.accepted ?? {};
+
+        const permissions =
+            data?.permissions ?? {};
+
+        const abstract =
+            data?.abstract ?? {};
+
+        const keywords =
+            data?.keywords ?? {};
+
+        this.jatsForm.patchValue({
+            journal: {
+                id: String(journal.id ?? ''),
+                id_type: String(journal.id_type ?? ''),
+                title: String(journal.title ?? ''),
+                title_en: String(journal.title_en ?? ''),
+                abbrev_es: String(journal.abbrev_es ?? ''),
+                abbrev_en: String(journal.abbrev_en ?? ''),
+                issn: String(journal.issn ?? ''),
+                publisher: String(journal.publisher ?? ''),
+                country: String(journal.country ?? ''),
+                url: String(journal.url ?? '')
+            },
+
+            article: {
+                id: String(article.id ?? ''),
+                type: String(
+                    article.type || 'research-article'
+                ),
+                category: String(article.category ?? ''),
+                title: String(article.title ?? ''),
+                title_en: String(article.title_en ?? ''),
+                doi: String(article.doi ?? ''),
+                volume: String(article.volume ?? ''),
+                issue: String(article.issue ?? ''),
+                first_page: String(article.first_page ?? ''),
+                last_page: String(article.last_page ?? ''),
+                publication_day: this.toFormString(
+                    article.publication_day
+                ),
+                publication_month: this.toFormString(
+                    article.publication_month
+                ),
+                publication_year: this.toFormString(
+                    article.publication_year
+                ),
+                url: String(article.url ?? '')
+            },
+
+            publicationHistory: {
+                received_day: this.toFormString(
+                    received.day ??
+                    history.received_day
+                ),
+                received_month: this.toFormString(
+                    received.month ??
+                    history.received_month
+                ),
+                received_year: this.toFormString(
+                    received.year ??
+                    history.received_year
+                ),
+                accepted_day: this.toFormString(
+                    accepted.day ??
+                    history.accepted_day
+                ),
+                accepted_month: this.toFormString(
+                    accepted.month ??
+                    history.accepted_month
+                ),
+                accepted_year: this.toFormString(
+                    accepted.year ??
+                    history.accepted_year
+                )
+            },
+
+            permissions: {
+                copyright_statement:
+                    String(
+                        permissions.copyright_statement ?? ''
+                    ),
+                copyright_year:
+                    String(
+                        permissions.copyright_year ?? ''
+                    ),
+                copyright_holder:
+                    String(
+                        permissions.copyright_holder ?? ''
+                    ),
+                license_url:
+                    String(
+                        permissions.license_url ?? ''
+                    ),
+                license_text:
+                    String(
+                        permissions.license_text ?? ''
+                    )
+            },
+
+            abstract: {
+                es: this.toText(abstract.es),
+                en: this.toText(abstract.en)
+            },
+
+            keywords: {
+                es: this.convertirListaImportada(
+                    keywords.es
+                ),
+                en: this.convertirListaImportada(
+                    keywords.en
+                )
+            }
+        });
+
+        this.autores.clear();
+        this.afiliaciones.clear();
+        this.secciones.clear();
+        this.figuras.clear();
+        this.referencias.clear();
+        this.customMeta.clear();
+
+        const authors =
+            Array.isArray(data?.authors)
+                ? data.authors
+                : [];
+
+        authors.forEach((author: any) => {
+            const control =
+                this.crearAutor();
+
+            control.patchValue({
+                surname:
+                    String(author?.surname ?? ''),
+                given_names:
+                    String(author?.given_names ?? ''),
+                display_name:
+                    String(author?.display_name ?? ''),
+                email:
+                    String(author?.email ?? ''),
+                orcid:
+                    String(author?.orcid ?? ''),
+                orcid_authenticated:
+                    this.toBoolean(
+                        author?.orcid_authenticated
+                    ),
+                corresponding:
+                    this.toBoolean(
+                        author?.corresponding
+                    ),
+                affiliation_id:
+                    String(
+                        author?.affiliation_id ?? ''
+                    )
+            });
+
+            this.autores.push(control);
+        });
+
+        const affiliations =
+            Array.isArray(data?.affiliations)
+                ? data.affiliations
+                : [];
+
+        affiliations.forEach(
+            (affiliation: any, index: number) => {
+
+                const control =
+                    this.crearAfiliacion(
+                        index + 1
+                    );
+
+                control.patchValue({
+                    id:
+                        String(
+                            affiliation?.id ||
+                            `aff-${index + 1}`
+                        ),
+                    institution:
+                        String(
+                            affiliation?.institution ?? ''
+                        ),
+                    ror:
+                        String(
+                            affiliation?.ror ?? ''
+                        )
+                });
+
+                this.afiliaciones.push(control);
+            }
+        );
+
+        const sections =
+            Array.isArray(data?.sections)
+                ? data.sections
+                : [];
+
+        sections.forEach(
+            (section: any, index: number) => {
+
+                const control =
+                    this.crearSeccion(
+                        index + 1
+                    );
+
+                control.patchValue({
+                    id:
+                        String(
+                            section?.id ||
+                            `sec-${index + 1}`
+                        ),
+                    title:
+                        String(
+                            section?.title ?? ''
+                        ),
+                    paragraphs:
+                        this.convertirParrafosImportados(
+                            section?.paragraphs
+                        )
+                });
+
+                this.secciones.push(control);
+            }
+        );
+
+        const figures =
+            Array.isArray(data?.figures)
+                ? data.figures
+                : [];
+
+        figures.forEach(
+            (figure: any, index: number) => {
+
+                const control =
+                    this.crearFigura(
+                        index + 1
+                    );
+
+                control.patchValue({
+                    id:
+                        String(
+                            figure?.id ||
+                            `fig-${index + 1}`
+                        ),
+                    section_id:
+                        String(
+                            figure?.section_id ?? ''
+                        ),
+                    position:
+                        this.toPosition(
+                            figure?.position
+                        ),
+                    label:
+                        String(
+                            figure?.label ||
+                            `Figura ${index + 1}`
+                        ),
+                    title:
+                        String(
+                            figure?.title ?? ''
+                        ),
+                    note:
+                        String(
+                            figure?.note ?? ''
+                        ),
+                    filename:
+                        String(
+                            figure?.filename ?? ''
+                        )
+                });
+
+                this.figuras.push(control);
+            }
+        );
+
+        const references =
+            Array.isArray(data?.references)
+                ? data.references
+                : [];
+
+        references.forEach(
+            (reference: any, index: number) => {
+
+                const control =
+                    this.crearReferencia(
+                        index + 1
+                    );
+
+                control.patchValue({
+                    id:
+                        String(
+                            reference?.id ||
+                            `ref-${index + 1}`
+                        ),
+                    type:
+                        String(
+                            reference?.type ||
+                            'journal'
+                        ),
+                    authors:
+                        this.convertirAutoresReferencia(
+                            reference?.authors
+                        ),
+                    title:
+                        String(
+                            reference?.title ?? ''
+                        ),
+                    source:
+                        String(
+                            reference?.source ?? ''
+                        ),
+                    year:
+                        String(
+                            reference?.year ?? ''
+                        ),
+                    volume:
+                        String(
+                            reference?.volume ?? ''
+                        ),
+                    issue:
+                        String(
+                            reference?.issue ?? ''
+                        ),
+                    first_page:
+                        String(
+                            reference?.first_page ?? ''
+                        ),
+                    last_page:
+                        String(
+                            reference?.last_page ?? ''
+                        ),
+                    doi:
+                        String(
+                            reference?.doi ?? ''
+                        ),
+                    citation:
+                        String(
+                            reference?.citation ?? ''
+                        )
+                });
+
+                this.referencias.push(control);
+            }
+        );
+
+        const customMeta =
+            Array.isArray(data?.customMeta)
+                ? data.customMeta
+                : [];
+
+        customMeta.forEach((meta: any) => {
+
+            const control =
+                this.crearCustomMeta();
+
+            control.patchValue({
+                name:
+                    String(
+                        meta?.name ?? ''
+                    ),
+                value:
+                    String(
+                        meta?.value ?? ''
+                    )
+            });
+
+            this.customMeta.push(control);
+        });
+
+        if (this.autores.length === 0) {
+            this.autores.push(
+                this.crearAutor(1)
+            );
+        }
+
+        if (this.afiliaciones.length === 0) {
+            this.afiliaciones.push(
+                this.crearAfiliacion(1)
+            );
+        }
+
+        if (this.secciones.length === 0) {
+            this.secciones.push(
+                this.crearSeccion(1)
+            );
+        }
+
+        if (this.figuras.length === 0) {
+            this.figuras.push(
+                this.crearFigura(1)
+            );
+        }
+
+        if (this.referencias.length === 0) {
+            this.referencias.push(
+                this.crearReferencia(1)
+            );
+        }
+    }
+
     generarXml(): void {
         if (this.jatsForm.invalid) {
             this.jatsForm.markAllAsTouched();
@@ -468,213 +980,300 @@ export class JatsGeneratorComponent {
             this.messageService.add({
                 severity: 'warn',
                 summary: 'Formulario incompleto',
-                detail: 'Complete los campos obligatorios.'
+                detail: 'Complete los campos obligatorios antes de generar el XML.'
             });
 
             return;
         }
 
         const formValue =
-            this.jatsForm.getRawValue() as unknown as JatsFormValue;
+            this.jatsForm.getRawValue() as JatsFormValue;
 
-        const data = {
+        const payload = {
             journal: {
-                id: formValue.journal.id,
-                id_type: formValue.journal.id_type,
-                title: formValue.journal.title,
-                title_en: formValue.journal.title_en,
-                abbrev_es: formValue.journal.abbrev_es,
-                abbrev_en: formValue.journal.abbrev_en,
-                issn: formValue.journal.issn,
-                publisher: formValue.journal.publisher,
-                country: formValue.journal.country,
-                url: formValue.journal.url
+                ...formValue.journal
             },
 
             article: {
-                id: formValue.article.id,
-                type: formValue.article.type,
-                category: formValue.article.category,
-                title: formValue.article.title,
-                title_en: formValue.article.title_en,
-                doi: formValue.article.doi,
-                volume: formValue.article.volume,
-                issue: formValue.article.issue,
-                first_page: formValue.article.first_page,
-                last_page: formValue.article.last_page,
-                publication_day: formValue.article.publication_day,
-                publication_month: formValue.article.publication_month,
-                publication_year: formValue.article.publication_year,
-                url: formValue.article.url
+                ...formValue.article,
+
+                publication_day:
+                    this.toNumber(
+                        formValue.article.publication_day
+                    ),
+
+                publication_month:
+                    this.toNumber(
+                        formValue.article.publication_month
+                    ),
+
+                publication_year:
+                    this.toNumber(
+                        formValue.article.publication_year
+                    )
             },
 
-            authors: formValue.authors.map(
-                (author: AutorForm) => ({
-                    surname: author.surname,
-                    given_names: author.given_names,
-                    display_name: author.display_name,
-                    email: author.email,
-                    orcid: author.orcid,
-                    orcid_authenticated: author.orcid_authenticated,
-                    corresponding: author.corresponding,
-                    affiliation_id: author.affiliation_id
-                })
-            ),
+            authors:
+                formValue.authors.map(
+                    (author: AutorForm) => ({
+                        surname:
+                            author.surname,
 
-            affiliations: formValue.affiliations.map(
-                (affiliation: AfiliacionForm) => ({
-                    id: affiliation.id,
-                    institution: affiliation.institution,
-                    ror: affiliation.ror
-                })
-            ),
+                        given_names:
+                            author.given_names,
+
+                        display_name:
+                            author.display_name,
+
+                        email:
+                            author.email,
+
+                        orcid:
+                            author.orcid,
+
+                        orcid_authenticated:
+                            Boolean(
+                                author.orcid_authenticated
+                            ),
+
+                        corresponding:
+                            Boolean(
+                                author.corresponding
+                            ),
+
+                        affiliation_id:
+                            author.affiliation_id
+                    })
+                ),
+
+            affiliations:
+                formValue.affiliations.map(
+                    (affiliation: AfiliacionForm) => ({
+                        id:
+                            affiliation.id,
+
+                        institution:
+                            affiliation.institution,
+
+                        ror:
+                            affiliation.ror
+                    })
+                ),
 
             publicationHistory: {
                 received: {
-                    day: formValue.publicationHistory.received_day,
-                    month: formValue.publicationHistory.received_month,
-                    year: formValue.publicationHistory.received_year
+                    day:
+                        formValue
+                            .publicationHistory
+                            .received_day,
+
+                    month:
+                        formValue
+                            .publicationHistory
+                            .received_month,
+
+                    year:
+                        formValue
+                            .publicationHistory
+                            .received_year
                 },
+
                 accepted: {
-                    day: formValue.publicationHistory.accepted_day,
-                    month: formValue.publicationHistory.accepted_month,
-                    year: formValue.publicationHistory.accepted_year
+                    day:
+                        formValue
+                            .publicationHistory
+                            .accepted_day,
+
+                    month:
+                        formValue
+                            .publicationHistory
+                            .accepted_month,
+
+                    year:
+                        formValue
+                            .publicationHistory
+                            .accepted_year
                 }
             },
 
             permissions: {
-                copyright_statement:
-                    formValue.permissions.copyright_statement,
-                copyright_year:
-                    formValue.permissions.copyright_year,
-                copyright_holder:
-                    formValue.permissions.copyright_holder,
-                license_url:
-                    formValue.permissions.license_url,
-                license_text:
-                    formValue.permissions.license_text
+                ...formValue.permissions
             },
 
             abstract: {
-                es: formValue.abstract.es,
-                en: formValue.abstract.en
+                es:
+                    formValue.abstract.es,
+
+                en:
+                    formValue.abstract.en
             },
 
             keywords: {
-                es: this.convertirLista(
-                    formValue.keywords.es
-                ),
-                en: this.convertirLista(
-                    formValue.keywords.en
-                )
+                es:
+                    this.convertirLista(
+                        formValue.keywords.es
+                    ),
+
+                en:
+                    this.convertirLista(
+                        formValue.keywords.en
+                    )
             },
 
-            sections: formValue.sections.map(
-                (section: SeccionForm) => ({
-                    id: section.id,
-                    title: section.title,
-                    paragraphs: this.convertirParrafos(
-                        section.paragraphs
-                    )
-                })
-            ),
+            sections:
+                formValue.sections.map(
+                    (section: SeccionForm) => ({
+                        id:
+                            section.id,
 
-            figures: formValue.figures.map(
-                (figure: FiguraForm) => ({
-                    id: figure.id,
-                    label: figure.label,
-                    title: figure.title,
-                    note: figure.note,
-                    filename: figure.filename
-                })
-            ),
+                        title:
+                            section.title,
 
-            references: formValue.references.map(
-                (reference: ReferenciaForm) => ({
-                    id: reference.id,
-                    type: reference.type,
-                    authors: this.convertirAutoresReferencia(
-                        reference.authors
-                    ),
-                    title: reference.title,
-                    source: reference.source,
-                    year: reference.year,
-                    volume: reference.volume,
-                    issue: reference.issue,
-                    first_page: reference.first_page,
-                    last_page: reference.last_page,
-                    doi: reference.doi
-                })
-            ),
+                        paragraphs:
+                            this.convertirParrafos(
+                                section.paragraphs
+                            )
+                    })
+                ),
 
-            customMeta: formValue.customMeta.map(
-                (meta: CustomMetaForm) => ({
-                    name: meta.name,
-                    value: meta.value
-                })
-            )
+            figures:
+                formValue.figures.map(
+                    (figure: FiguraForm) => ({
+                        id:
+                            figure.id,
+
+                        section_id:
+                            figure.section_id,
+
+                        position:
+                            Number(
+                                figure.position
+                            ) || 1,
+
+                        label:
+                            figure.label,
+
+                        title:
+                            figure.title,
+
+                        note:
+                            figure.note,
+
+                        filename:
+                            figure.filename
+                    })
+                ),
+
+            references:
+                formValue.references.map(
+                    (reference: ReferenciaForm) => ({
+                        id:
+                            reference.id,
+
+                        type:
+                            reference.type,
+
+                        authors:
+                            this.convertirAutoresReferencia(
+                                reference.authors
+                            ),
+
+                        title:
+                            reference.title,
+
+                        source:
+                            reference.source,
+
+                        year:
+                            reference.year,
+
+                        volume:
+                            reference.volume,
+
+                        issue:
+                            reference.issue,
+
+                        first_page:
+                            reference.first_page,
+
+                        last_page:
+                            reference.last_page,
+
+                        doi:
+                            reference.doi,
+
+                        citation:
+                            reference.citation
+                    })
+                ),
+
+            customMeta:
+                formValue.customMeta.map(
+                    (meta: CustomMetaForm) => ({
+                        name:
+                            meta.name,
+
+                        value:
+                            meta.value
+                    })
+                )
         };
 
         this.http.post(
             `${COOKIE}/jats/generate`,
-            data,
+            payload,
             {
                 withCredentials: true,
                 responseType: 'text'
             }
         ).subscribe({
-            next: (xml: string) => {
-                console.log(
-                    'XML generado:',
-                    xml
-                );
+            next: xml => {
 
-                const blob = new Blob(
-                    [xml],
-                    {
-                        type: 'application/xml;charset=utf-8'
-                    }
-                );
+                const blob =
+                    new Blob(
+                        [xml],
+                        {
+                            type:
+                                'application/xml;charset=utf-8'
+                        }
+                    );
 
                 const url =
-                    window.URL.createObjectURL(blob);
+                    window.URL.createObjectURL(
+                        blob
+                    );
 
-                const link =
-                    document.createElement('a');
+                const anchor =
+                    document.createElement(
+                        'a'
+                    );
 
-                link.href = url;
-                link.download =
+                anchor.href = url;
+
+                anchor.download =
                     `${formValue.article.id || 'article'}.xml`;
 
-                document.body.appendChild(link);
+                anchor.click();
 
-                link.click();
-
-                document.body.removeChild(link);
-
-                window.URL.revokeObjectURL(url);
+                window.URL.revokeObjectURL(
+                    url
+                );
 
                 this.messageService.add({
                     severity: 'success',
                     summary: 'XML generado',
-                    detail: 'El archivo JATS fue generado correctamente.'
+                    detail: 'El archivo XML JATS fue generado correctamente.'
                 });
             },
 
-            error: (error) => {
-                console.error(
-                    'Error al generar XML:',
-                    error
-                );
+            error: error => {
 
-                let detail =
+                console.error(error);
+
+                const detail =
+                    error?.error?.message ||
+                    error?.error?.error ||
                     'No fue posible generar el XML JATS.';
-
-                if (typeof error?.error === 'string') {
-                    detail = error.error;
-                } else if (error?.error?.message) {
-                    detail = error.error.message;
-                }
 
                 this.messageService.add({
                     severity: 'error',
@@ -685,70 +1284,19 @@ export class JatsGeneratorComponent {
         });
     }
 
-    private convertirLista(
-        value: string | null | undefined
-    ): string[] {
-        if (!value) {
-            return [];
-        }
-
-        return value
-            .split(',')
-            .map(item => item.trim())
-            .filter(item => item.length > 0);
-    }
-
-    private convertirParrafos(
-        value: string | null | undefined
-    ): string[] {
-        if (!value) {
-            return [];
-        }
-
-        return value
-            .split(/\n\s*\n/)
-            .map(item => item.trim())
-            .filter(item => item.length > 0);
-    }
-
-    private convertirAutoresReferencia(
-        value: string | null | undefined
-    ): {
-        surname: string;
-        given_names: string;
-    }[] {
-        if (!value) {
-            return [];
-        }
-
-        return value
-            .split(';')
-            .map(author => author.trim())
-            .filter(author => author.length > 0)
-            .map(author => {
-                const parts = author
-                    .split(',')
-                    .map(part => part.trim());
-
-                return {
-                    surname: parts[0] ?? '',
-                    given_names: parts[1] ?? ''
-                };
-            });
-    }
-
     limpiarFormulario(): void {
-        this.jatsForm.reset({
+
+        this.jatsForm.patchValue({
             journal: {
-                id: 'SIBIUAS',
-                id_type: 'ojs',
+                id: '',
+                id_type: '',
                 title: '',
                 title_en: '',
                 abbrev_es: '',
                 abbrev_en: '',
                 issn: '',
                 publisher: '',
-                country: 'MX',
+                country: '',
                 url: ''
             },
 
@@ -765,7 +1313,7 @@ export class JatsGeneratorComponent {
                 last_page: '',
                 publication_day: '',
                 publication_month: '',
-                publication_year: new Date().getFullYear(),
+                publication_year: '',
                 url: ''
             },
 
@@ -797,35 +1345,18 @@ export class JatsGeneratorComponent {
             }
         });
 
-        while (this.autores.length > 0) {
-            this.autores.removeAt(0);
-        }
-
-        while (this.afiliacionesForm.length > 0) {
-            this.afiliacionesForm.removeAt(0);
-        }
-
-        while (this.secciones.length > 0) {
-            this.secciones.removeAt(0);
-        }
-
-        while (this.figuras.length > 0) {
-            this.figuras.removeAt(0);
-        }
-
-        while (this.referencias.length > 0) {
-            this.referencias.removeAt(0);
-        }
-
-        while (this.customMeta.length > 0) {
-            this.customMeta.removeAt(0);
-        }
+        this.autores.clear();
+        this.afiliaciones.clear();
+        this.secciones.clear();
+        this.figuras.clear();
+        this.referencias.clear();
+        this.customMeta.clear();
 
         this.autores.push(
-            this.crearAutor()
+            this.crearAutor(1)
         );
 
-        this.afiliacionesForm.push(
+        this.afiliaciones.push(
             this.crearAfiliacion(1)
         );
 
@@ -833,10 +1364,209 @@ export class JatsGeneratorComponent {
             this.crearSeccion(1)
         );
 
-        this.messageService.add({
-            severity: 'info',
-            summary: 'Formulario limpiado',
-            detail: 'Los datos fueron eliminados.'
-        });
+        this.figuras.push(
+            this.crearFigura(1)
+        );
+
+        this.referencias.push(
+            this.crearReferencia(1)
+        );
+    }
+
+    private convertirLista(
+        value: string
+    ): string[] {
+
+        if (!value) {
+            return [];
+        }
+
+        return value
+            .split(',')
+            .map(
+                item => item.trim()
+            )
+            .filter(
+                item => item.length > 0
+            );
+    }
+
+    private convertirListaImportada(
+        value: unknown
+    ): string {
+
+        if (Array.isArray(value)) {
+            return value
+                .map(
+                    item => String(item).trim()
+                )
+                .filter(
+                    item => item.length > 0
+                )
+                .join(', ');
+        }
+
+        return value == null
+            ? ''
+            : String(value);
+    }
+
+    private convertirParrafos(
+        value: string
+    ): string[] {
+
+        if (!value) {
+            return [];
+        }
+
+        return value
+            .split(/\n\s*\n/)
+            .map(
+                item => item.trim()
+            )
+            .filter(
+                item => item.length > 0
+            );
+    }
+
+    private convertirParrafosImportados(
+        value: unknown
+    ): string {
+
+        if (Array.isArray(value)) {
+            return value
+                .map(
+                    item => String(item).trim()
+                )
+                .filter(
+                    item => item.length > 0
+                )
+                .join('\n\n');
+        }
+
+        return value == null
+            ? ''
+            : String(value);
+    }
+
+    private convertirAutoresReferencia(
+        value: unknown
+    ): string {
+
+        if (!Array.isArray(value)) {
+            return value == null
+                ? ''
+                : String(value);
+        }
+
+        return value
+            .map((author: any) => {
+
+                if (typeof author === 'string') {
+                    return author;
+                }
+
+                const surname =
+                    String(
+                        author?.surname ?? ''
+                    ).trim();
+
+                const givenNames =
+                    String(
+                        author?.given_names ?? ''
+                    ).trim();
+
+                if (
+                    surname &&
+                    givenNames
+                ) {
+                    return `${surname}, ${givenNames}`;
+                }
+
+                return surname ||
+                    givenNames;
+            })
+            .filter(
+                item => item.length > 0
+            )
+            .join('; ');
+    }
+
+    private toBoolean(
+        value: unknown
+    ): boolean {
+
+        return (
+            value === true ||
+            value === 1 ||
+            value === '1' ||
+            value === 'true' ||
+            value === 'yes'
+        );
+    }
+
+    private toFormString(
+        value: unknown
+    ): string {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return '';
+        }
+
+        return String(value);
+    }
+
+    private toPosition(
+        value: unknown
+    ): number {
+
+        const numberValue =
+            Number(value);
+
+        if (
+            Number.isNaN(numberValue) ||
+            numberValue < 1
+        ) {
+            return 1;
+        }
+
+        return numberValue;
+    }
+
+    private toNumber(
+        value: string
+    ): number | null {
+
+        if (
+            value === null ||
+            value === undefined ||
+            value === ''
+        ) {
+            return null;
+        }
+
+        const numberValue =
+            Number(value);
+
+        return Number.isNaN(numberValue)
+            ? null
+            : numberValue;
+    }
+
+    private toText(
+        value: unknown
+    ): string {
+
+        if (Array.isArray(value)) {
+            return value.join('\n');
+        }
+
+        return value == null
+            ? ''
+            : String(value);
     }
 }
+
