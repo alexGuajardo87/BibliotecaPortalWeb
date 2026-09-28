@@ -422,18 +422,27 @@ export class JatsGeneratorComponent {
     }
 
     eliminarSeccion(index: number): void {
-        if (this.secciones.length > 1) {
-            const sectionId =
-                this.secciones.at(index).get('id')?.value;
-
-            this.secciones.removeAt(index);
-
-            this.figuras.controls.forEach(control => {
-                if (control.get('section_id')?.value === sectionId) {
-                    control.get('section_id')?.setValue('');
-                }
-            });
+        if (this.secciones.length <= 1) {
+            return;
         }
+
+        const sectionId = this.secciones
+            .at(index)
+            .get('id')
+            ?.value;
+
+        this.secciones.removeAt(index);
+
+        this.figuras.controls.forEach(control => {
+            if (
+                control.get('section_id')?.value ===
+                sectionId
+            ) {
+                control
+                    .get('section_id')
+                    ?.setValue('');
+            }
+        });
     }
 
     agregarFigura(): void {
@@ -450,7 +459,9 @@ export class JatsGeneratorComponent {
 
     agregarReferencia(): void {
         this.referencias.push(
-            this.crearReferencia(this.referencias.length + 1)
+            this.crearReferencia(
+                this.referencias.length + 1
+            )
         );
     }
 
@@ -470,7 +481,10 @@ export class JatsGeneratorComponent {
         this.customMeta.removeAt(index);
     }
 
-    seleccionarFigura(event: Event, index: number): void {
+    seleccionarFigura(
+        event: Event,
+        index: number
+    ): void {
         const input =
             event.target as HTMLInputElement;
 
@@ -498,7 +512,11 @@ export class JatsGeneratorComponent {
             return;
         }
 
-        if (!file.name.toLowerCase().endsWith('.xml')) {
+        if (
+            !file.name
+                .toLowerCase()
+                .endsWith('.xml')
+        ) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Archivo inválido',
@@ -527,9 +545,12 @@ export class JatsGeneratorComponent {
         ).subscribe({
             next: response => {
                 const data =
-                    response?.data ?? response;
+                    response?.data ??
+                    response;
 
-                this.cargarDatosImportados(data);
+                this.cargarDatosImportados(
+                    data
+                );
 
                 this.messageService.add({
                     severity: 'success',
@@ -559,7 +580,9 @@ export class JatsGeneratorComponent {
         });
     }
 
-    private cargarDatosImportados(data: any): void {
+    private cargarDatosImportados(
+        data: any
+    ): void {
         const journal =
             data?.journal ?? {};
 
@@ -586,160 +609,283 @@ export class JatsGeneratorComponent {
 
         this.jatsForm.patchValue({
             journal: {
-                id: String(journal.id ?? ''),
-                id_type: String(journal.id_type ?? ''),
-                title: String(journal.title ?? ''),
-                title_en: String(journal.title_en ?? ''),
-                abbrev_es: String(journal.abbrev_es ?? ''),
-                abbrev_en: String(journal.abbrev_en ?? ''),
-                issn: String(journal.issn ?? ''),
-                publisher: String(journal.publisher ?? ''),
-                country: String(journal.country ?? ''),
-                url: String(journal.url ?? '')
+                id: this.toFormString(
+                    journal.id
+                ),
+                id_type: this.toFormString(
+                    journal.id_type
+                ),
+                title: this.toFormString(
+                    journal.title
+                ),
+                title_en: this.toFormString(
+                    journal.title_en
+                ),
+                abbrev_es: this.toFormString(
+                    journal.abbrev_es
+                ),
+                abbrev_en: this.toFormString(
+                    journal.abbrev_en
+                ),
+                issn: this.toFormString(
+                    journal.issn
+                ),
+                publisher: this.toFormString(
+                    journal.publisher
+                ),
+                country: this.toFormString(
+                    journal.country
+                ),
+                url: this.toFormString(
+                    journal.url
+                )
             },
 
             article: {
-                id: String(article.id ?? ''),
-                type: String(
-                    article.type || 'research-article'
+                id: this.toFormString(
+                    article.id
                 ),
-                category: String(article.category ?? ''),
-                title: String(article.title ?? ''),
-                title_en: String(article.title_en ?? ''),
-                doi: String(article.doi ?? ''),
-                volume: String(article.volume ?? ''),
-                issue: String(article.issue ?? ''),
-                first_page: String(article.first_page ?? ''),
-                last_page: String(article.last_page ?? ''),
-                publication_day: this.toFormString(
-                    article.publication_day
+                type:
+                    this.toFormString(
+                        article.type
+                    ) ||
+                    'research-article',
+                category: this.toFormString(
+                    article.category
                 ),
-                publication_month: this.toFormString(
-                    article.publication_month
+                title: this.toFormString(
+                    article.title
                 ),
-                publication_year: this.toFormString(
-                    article.publication_year
+                title_en: this.toFormString(
+                    article.title_en
                 ),
-                url: String(article.url ?? '')
+                doi: this.toFormString(
+                    article.doi
+                ),
+                volume: this.toFormString(
+                    article.volume
+                ),
+                issue: this.toFormString(
+                    article.issue
+                ),
+                first_page: this.toFormString(
+                    article.first_page
+                ),
+                last_page: this.toFormString(
+                    article.last_page
+                ),
+                publication_day:
+                    this.toFormString(
+                        article.publication_day
+                    ),
+                publication_month:
+                    this.toFormString(
+                        article.publication_month
+                    ),
+                publication_year:
+                    this.toFormString(
+                        article.publication_year
+                    ),
+                url: this.toFormString(
+                    article.url
+                )
             },
 
             publicationHistory: {
-                received_day: this.toFormString(
-                    received.day ??
-                    history.received_day
-                ),
-                received_month: this.toFormString(
-                    received.month ??
-                    history.received_month
-                ),
-                received_year: this.toFormString(
-                    received.year ??
-                    history.received_year
-                ),
-                accepted_day: this.toFormString(
-                    accepted.day ??
-                    history.accepted_day
-                ),
-                accepted_month: this.toFormString(
-                    accepted.month ??
-                    history.accepted_month
-                ),
-                accepted_year: this.toFormString(
-                    accepted.year ??
-                    history.accepted_year
-                )
+                received_day:
+                    this.toFormString(
+                        received.day ??
+                        history.received_day
+                    ),
+                received_month:
+                    this.toFormString(
+                        received.month ??
+                        history.received_month
+                    ),
+                received_year:
+                    this.toFormString(
+                        received.year ??
+                        history.received_year
+                    ),
+                accepted_day:
+                    this.toFormString(
+                        accepted.day ??
+                        history.accepted_day
+                    ),
+                accepted_month:
+                    this.toFormString(
+                        accepted.month ??
+                        history.accepted_month
+                    ),
+                accepted_year:
+                    this.toFormString(
+                        accepted.year ??
+                        history.accepted_year
+                    )
             },
 
             permissions: {
                 copyright_statement:
-                    String(
-                        permissions.copyright_statement ?? ''
+                    this.toFormString(
+                        permissions.copyright_statement
                     ),
                 copyright_year:
-                    String(
-                        permissions.copyright_year ?? ''
+                    this.toFormString(
+                        permissions.copyright_year
                     ),
                 copyright_holder:
-                    String(
-                        permissions.copyright_holder ?? ''
+                    this.toFormString(
+                        permissions.copyright_holder
                     ),
                 license_url:
-                    String(
-                        permissions.license_url ?? ''
+                    this.toFormString(
+                        permissions.license_url
                     ),
                 license_text:
-                    String(
-                        permissions.license_text ?? ''
+                    this.toFormString(
+                        permissions.license_text
                     )
             },
 
             abstract: {
-                es: this.toText(abstract.es),
-                en: this.toText(abstract.en)
+                es: this.toText(
+                    abstract.es
+                ),
+                en: this.toText(
+                    abstract.en
+                )
             },
 
             keywords: {
-                es: this.convertirListaImportada(
-                    keywords.es
-                ),
-                en: this.convertirListaImportada(
-                    keywords.en
-                )
+                es:
+                    this.convertirListaImportada(
+                        keywords.es
+                    ),
+                en:
+                    this.convertirListaImportada(
+                        keywords.en
+                    )
             }
         });
 
+        this.cargarAutoresImportados(
+            data?.authors
+        );
+
+        this.cargarAfiliacionesImportadas(
+            data?.affiliations
+        );
+
+        this.cargarSeccionesImportadas(
+            data?.sections
+        );
+
+        this.cargarFigurasImportadas(
+            data?.figures
+        );
+
+        this.cargarReferenciasImportadas(
+            data?.references
+        );
+
+        this.cargarCustomMetaImportado(
+            data?.customMeta
+        );
+    }
+
+    private cargarAutoresImportados(
+        authors: any
+    ): void {
         this.autores.clear();
+
+        if (
+            !Array.isArray(authors) ||
+            authors.length === 0
+        ) {
+            this.autores.push(
+                this.crearAutor(1)
+            );
+
+            return;
+        }
+
+        authors.forEach(
+            (author: any, index: number) => {
+                const control =
+                    this.crearAutor(
+                        index + 1
+                    );
+
+                control.patchValue({
+                    surname:
+                        this.toFormString(
+                            author?.surname
+                        ),
+
+                    given_names:
+                        this.toFormString(
+                            author?.given_names
+                        ),
+
+                    display_name:
+                        this.toFormString(
+                            author?.display_name
+                        ),
+
+                    email:
+                        this.toFormString(
+                            author?.email
+                        ),
+
+                    orcid:
+                        this.toFormString(
+                            author?.orcid
+                        ),
+
+                    orcid_authenticated:
+                        this.toBoolean(
+                            author?.orcid_authenticated
+                        ),
+
+                    corresponding:
+                        this.toBoolean(
+                            author?.corresponding
+                        ),
+
+                    affiliation_id:
+                        this.toFormString(
+                            author?.affiliation_id
+                        )
+                });
+
+                this.autores.push(
+                    control
+                );
+            }
+        );
+    }
+
+    private cargarAfiliacionesImportadas(
+        affiliations: any
+    ): void {
         this.afiliaciones.clear();
-        this.secciones.clear();
-        this.figuras.clear();
-        this.referencias.clear();
-        this.customMeta.clear();
 
-        const authors =
-            Array.isArray(data?.authors)
-                ? data.authors
-                : [];
+        if (
+            !Array.isArray(affiliations) ||
+            affiliations.length === 0
+        ) {
+            this.afiliaciones.push(
+                this.crearAfiliacion(1)
+            );
 
-        authors.forEach((author: any) => {
-            const control =
-                this.crearAutor();
-
-            control.patchValue({
-                surname:
-                    String(author?.surname ?? ''),
-                given_names:
-                    String(author?.given_names ?? ''),
-                display_name:
-                    String(author?.display_name ?? ''),
-                email:
-                    String(author?.email ?? ''),
-                orcid:
-                    String(author?.orcid ?? ''),
-                orcid_authenticated:
-                    this.toBoolean(
-                        author?.orcid_authenticated
-                    ),
-                corresponding:
-                    this.toBoolean(
-                        author?.corresponding
-                    ),
-                affiliation_id:
-                    String(
-                        author?.affiliation_id ?? ''
-                    )
-            });
-
-            this.autores.push(control);
-        });
-
-        const affiliations =
-            Array.isArray(data?.affiliations)
-                ? data.affiliations
-                : [];
+            return;
+        }
 
         affiliations.forEach(
-            (affiliation: any, index: number) => {
-
+            (
+                affiliation: any,
+                index: number
+            ) => {
                 const control =
                     this.crearAfiliacion(
                         index + 1
@@ -747,32 +893,50 @@ export class JatsGeneratorComponent {
 
                 control.patchValue({
                     id:
-                        String(
-                            affiliation?.id ||
-                            `aff-${index + 1}`
-                        ),
+                        this.toFormString(
+                            affiliation?.id
+                        ) ||
+                        `aff-${index + 1}`,
+
                     institution:
-                        String(
-                            affiliation?.institution ?? ''
+                        this.toFormString(
+                            affiliation?.institution
                         ),
+
                     ror:
-                        String(
-                            affiliation?.ror ?? ''
+                        this.toFormString(
+                            affiliation?.ror
                         )
                 });
 
-                this.afiliaciones.push(control);
+                this.afiliaciones.push(
+                    control
+                );
             }
         );
+    }
 
-        const sections =
-            Array.isArray(data?.sections)
-                ? data.sections
-                : [];
+    private cargarSeccionesImportadas(
+        sections: any
+    ): void {
+        this.secciones.clear();
+
+        if (
+            !Array.isArray(sections) ||
+            sections.length === 0
+        ) {
+            this.secciones.push(
+                this.crearSeccion(1)
+            );
+
+            return;
+        }
 
         sections.forEach(
-            (section: any, index: number) => {
-
+            (
+                section: any,
+                index: number
+            ) => {
                 const control =
                     this.crearSeccion(
                         index + 1
@@ -780,32 +944,50 @@ export class JatsGeneratorComponent {
 
                 control.patchValue({
                     id:
-                        String(
-                            section?.id ||
-                            `sec-${index + 1}`
-                        ),
+                        this.toFormString(
+                            section?.id
+                        ) ||
+                        `sec-${index + 1}`,
+
                     title:
-                        String(
-                            section?.title ?? ''
+                        this.toFormString(
+                            section?.title
                         ),
+
                     paragraphs:
                         this.convertirParrafosImportados(
                             section?.paragraphs
                         )
                 });
 
-                this.secciones.push(control);
+                this.secciones.push(
+                    control
+                );
             }
         );
+    }
 
-        const figures =
-            Array.isArray(data?.figures)
-                ? data.figures
-                : [];
+    private cargarFigurasImportadas(
+        figures: any
+    ): void {
+        this.figuras.clear();
+
+        if (
+            !Array.isArray(figures) ||
+            figures.length === 0
+        ) {
+            this.figuras.push(
+                this.crearFigura(1)
+            );
+
+            return;
+        }
 
         figures.forEach(
-            (figure: any, index: number) => {
-
+            (
+                figure: any,
+                index: number
+            ) => {
                 const control =
                     this.crearFigura(
                         index + 1
@@ -813,49 +995,71 @@ export class JatsGeneratorComponent {
 
                 control.patchValue({
                     id:
-                        String(
-                            figure?.id ||
-                            `fig-${index + 1}`
-                        ),
+                        this.toFormString(
+                            figure?.id
+                        ) ||
+                        `fig-${index + 1}`,
+
                     section_id:
-                        String(
-                            figure?.section_id ?? ''
+                        this.toFormString(
+                            figure?.section_id
                         ),
+
                     position:
                         this.toPosition(
                             figure?.position
                         ),
+
                     label:
-                        String(
-                            figure?.label ||
-                            `Figura ${index + 1}`
-                        ),
+                        this.toFormString(
+                            figure?.label
+                        ) ||
+                        `Figura ${index + 1}`,
+
                     title:
-                        String(
-                            figure?.title ?? ''
+                        this.toFormString(
+                            figure?.title
                         ),
+
                     note:
-                        String(
-                            figure?.note ?? ''
+                        this.toFormString(
+                            figure?.note
                         ),
+
                     filename:
-                        String(
-                            figure?.filename ?? ''
+                        this.toFormString(
+                            figure?.filename
                         )
                 });
 
-                this.figuras.push(control);
+                this.figuras.push(
+                    control
+                );
             }
         );
+    }
 
-        const references =
-            Array.isArray(data?.references)
-                ? data.references
-                : [];
+    private cargarReferenciasImportadas(
+        references: any
+    ): void {
+        this.referencias.clear();
+
+        if (
+            !Array.isArray(references) ||
+            references.length === 0
+        ) {
+            this.referencias.push(
+                this.crearReferencia(1)
+            );
+
+            return;
+        }
 
         references.forEach(
-            (reference: any, index: number) => {
-
+            (
+                reference: any,
+                index: number
+            ) => {
                 const control =
                     this.crearReferencia(
                         index + 1
@@ -863,114 +1067,108 @@ export class JatsGeneratorComponent {
 
                 control.patchValue({
                     id:
-                        String(
-                            reference?.id ||
-                            `ref-${index + 1}`
-                        ),
+                        this.toFormString(
+                            reference?.id
+                        ) ||
+                        `ref-${index + 1}`,
+
                     type:
-                        String(
-                            reference?.type ||
-                            'journal'
-                        ),
+                        this.toFormString(
+                            reference?.type
+                        ) ||
+                        'journal',
+
                     authors:
                         this.convertirAutoresReferencia(
                             reference?.authors
                         ),
+
                     title:
-                        String(
-                            reference?.title ?? ''
+                        this.toFormString(
+                            reference?.title
                         ),
+
                     source:
-                        String(
-                            reference?.source ?? ''
+                        this.toFormString(
+                            reference?.source
                         ),
+
                     year:
-                        String(
-                            reference?.year ?? ''
+                        this.toFormString(
+                            reference?.year
                         ),
+
                     volume:
-                        String(
-                            reference?.volume ?? ''
+                        this.toFormString(
+                            reference?.volume
                         ),
+
                     issue:
-                        String(
-                            reference?.issue ?? ''
+                        this.toFormString(
+                            reference?.issue
                         ),
+
                     first_page:
-                        String(
-                            reference?.first_page ?? ''
+                        this.toFormString(
+                            reference?.first_page
                         ),
+
                     last_page:
-                        String(
-                            reference?.last_page ?? ''
+                        this.toFormString(
+                            reference?.last_page
                         ),
+
                     doi:
-                        String(
-                            reference?.doi ?? ''
+                        this.toFormString(
+                            reference?.doi
                         ),
+
                     citation:
-                        String(
-                            reference?.citation ?? ''
+                        this.toFormString(
+                            reference?.citation
                         )
                 });
 
-                this.referencias.push(control);
+                this.referencias.push(
+                    control
+                );
             }
         );
+    }
 
-        const customMeta =
-            Array.isArray(data?.customMeta)
-                ? data.customMeta
-                : [];
+    private cargarCustomMetaImportado(
+        customMeta: any
+    ): void {
+        this.customMeta.clear();
 
-        customMeta.forEach((meta: any) => {
-
-            const control =
-                this.crearCustomMeta();
-
-            control.patchValue({
-                name:
-                    String(
-                        meta?.name ?? ''
-                    ),
-                value:
-                    String(
-                        meta?.value ?? ''
-                    )
-            });
-
-            this.customMeta.push(control);
-        });
-
-        if (this.autores.length === 0) {
-            this.autores.push(
-                this.crearAutor(1)
-            );
+        if (
+            !Array.isArray(customMeta)
+        ) {
+            return;
         }
 
-        if (this.afiliaciones.length === 0) {
-            this.afiliaciones.push(
-                this.crearAfiliacion(1)
-            );
-        }
+        customMeta.forEach(
+            (meta: any) => {
+                const control =
+                    this.crearCustomMeta();
 
-        if (this.secciones.length === 0) {
-            this.secciones.push(
-                this.crearSeccion(1)
-            );
-        }
+                control.patchValue({
+                    name:
+                        this.toFormString(
+                            meta?.name
+                        ),
 
-        if (this.figuras.length === 0) {
-            this.figuras.push(
-                this.crearFigura(1)
-            );
-        }
+                    value:
+                        this.toFormString(
+                            meta?.value
+                        )
+                });
 
-        if (this.referencias.length === 0) {
-            this.referencias.push(
-                this.crearReferencia(1)
-            );
-        }
+                this.customMeta.push(
+                    control
+                );
+            }
+        );
     }
 
     generarXml(): void {
@@ -1048,7 +1246,9 @@ export class JatsGeneratorComponent {
 
             affiliations:
                 formValue.affiliations.map(
-                    (affiliation: AfiliacionForm) => ({
+                    (
+                        affiliation: AfiliacionForm
+                    ) => ({
                         id:
                             affiliation.id,
 
@@ -1122,7 +1322,9 @@ export class JatsGeneratorComponent {
 
             sections:
                 formValue.sections.map(
-                    (section: SeccionForm) => ({
+                    (
+                        section: SeccionForm
+                    ) => ({
                         id:
                             section.id,
 
@@ -1138,7 +1340,9 @@ export class JatsGeneratorComponent {
 
             figures:
                 formValue.figures.map(
-                    (figure: FiguraForm) => ({
+                    (
+                        figure: FiguraForm
+                    ) => ({
                         id:
                             figure.id,
 
@@ -1166,7 +1370,9 @@ export class JatsGeneratorComponent {
 
             references:
                 formValue.references.map(
-                    (reference: ReferenciaForm) => ({
+                    (
+                        reference: ReferenciaForm
+                    ) => ({
                         id:
                             reference.id,
 
@@ -1209,7 +1415,9 @@ export class JatsGeneratorComponent {
 
             customMeta:
                 formValue.customMeta.map(
-                    (meta: CustomMetaForm) => ({
+                    (
+                        meta: CustomMetaForm
+                    ) => ({
                         name:
                             meta.name,
 
@@ -1228,7 +1436,6 @@ export class JatsGeneratorComponent {
             }
         ).subscribe({
             next: xml => {
-
                 const blob =
                     new Blob(
                         [xml],
@@ -1267,7 +1474,6 @@ export class JatsGeneratorComponent {
             },
 
             error: error => {
-
                 console.error(error);
 
                 const detail =
@@ -1285,7 +1491,6 @@ export class JatsGeneratorComponent {
     }
 
     limpiarFormulario(): void {
-
         this.jatsForm.patchValue({
             journal: {
                 id: '',
@@ -1376,7 +1581,6 @@ export class JatsGeneratorComponent {
     private convertirLista(
         value: string
     ): string[] {
-
         if (!value) {
             return [];
         }
@@ -1394,7 +1598,6 @@ export class JatsGeneratorComponent {
     private convertirListaImportada(
         value: unknown
     ): string {
-
         if (Array.isArray(value)) {
             return value
                 .map(
@@ -1414,7 +1617,6 @@ export class JatsGeneratorComponent {
     private convertirParrafos(
         value: string
     ): string[] {
-
         if (!value) {
             return [];
         }
@@ -1432,7 +1634,6 @@ export class JatsGeneratorComponent {
     private convertirParrafosImportados(
         value: unknown
     ): string {
-
         if (Array.isArray(value)) {
             return value
                 .map(
@@ -1452,7 +1653,6 @@ export class JatsGeneratorComponent {
     private convertirAutoresReferencia(
         value: unknown
     ): string {
-
         if (!Array.isArray(value)) {
             return value == null
                 ? ''
@@ -1460,34 +1660,43 @@ export class JatsGeneratorComponent {
         }
 
         return value
-            .map((author: any) => {
+            .map(
+                (author: any) => {
+                    if (
+                        typeof author ===
+                        'string'
+                    ) {
+                        return author;
+                    }
 
-                if (typeof author === 'string') {
-                    return author;
+                    const surname =
+                        String(
+                            author?.surname ??
+                            ''
+                        ).trim();
+
+                    const givenNames =
+                        String(
+                            author?.given_names ??
+                            ''
+                        ).trim();
+
+                    if (
+                        surname &&
+                        givenNames
+                    ) {
+                        return `${surname}, ${givenNames}`;
+                    }
+
+                    return (
+                        surname ||
+                        givenNames
+                    );
                 }
-
-                const surname =
-                    String(
-                        author?.surname ?? ''
-                    ).trim();
-
-                const givenNames =
-                    String(
-                        author?.given_names ?? ''
-                    ).trim();
-
-                if (
-                    surname &&
-                    givenNames
-                ) {
-                    return `${surname}, ${givenNames}`;
-                }
-
-                return surname ||
-                    givenNames;
-            })
+            )
             .filter(
-                item => item.length > 0
+                item =>
+                    item.length > 0
             )
             .join('; ');
     }
@@ -1495,7 +1704,6 @@ export class JatsGeneratorComponent {
     private toBoolean(
         value: unknown
     ): boolean {
-
         return (
             value === true ||
             value === 1 ||
@@ -1508,7 +1716,6 @@ export class JatsGeneratorComponent {
     private toFormString(
         value: unknown
     ): string {
-
         if (
             value === null ||
             value === undefined
@@ -1522,7 +1729,6 @@ export class JatsGeneratorComponent {
     private toPosition(
         value: unknown
     ): number {
-
         const numberValue =
             Number(value);
 
@@ -1539,7 +1745,6 @@ export class JatsGeneratorComponent {
     private toNumber(
         value: string
     ): number | null {
-
         if (
             value === null ||
             value === undefined ||
@@ -1559,7 +1764,6 @@ export class JatsGeneratorComponent {
     private toText(
         value: unknown
     ): string {
-
         if (Array.isArray(value)) {
             return value.join('\n');
         }
