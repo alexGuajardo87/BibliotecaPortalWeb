@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormArray,
@@ -151,6 +151,7 @@ export class JatsGeneratorComponent {
     private readonly fb = inject(FormBuilder);
     private readonly http = inject(HttpClient);
     private readonly messageService = inject(MessageService);
+    private readonly cdr = inject(ChangeDetectorRef);
 
     articleTypes = [
         {
@@ -411,7 +412,25 @@ export class JatsGeneratorComponent {
 
     eliminarAfiliacion(index: number): void {
         if (this.afiliaciones.length > 1) {
+            const affiliationId = this.afiliaciones
+                .at(index)
+                .get('id')
+                ?.value;
+
             this.afiliaciones.removeAt(index);
+
+            this.autores.controls.forEach(control => {
+                if (
+                    control.get('affiliation_id')?.value ===
+                    affiliationId
+                ) {
+                    control
+                        .get('affiliation_id')
+                        ?.setValue('');
+                }
+            });
+
+            this.cdr.detectChanges();
         }
     }
 
@@ -528,8 +547,7 @@ export class JatsGeneratorComponent {
             return;
         }
 
-        const formData =
-            new FormData();
+        const formData = new FormData();
 
         formData.append(
             'file',
@@ -768,12 +786,12 @@ export class JatsGeneratorComponent {
             }
         });
 
-        this.cargarAutoresImportados(
-            data?.authors
-        );
-
         this.cargarAfiliacionesImportadas(
             data?.affiliations
+        );
+
+        this.cargarAutoresImportados(
+            data?.authors
         );
 
         this.cargarSeccionesImportadas(
@@ -791,6 +809,12 @@ export class JatsGeneratorComponent {
         this.cargarCustomMetaImportado(
             data?.customMeta
         );
+
+        this.jatsForm.updateValueAndValidity({
+            emitEvent: false
+        });
+
+        this.cdr.detectChanges();
     }
 
     private cargarAutoresImportados(
@@ -816,53 +840,74 @@ export class JatsGeneratorComponent {
                         index + 1
                     );
 
-                control.patchValue({
-                    surname:
-                        this.toFormString(
-                            author?.surname
-                        ),
+                const affiliationId =
+                    this.toFormString(
+                        author?.affiliation_id
+                    );
 
-                    given_names:
-                        this.toFormString(
-                            author?.given_names
-                        ),
+                const affiliationExists =
+                    this.afiliacionesOpciones.some(
+                        option =>
+                            option.value ===
+                            affiliationId
+                    );
 
-                    display_name:
-                        this.toFormString(
-                            author?.display_name
-                        ),
+                control.patchValue(
+                    {
+                        surname:
+                            this.toFormString(
+                                author?.surname
+                            ),
 
-                    email:
-                        this.toFormString(
-                            author?.email
-                        ),
+                        given_names:
+                            this.toFormString(
+                                author?.given_names
+                            ),
 
-                    orcid:
-                        this.toFormString(
-                            author?.orcid
-                        ),
+                        display_name:
+                            this.toFormString(
+                                author?.display_name
+                            ),
 
-                    orcid_authenticated:
-                        this.toBoolean(
-                            author?.orcid_authenticated
-                        ),
+                        email:
+                            this.toFormString(
+                                author?.email
+                            ),
 
-                    corresponding:
-                        this.toBoolean(
-                            author?.corresponding
-                        ),
+                        orcid:
+                            this.toFormString(
+                                author?.orcid
+                            ),
 
-                    affiliation_id:
-                        this.toFormString(
-                            author?.affiliation_id
-                        )
-                });
+                        orcid_authenticated:
+                            this.toBoolean(
+                                author?.orcid_authenticated
+                            ),
+
+                        corresponding:
+                            this.toBoolean(
+                                author?.corresponding
+                            ),
+
+                        affiliation_id:
+                            affiliationExists
+                                ? affiliationId
+                                : ''
+                    },
+                    {
+                        emitEvent: false
+                    }
+                );
 
                 this.autores.push(
                     control
                 );
             }
         );
+
+        this.autores.updateValueAndValidity({
+            emitEvent: false
+        });
     }
 
     private cargarAfiliacionesImportadas(
@@ -891,29 +936,38 @@ export class JatsGeneratorComponent {
                         index + 1
                     );
 
-                control.patchValue({
-                    id:
-                        this.toFormString(
-                            affiliation?.id
-                        ) ||
-                        `aff-${index + 1}`,
+                control.patchValue(
+                    {
+                        id:
+                            this.toFormString(
+                                affiliation?.id
+                            ) ||
+                            `aff-${index + 1}`,
 
-                    institution:
-                        this.toFormString(
-                            affiliation?.institution
-                        ),
+                        institution:
+                            this.toFormString(
+                                affiliation?.institution
+                            ),
 
-                    ror:
-                        this.toFormString(
-                            affiliation?.ror
-                        )
-                });
+                        ror:
+                            this.toFormString(
+                                affiliation?.ror
+                            )
+                    },
+                    {
+                        emitEvent: false
+                    }
+                );
 
                 this.afiliaciones.push(
                     control
                 );
             }
         );
+
+        this.afiliaciones.updateValueAndValidity({
+            emitEvent: false
+        });
     }
 
     private cargarSeccionesImportadas(
@@ -942,23 +996,28 @@ export class JatsGeneratorComponent {
                         index + 1
                     );
 
-                control.patchValue({
-                    id:
-                        this.toFormString(
-                            section?.id
-                        ) ||
-                        `sec-${index + 1}`,
+                control.patchValue(
+                    {
+                        id:
+                            this.toFormString(
+                                section?.id
+                            ) ||
+                            `sec-${index + 1}`,
 
-                    title:
-                        this.toFormString(
-                            section?.title
-                        ),
+                        title:
+                            this.toFormString(
+                                section?.title
+                            ),
 
-                    paragraphs:
-                        this.convertirParrafosImportados(
-                            section?.paragraphs
-                        )
-                });
+                        paragraphs:
+                            this.convertirParrafosImportados(
+                                section?.paragraphs
+                            )
+                    },
+                    {
+                        emitEvent: false
+                    }
+                );
 
                 this.secciones.push(
                     control
@@ -993,44 +1052,49 @@ export class JatsGeneratorComponent {
                         index + 1
                     );
 
-                control.patchValue({
-                    id:
-                        this.toFormString(
-                            figure?.id
-                        ) ||
-                        `fig-${index + 1}`,
+                control.patchValue(
+                    {
+                        id:
+                            this.toFormString(
+                                figure?.id
+                            ) ||
+                            `fig-${index + 1}`,
 
-                    section_id:
-                        this.toFormString(
-                            figure?.section_id
-                        ),
+                        section_id:
+                            this.toFormString(
+                                figure?.section_id
+                            ),
 
-                    position:
-                        this.toPosition(
-                            figure?.position
-                        ),
+                        position:
+                            this.toPosition(
+                                figure?.position
+                            ),
 
-                    label:
-                        this.toFormString(
-                            figure?.label
-                        ) ||
-                        `Figura ${index + 1}`,
+                        label:
+                            this.toFormString(
+                                figure?.label
+                            ) ||
+                            `Figura ${index + 1}`,
 
-                    title:
-                        this.toFormString(
-                            figure?.title
-                        ),
+                        title:
+                            this.toFormString(
+                                figure?.title
+                            ),
 
-                    note:
-                        this.toFormString(
-                            figure?.note
-                        ),
+                        note:
+                            this.toFormString(
+                                figure?.note
+                            ),
 
-                    filename:
-                        this.toFormString(
-                            figure?.filename
-                        )
-                });
+                        filename:
+                            this.toFormString(
+                                figure?.filename
+                            )
+                    },
+                    {
+                        emitEvent: false
+                    }
+                );
 
                 this.figuras.push(
                     control
@@ -1065,69 +1129,74 @@ export class JatsGeneratorComponent {
                         index + 1
                     );
 
-                control.patchValue({
-                    id:
-                        this.toFormString(
-                            reference?.id
-                        ) ||
-                        `ref-${index + 1}`,
+                control.patchValue(
+                    {
+                        id:
+                            this.toFormString(
+                                reference?.id
+                            ) ||
+                            `ref-${index + 1}`,
 
-                    type:
-                        this.toFormString(
-                            reference?.type
-                        ) ||
-                        'journal',
+                        type:
+                            this.toFormString(
+                                reference?.type
+                            ) ||
+                            'journal',
 
-                    authors:
-                        this.convertirAutoresReferencia(
-                            reference?.authors
-                        ),
+                        authors:
+                            this.convertirAutoresReferencia(
+                                reference?.authors
+                            ),
 
-                    title:
-                        this.toFormString(
-                            reference?.title
-                        ),
+                        title:
+                            this.toFormString(
+                                reference?.title
+                            ),
 
-                    source:
-                        this.toFormString(
-                            reference?.source
-                        ),
+                        source:
+                            this.toFormString(
+                                reference?.source
+                            ),
 
-                    year:
-                        this.toFormString(
-                            reference?.year
-                        ),
+                        year:
+                            this.toFormString(
+                                reference?.year
+                            ),
 
-                    volume:
-                        this.toFormString(
-                            reference?.volume
-                        ),
+                        volume:
+                            this.toFormString(
+                                reference?.volume
+                            ),
 
-                    issue:
-                        this.toFormString(
-                            reference?.issue
-                        ),
+                        issue:
+                            this.toFormString(
+                                reference?.issue
+                            ),
 
-                    first_page:
-                        this.toFormString(
-                            reference?.first_page
-                        ),
+                        first_page:
+                            this.toFormString(
+                                reference?.first_page
+                            ),
 
-                    last_page:
-                        this.toFormString(
-                            reference?.last_page
-                        ),
+                        last_page:
+                            this.toFormString(
+                                reference?.last_page
+                            ),
 
-                    doi:
-                        this.toFormString(
-                            reference?.doi
-                        ),
+                        doi:
+                            this.toFormString(
+                                reference?.doi
+                            ),
 
-                    citation:
-                        this.toFormString(
-                            reference?.citation
-                        )
-                });
+                        citation:
+                            this.toFormString(
+                                reference?.citation
+                            )
+                    },
+                    {
+                        emitEvent: false
+                    }
+                );
 
                 this.referencias.push(
                     control
@@ -1152,17 +1221,22 @@ export class JatsGeneratorComponent {
                 const control =
                     this.crearCustomMeta();
 
-                control.patchValue({
-                    name:
-                        this.toFormString(
-                            meta?.name
-                        ),
+                control.patchValue(
+                    {
+                        name:
+                            this.toFormString(
+                                meta?.name
+                            ),
 
-                    value:
-                        this.toFormString(
-                            meta?.value
-                        )
-                });
+                        value:
+                            this.toFormString(
+                                meta?.value
+                            )
+                    },
+                    {
+                        emitEvent: false
+                    }
+                );
 
                 this.customMeta.push(
                     control
@@ -1576,6 +1650,8 @@ export class JatsGeneratorComponent {
         this.referencias.push(
             this.crearReferencia(1)
         );
+
+        this.cdr.detectChanges();
     }
 
     private convertirLista(
