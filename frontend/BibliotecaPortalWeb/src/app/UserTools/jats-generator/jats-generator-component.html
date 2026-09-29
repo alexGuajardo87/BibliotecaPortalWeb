@@ -414,7 +414,7 @@
 
                 <div formArrayName="authors" class="space-y-5">
 
-                    @for (autor of autores.controls; track $index) {
+                    @for (autor of autores.controls; track autor) {
 
                         <div
                             [formGroupName]="$index"
@@ -589,7 +589,7 @@
 
                 <div formArrayName="affiliations" class="space-y-5">
 
-                    @for (afiliacion of afiliaciones.controls; track $index) {
+                    @for (afiliacion of afiliaciones.controls; track afiliacion) {
 
                         <div
                             [formGroupName]="$index"
@@ -1003,7 +1003,7 @@
 
                 <div formArrayName="sections" class="space-y-5">
 
-                    @for (seccion of secciones.controls; track $index) {
+                    @for (seccion of secciones.controls; track seccion) {
 
                         <div
                             [formGroupName]="$index"
@@ -1113,7 +1113,7 @@
 
                 <div formArrayName="figures" class="space-y-5">
 
-                    @for (figura of figuras.controls; track $index) {
+                    @for (figura of figuras.controls; track figura) {
 
                         <div
                             [formGroupName]="$index"
@@ -1219,11 +1219,9 @@
                                     />
 
                                     @if (figura.get('filename')?.value) {
-
                                         <div class="text-xs text-surface-500 mt-2">
                                             {{ figura.get('filename')?.value }}
                                         </div>
-
                                     }
 
                                 </div>
@@ -1286,7 +1284,7 @@
 
                 <div formArrayName="references" class="space-y-5">
 
-                    @for (referencia of referencias.controls; track $index) {
+                    @for (referencia of referencias.controls; track referencia) {
 
                         <div
                             [formGroupName]="$index"
@@ -1510,7 +1508,7 @@
 
                 <div formArrayName="customMeta" class="space-y-4">
 
-                    @for (meta of customMeta.controls; track $index) {
+                    @for (meta of customMeta.controls; track meta) {
 
                         <div
                             [formGroupName]="$index"
@@ -1587,4 +1585,3 @@
 
     </div>
 </div>
-
