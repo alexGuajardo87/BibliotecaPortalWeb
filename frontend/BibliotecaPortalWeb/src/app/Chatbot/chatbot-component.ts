@@ -149,11 +149,13 @@ export class ChatbotComponent implements OnInit {
             sessionId: this.sessionId
         }).subscribe({
             next: (respuesta) => {
+                const textoRespuesta = respuesta?.respuesta ?? '';
+
                 this.mensajes.update(lista => [
                     ...lista,
                     {
                         tipo: 'bot',
-                        texto: respuesta.respuesta,
+                        texto: textoRespuesta || 'No se recibió una respuesta del servidor.',
                         hora: new Date()
                     }
                 ]);
