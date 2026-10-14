@@ -77,31 +77,31 @@ body {
 
 @media (min-width: 3000px) {
     .header-logo {
-        background-image: url('/logo1.png');
+        background-image: url('/logo1.webp');
     }
 }
 
 @media (min-width: 1920px) and (max-width: 2999px) {
     .header-logo {
-        background-image: url('/logo2.png');
+        background-image: url('/logo2.webp');
     }
 }
 
 @media (min-width: 1024px) and (max-width: 1919px) {
     .header-logo {
-        background-image: url('/logo3.png');
+        background-image: url('/logo3.webp');
     }
 }
 
 @media (max-width: 1023px) {
     .header-logo {
-        background-image: url('/logo4.png');
+        background-image: url('/logo4.webp');
     }
 }
 
 @media (max-width: 1023px) {
     .header-logo {
-        background-image: url('/logo4.png');
+        background-image: url('/logo4.webp');
     }
 }
 

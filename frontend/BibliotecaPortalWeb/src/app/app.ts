@@ -273,139 +273,139 @@ export class App {
     itemsV: MegaMenuItem[] = [
         {
             label: 'SIBIUAS',
-            image: '/cover_issue_204_es.png',
+            image: '/cover_issue_204_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/SIBIUAS',
             target: '_blank'
         },
         {
             label: 'ACBIOMEX',
-            image: '/cover_issue_208_es.png',
+            image: '/cover_issue_208_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/ACBIOMEX',
             target: '_blank'
         },
         {
             label: 'Buiyya',
-            image: '/cover_issue_205_es.png',
+            image: '/cover_issue_205_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/Buiyya',
             target: '_blank'
         },
         {
             label: 'ESCRIPTA',
-            image: '/cover_issue_193_es.jpg',
+            image: '/cover_issue_193_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/ESCRIPTA',
             target: '_blank'
         },
         {
             label: 'RI',
-            image: '/cover_issue_190_es.png',
+            image: '/cover_issue_190_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/RI',
             target: '_blank'
         },
         {
             label: 'JUS',
-            image: '/cover_issue_191_es.png',
+            image: '/cover_issue_191_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/JUS',
             target: '_blank'
         },
         {
             label: 'IJISTA',
-            image: '/cover_issue_197_es.png',
+            image: '/cover_issue_197_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/IJISTA',
             target: '_blank'
         },
         {
             label: 'QBU',
-            image: '/cover_issue_121_es.jpg',
+            image: '/cover_issue_121_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/QBU',
             target: '_blank'
         },
         {
             label: 'CIMAR',
-            image: '/cover_issue_196_es.jpg',
+            image: '/cover_issue_196_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/CIMAR',
             target: '_blank'
         },
         {
             label: 'FEMUAS',
-            image: '/cover_issue_207_es.jpg',
+            image: '/cover_issue_207_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/FEMUAS',
             target: '_blank'
         },
         {
             label: 'RITUAS',
-            image: '/journalThumbnail_es.png',
+            image: '/journalThumbnail_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/RITUAS',
             target: '_blank'
         },
         {
             label: 'RECIE',
-            image: '/cover_issue_188_es.jpg',
+            image: '/cover_issue_188_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/RECIE',
             target: '_blank'
         },
         {
             label: 'REVOUAS',
-            image: '/cover_issue_189_es.png',
+            image: '/cover_issue_189_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/REVOUAS',
             target: '_blank'
         },
         {
             label: 'RECEAUAS',
-            image: '/cover_issue_192_es.png',
+            image: '/cover_issue_192_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/RECEAUAS',
             target: '_blank'
         },
         {
             label: 'CYU',
-            image: '/cover_issue_39_es.png',
+            image: '/cover_issue_39_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/CYU',
             target: '_blank'
         },
         {
             label: 'ARENAS',
-            image: '/journalThumbnail_es.png',
+            image: '/journalThumbnail_es.webp',
             url: 'https://revistas.uas.edu.mx/index.php/ARENAS',
             target: '_blank'
         },
         {
             label: 'ACCED',
-            image: '/journalThumbnail_es (1).png',
+            image: '/journalThumbnail_es (1).webp',
             url: 'https://revistas.uas.edu.mx/index.php/ACCED',
             target: '_blank'
         },
         {
             label: 'Psico-logos',
-            image: 'journalThumbnail_es (2).png',
+            image: 'journalThumbnail_es (2).webp',
             url: 'https://revistas.uas.edu.mx/index.php/Psico-logos',
             target: '_blank'
         },
         {
             label: 'RIIBIOS',
-            image: 'journalThumbnail_es (4).png',
+            image: 'journalThumbnail_es (4).webp',
             url: 'https://revistas.uas.edu.mx/index.php/RIIBIOS',
             target: '_blank'
         },
         {
             label: 'IDEAS',
-            image: 'journalThumbnail_es (5).png',
+            image: 'journalThumbnail_es (5).webp',
             url: 'https://revistas.uas.edu.mx/index.php/IDEAS',
             target: '_blank'
         },
         {
             label: 'uasjmr',
-            image: 'journalThumbnail_es (6).png',
+            image: 'journalThumbnail_es (6).webp',
             url: 'https://revistas.uas.edu.mx/index.php/uasjmr',
             target: '_blank'
         },
         {
             label: 'REVOECI',
-            image: 'journalThumbnail_es (7).png',
+            image: 'journalThumbnail_es (7).webp',
             url: 'https://revistas.uas.edu.mx/index.php/REVOECI',
             target: '_blank'
         },
         {
             label: 'EDUMORPHOSIS',
-            image: 'journalThumbnail_es (8).png',
+            image: 'journalThumbnail_es (8).webp',
             url: 'https://revistas.uas.edu.mx/index.php/EDUMORPHOSIS',
             target: '_blank'
         }
@@ -414,37 +414,37 @@ export class App {
     itemsVRight: MegaMenuItem[] = [
         {
             label: 'SIBIUAS',
-            image: '/AURA-MAR.png',
+            image: '/AURA-MAR.webp',
             url: 'https://aura.amelica.org/index.html',
             target: '_blank'
         },
         {
             label: 'ACBIOMEX',
-            image: '/CC-MAR.png',
+            image: '/CC-MAR.webp',
             url: 'https://creativecommons.org/',
             target: '_blank'
         },
         {
             label: 'Buiyya',
-            image: '/DOA_Logo3-MAR.png',
+            image: '/DOA_Logo3-MAR.webp',
             url: '',
             target: '_blank'
         },
         {
             label: 'ESCRIPTA',
-            image: '/DOAJ-MAR.png',
+            image: '/DOAJ-MAR.webp',
             url: 'https://doaj.org/',
             target: '_blank'
         },
         {
             label: 'RI',
-            image: '/Facebook-Logo-2019-MAR.png',
+            image: '/Facebook-Logo-2019-MAR.webp',
             url: 'https://www.facebook.com/',
             target: '_blank'
         },
         {
             label: 'JUS',
-            image: '/Google Scholar-MAR.png',
+            image: '/Google Scholar-MAR.webp',
             url: 'https://scholar.google.com/',
             target: '_blank'
         },
@@ -456,61 +456,61 @@ export class App {
         },
         {
             label: 'QBU',
-            image: '/Latindex-MAR.png',
+            image: '/Latindex-MAR.webp',
             url: 'https://latindex.org/latindex/inicio',
             target: '_blank'
         },
         {
             label: 'CIMAR',
-            image: '/LatinRev-MAR.png',
+            image: '/LatinRev-MAR.webp',
             url: 'https://latinrev.flacso.org.ar/',
             target: '_blank'
         },
         {
             label: 'FEMUAS',
-            image: '/LivRe-MAR.png',
+            image: '/LivRe-MAR.webp',
             url: 'https://livre.cnen.gov.br/Inicial.asp',
             target: '_blank'
         },
         {
             label: 'RITUAS',
-            image: '/Logo AmeliCA-MAR.png',
+            image: '/Logo AmeliCA-MAR.webp',
             url: 'https://amelica.org/',
             target: '_blank'
         },
         {
             label: 'RECIE',
-            image: '/Logo-blue Vlex-MAR.png',
+            image: '/Logo-blue Vlex-MAR.webp',
             url: 'https://vlex.com.mx/',
             target: '_blank'
         },
         {
             label: 'REVOUAS',
-            image: '/miar-MAR.png',
+            image: '/miar-MAR.webp',
             url: 'https://miar.ub.edu/',
             target: '_blank'
         },
         {
             label: 'RECEAUAS',
-            image: '/new-instagram-text-logo-MAR.png',
+            image: '/new-instagram-text-logo-MAR.webp',
             url: 'https://www.instagram.com/',
             target: '_blank'
         },
         {
             label: 'CYU',
-            image: '/REDIB-MAR.png',
+            image: '/REDIB-MAR.webp',
             url: 'https://static.redib.org/',
             target: '_blank'
         },
         {
             label: 'ARENAS',
-            image: '/Road-MAR.png',
+            image: '/Road-MAR.webp',
             url: 'https://road.issn.org/',
             target: '_blank'
         },
         {
             label: 'Psico-logos',
-            image: 'zenodo_in_blue-MAR.png',
+            image: 'zenodo_in_blue-MAR.webp',
             url: 'https://zenodo.org/',
             target: '_blank'
         }

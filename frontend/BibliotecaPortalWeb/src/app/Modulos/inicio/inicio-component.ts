@@ -24,49 +24,49 @@ export class InicioComponent implements AfterViewInit {
         {
             titulo: 'Biblioteca Central',
             descripcion: 'Espacio principal de consulta y estudio, con un amplio acervo bibliográfico y servicios dirigidos a estudiantes, docentes e investigadores.',
-            imagen: '/carrusel1.jpeg',
+            imagen: '/carrusel1.webp',
             icono: 'pi pi-building'
         },
         {
             titulo: 'Hemeroteca',
             descripcion: 'Consulta periódicos, revistas y publicaciones especializadas que forman parte del acervo documental de la Universidad.',
-            imagen: '/carrusel2.jpg',
+            imagen: '/carrusel2.webp',
             icono: 'pi pi-book'
         },
         {
             titulo: 'Área Virtual',
             descripcion: 'Accede desde cualquier lugar a recursos digitales, servicios en línea, bases de datos y herramientas de apoyo para la investigación.',
-            imagen: '/carrusel3.jpg',
+            imagen: '/carrusel3.webp',
             icono: 'pi pi-desktop'
         },
         {
             titulo: 'Archivo Histórico',
             descripcion: 'Descubre y consulta documentos, publicaciones y materiales que forman parte de la memoria histórica y del patrimonio documental de la Universidad.',
-            imagen: '/carrusel4.jpg',
+            imagen: '/carrusel4.webp',
             icono: 'pi pi-folder-open'
         },
         {
             titulo: 'Auditorio',
             descripcion: 'Espacio destinado a conferencias, presentaciones, cursos, talleres y actividades académicas y culturales de la comunidad universitaria.',
-            imagen: '/carrusel6.jpg',
+            imagen: '/carrusel6.webp',
             icono: 'pi pi-microphone'
         },
         {
             titulo: 'Cubículos',
             descripcion: 'Espacios destinados al estudio individual y colaborativo, ideales para realizar trabajos académicos, proyectos e investigaciones.',
-            imagen: '/carrusel7.jpg',
+            imagen: '/carrusel7.webp',
             icono: 'pi pi-users'
         },
         {
             titulo: 'Área Infantil',
             descripcion: 'Espacio diseñado especialmente para niñas y niños, donde pueden acercarse a la lectura mediante actividades educativas, materiales bibliográficos y experiencias que fomentan su imaginación, aprendizaje y gusto por los libros.',
-            imagen: '/carrusel8.jpg',
+            imagen: '/carrusel8.webp',
             icono: 'pi pi-users'
         },
         {
             titulo: 'Visita Guiada',
             descripcion: 'Conoce nuestras instalaciones y servicios a través de recorridos guiados por la biblioteca. Descubre sus espacios, colecciones, recursos y servicios disponibles para la comunidad universitaria y nuestros visitantes.',
-            imagen: '/carrusel9.jpg',
+            imagen: '/carrusel9.webp',
             icono: 'pi pi-users'
         }
     ];
