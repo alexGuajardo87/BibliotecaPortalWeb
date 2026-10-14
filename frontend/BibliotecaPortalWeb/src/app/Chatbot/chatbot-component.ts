@@ -19,6 +19,12 @@ interface MensajeChat {
     hora: Date;
 }
 
+interface ChatbotResponse {
+    response?: string;
+    respuesta?: string;
+    message?: string;
+}
+
 @Component({
     selector: 'app-chatbot',
     standalone: true,
@@ -32,7 +38,6 @@ interface MensajeChat {
     styleUrl: './chatbot-component.css'
 })
 export class ChatbotComponent implements OnInit {
-
     private readonly chatbotService = inject(ChatbotService);
 
     @ViewChild('chatbotMessages')
@@ -57,18 +62,16 @@ export class ChatbotComponent implements OnInit {
     ngOnInit(): void {
         this.sessionId = this.obtenerSessionId();
 
-            this.mensajes.set([
+        this.mensajes.set([
             {
                 tipo: 'bot',
                 texto:
-                    '📚 BIBLIOBOT\n\n' +
+                    '📚 BIBLIObot\n\n' +
                     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' +
                     '        MENÚ PRINCIPAL\n' +
                     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
-
                     '📖 1. BIBLIOTECAS\n' +
                     '   └─ a. Horarios y ubicaciones\n\n' +
-
                     '🏛️ 2. SERVICIOS BIBLIOTECARIOS\n' +
                     '   ├─ a. Préstamo interno\n' +
                     '   ├─ b. Préstamo externo\n' +
@@ -78,31 +81,23 @@ export class ChatbotComponent implements OnInit {
                     '   ├─ f. Asesorías académicas\n' +
                     '   ├─ g. Auditorio\n' +
                     '   └─ h. Donación de libros\n\n' +
-
                     '📚 3. CATÁLOGO, LIBROS Y PRÉSTAMOS\n' +
                     '   └─ a. Buscador de libros\n\n' +
-
                     '💻 4. RECURSOS DIGITALES\n' +
                     '   └─ a. Laboratorios de física, química y matemáticas\n\n' +
-
                     '🔎 5. BÚSQUEDA DE INFORMACIÓN CIENTÍFICA\n' +
                     '   ├─ a. Bases de datos con acceso por IP institucional\n' +
                     '   └─ b. Directorio de revistas externas\n\n' +
-
                     '🎓 6. TESIS Y REVISTAS UAS\n' +
                     '   ├─ a. Repositorio Institucional de Tesis “Buelna”\n' +
                     '   └─ b. Repositorio Institucional de Revistas Científicas\n\n' +
-
                     '🎓 7. CURSOS Y CAPACITACIÓN\n' +
                     '   └─ a. Solicitud de cursos\n' +
                     '       └─ i. Cursos de IA\n\n' +
-
                     '📋 8. TRÁMITES Y NORMATIVIDAD\n' +
                     '   └─ a. Constancia de No Adeudo Bibliotecario\n\n' +
-
                     '📅 9. EVENTOS Y AVISOS\n' +
                     '   └─ a. Próximos cursos\n\n' +
-
                     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' +
                     '💬 Escribe el número o nombre de la opción que deseas consultar.\n\n' +
                     '↩️ Escribe "menú" en cualquier momento para regresar al inicio.',
@@ -149,13 +144,20 @@ export class ChatbotComponent implements OnInit {
             sessionId: this.sessionId
         }).subscribe({
             next: (respuesta) => {
-                const textoRespuesta = respuesta?.respuesta ?? '';
+                const datos = respuesta as ChatbotResponse | null;
+                const textoRespuesta =
+                    datos?.response ??
+                    datos?.respuesta ??
+                    datos?.message ??
+                    '';
 
                 this.mensajes.update(lista => [
                     ...lista,
                     {
                         tipo: 'bot',
-                        texto: textoRespuesta || 'No se recibió una respuesta del servidor.',
+                        texto: typeof textoRespuesta === 'string' && textoRespuesta.trim()
+                            ? textoRespuesta
+                            : 'No se recibió una respuesta del servidor.',
                         hora: new Date()
                     }
                 ]);
@@ -208,10 +210,7 @@ export class ChatbotComponent implements OnInit {
 
         const nuevo = crypto.randomUUID();
 
-        localStorage.setItem(
-            'chatbot_session_id',
-            nuevo
-        );
+        localStorage.setItem('chatbot_session_id', nuevo);
 
         return nuevo;
     }
