@@ -210,6 +210,13 @@ export class App {
                 }
             ]
         },
+            {
+            label: 'CONLAIN-UAS',
+            icon: 'pi pi-globe',
+            routerLink: ['/congreso-conlain-uas']
+        }
+        
+        /*,
         {
             label: 'Administración',
             icon: 'pi pi-cog',
@@ -267,7 +274,7 @@ export class App {
                     routerLink: ['/admin/permisos']
                 }
             ]
-        }
+        }*/
     ];
 
     itemsV: MegaMenuItem[] = [

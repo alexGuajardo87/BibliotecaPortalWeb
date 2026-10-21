@@ -51,6 +51,9 @@ export class ChatbotComponent implements OnInit {
     @ViewChild('chatbotMessages')
     chatbotMessages!: ElementRef<HTMLDivElement>;
 
+    @ViewChild('chatbotInput')
+    chatbotInput!: ElementRef<HTMLInputElement>;
+
     abierto = signal(false);
     mensaje = '';
     cargando = signal(false);
@@ -73,36 +76,43 @@ export class ChatbotComponent implements OnInit {
         this.mensajes.set([
             {
                 tipo: 'bot',
-                texto:
-                   `📚 BIBLIOBOT
+                texto: `📚 BIBLIObot
 
-                    ━━━━━━━━━━━━━━━━━━━━━
-                        MENÚ PRINCIPAL
-                    ━━━━━━━━━━━━━━━━━━━━━
+            ━━━━━━━━━━━━━━━━━━━━
+                MENÚ PRINCIPAL
+            ━━━━━━━━━━━━━━━━━━━━
 
-                    📖 BIBLIOTECAS
-                    └─ Horarios y ubicaciones
-                        ├─ 🕐 h1. Horario de Culiacán
-                        ├─ 🕐 h2. Horario de Los Mochis
-                        └─ 🕐 h3. Horario de Mazatlán
+            📖 BIBLIOTECAS
+            └─ Horarios y ubicaciones
+                ├─ 🕐 h1. Horario de Culiacán
+                ├─ 🕐 h2. Horario de Los Mochis
+                └─ 🕐 h3. Horario de Mazatlán
 
-                    🏛️ SERVICIOS BIBLIOTECARIOS
-                    ├─ 🪪 s1. Credenciales
-                    └─ 🧭 s2. Visitas guiadas
+            🏛️ SERVICIOS BIBLIOTECARIOS
+            ├─ 🪪 s1. Credenciales
+            └─ 🧭 s2. Visitas guiadas
 
-                    📋 TRÁMITES Y NORMATIVIDAD
-                    └─ Constancia de No Adeudo Bibliotecario
-                        ├─ 💰 c1. Costo de la constancia
-                        ├─ 📝 c2. Manual para solicitar la constancia
-                        └─ 🎥 c3. Video tutorial para solicitar la constancia
+            📋 TRÁMITES Y NORMATIVIDAD
+            └─ Constancia de No Adeudo Bibliotecario
+                ├─ 💰 c1. Costo de la constancia
+                ├─ 📝 c2. Manual para solicitar la constancia
+                └─ 🎥 c3. Video tutorial para solicitar la constancia
 
-                    ━━━━━━━━━━━━━━━━━━━━━
-                    💬 Escribe el código o nombre de la opción que deseas consultar.
+            ━━━━━━━━━━━━━━━━━━━━
+            💬 Escribe el código o nombre de la opción que deseas consultar.
 
-                    ↩️ Escribe "menú" en cualquier momento para regresar al inicio.`,
+            ↩️ Escribe "menú" en cualquier momento para regresar al inicio.`,
                 hora: new Date()
             }
         ]);
+
+        this.abierto.set(true);
+
+        setTimeout(() => {
+            this.desplazarAlFinal();
+            this.enfocarInput();
+        }, 300);
+
     }
 
     toggleChat(): void {
@@ -111,6 +121,7 @@ export class ChatbotComponent implements OnInit {
         if (this.abierto()) {
             setTimeout(() => {
                 this.desplazarAlFinal();
+                this.enfocarInput();
             }, 100);
         }
     }
@@ -161,6 +172,7 @@ export class ChatbotComponent implements OnInit {
                 ]);
 
                 this.cargando.set(false);
+                this.enfocarInput();
             },
             error: () => {
                 this.mensajes.update(lista => [
@@ -173,8 +185,17 @@ export class ChatbotComponent implements OnInit {
                 ]);
 
                 this.cargando.set(false);
+                this.enfocarInput();
             }
         });
+    }
+
+    private enfocarInput(): void {
+        setTimeout(() => {
+            if (this.abierto() && !this.cargando()) {
+                this.chatbotInput?.nativeElement.focus();
+            }
+        }, 100);
     }
 
     private crearMensajeBot(textoOriginal: string): MensajeChat {
@@ -276,7 +297,6 @@ export class ChatbotComponent implements OnInit {
     private esImagenDirecta(url: string): boolean {
         try {
             const parsed = new URL(url);
-
             return /\.(png|jpe?g|gif|webp|avif|bmp)$/i.test(parsed.pathname);
         } catch {
             return false;
@@ -286,7 +306,6 @@ export class ChatbotComponent implements OnInit {
     private esVideoDirecto(url: string): boolean {
         try {
             const parsed = new URL(url);
-
             return /\.(mp4|webm|ogg|mov|m4v)$/i.test(parsed.pathname);
         } catch {
             return false;

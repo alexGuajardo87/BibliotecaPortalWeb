@@ -1,4 +1,3 @@
-
 @if (abierto()) {
     <div class="chatbot-window">
         <div class="chatbot-header">
@@ -97,6 +96,7 @@
         <div class="chatbot-footer">
             <div class="chatbot-input-container">
                 <input
+                    #chatbotInput
                     pInputText
                     type="text"
                     [(ngModel)]="mensaje"

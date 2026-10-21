@@ -1,3 +1,38 @@
+<p-dialog
+    [(visible)]="mostrarModal"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [dismissableMask]="false"
+    [breakpoints]="{ '640px': '96vw' }"
+    [style]="{ width: '600px' }"
+    styleClass="inicio-modal">
+
+    <ng-template #header>
+        <span class="text-xl font-bold">Biblioteca Central UAS</span>
+    </ng-template>
+
+    <div class="flex flex-col items-center gap-3">
+
+        <img
+            src="/conlain.webp"
+            alt="Información de la Biblioteca Central UAS"
+            class="block w-full h-auto max-h-[69vh] object-contain rounded-lg">
+
+        <p class="text-center text-surface-600">
+            <b>Bienvenido, ingresa para ver la información general del congreso</b>
+        </p>
+
+        <p-button
+            label="Ingresar"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            (onClick)="irAlModulo()">
+        </p-button>
+    </div>
+</p-dialog>
+
 <div class="mt-8 mb-16 px-4">
 
     <p-carousel

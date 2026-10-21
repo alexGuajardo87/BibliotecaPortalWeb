@@ -8,8 +8,11 @@ import { HistoriaUniversidadComponent } from './Modulos/historia-universidad/his
 import { BibliotecaCentralComponent } from './Modulos/biblioteca-central/biblioteca-central-component';
 import { CongresosComponent } from './Formularios/congresos/congresos-component';
 
+import { ConlainuasComponent } from './CONLAINUAS/conlainuas-component';
+
 export const routes: Routes = [
     { path: '', component: InicioComponent, title: 'inicio' },
+    { path: 'congreso-conlain-uas', component: ConlainuasComponent, title: 'conlainuas' },
     { path: 'login', component: LoginComponent, title: 'login' },
     { path: 'generador-jats', component: JatsGeneratorComponent, title: 'generador-jats' },
     { path: 'registro-usuarios', component: RegistroUsuariosComponent, title: 'registro-usuarios' },

@@ -1,5 +1,8 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Carousel } from 'primeng/carousel';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 declare global {
     interface Window {
@@ -11,14 +14,18 @@ declare global {
     selector: 'app-inicio-component',
     standalone: true,
     imports: [
-        Carousel
+        Carousel,
+        DialogModule,
+        ButtonModule
     ],
     templateUrl: './inicio-component.html',
     styleUrl: './inicio-component.css'
 })
-export class InicioComponent implements AfterViewInit {
+export class InicioComponent implements AfterViewInit, OnInit {
+    private readonly router = inject(Router);
 
     mostrarInfoTesis = false;
+    mostrarModal = false;
 
     items = [
         {
@@ -70,6 +77,15 @@ export class InicioComponent implements AfterViewInit {
             icono: 'pi pi-users'
         }
     ];
+
+    ngOnInit(): void {
+        this.mostrarModal = true;
+    }
+
+    irAlModulo(): void {
+        this.mostrarModal = false;
+        this.router.navigate(['/congreso-conlain-uas']);
+    }
 
     ngAfterViewInit(): void {
         this.cargarFacebook();
