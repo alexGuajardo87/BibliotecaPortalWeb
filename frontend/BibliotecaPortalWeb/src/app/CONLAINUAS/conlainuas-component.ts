@@ -1,5 +1,7 @@
+
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { CronogramaService, CronogramaRegistro } from '../Services/cronograma.service';
 
 interface ActividadCongreso {
     id: number;
@@ -14,12 +16,14 @@ interface ActividadCongreso {
 }
 
 @Component({
-  selector: 'app-conlainuas-component',
-  imports: [CommonModule,DatePipe],
-  templateUrl: './conlainuas-component.html',
-  styleUrl: './conlainuas-component.css',
+    selector: 'app-conlainuas-component',
+    imports: [CommonModule, DatePipe],
+    templateUrl: './conlainuas-component.html',
+    styleUrl: './conlainuas-component.css'
 })
-export class ConlainuasComponent {
+export class ConlainuasComponent implements OnInit {
+    private readonly cronogramaService = inject(CronogramaService);
+
     readonly fechaInicio = '2026-10-26';
     readonly fechaFin = '2026-10-30';
 
@@ -27,10 +31,12 @@ export class ConlainuasComponent {
         'Todas',
         'Ponentes',
         'Presentador de Revista',
-        'Presentador de libro'
+        'Presentador de libro',
+        'Comité Organizador'
     ];
 
     readonly dias = [
+        { fecha: 'general', nombre: 'Día general', numero: 0 },
         { fecha: '2026-10-26', nombre: 'Lunes', numero: 26 },
         { fecha: '2026-10-27', nombre: 'Martes', numero: 27 },
         { fecha: '2026-10-28', nombre: 'Miércoles', numero: 28 },
@@ -38,221 +44,165 @@ export class ConlainuasComponent {
         { fecha: '2026-10-30', nombre: 'Viernes', numero: 30 }
     ];
 
-    diaSeleccionado = '2026-10-26';
-    categoriaSeleccionada = 'Todas';
+    readonly diaSeleccionado = signal('2026-10-26');
+    readonly categoriaSeleccionada = signal('Todas');
+    readonly actividades = signal<ActividadCongreso[]>([]);
+    readonly cargando = signal(false);
+    readonly errorCarga = signal('');
 
-    actividades: ActividadCongreso[] = [
-        {
-            id: 1,
-            fecha: '2026-10-26',
-            horaInicio: '09:00',
-            horaFin: '09:30',
-            categoria: 'Ponentes',
-            titulo: 'Inauguración del congreso',
-            participante: 'Comité organizador',
-            lugar: 'Auditorio principal',
-            descripcion: 'Bienvenida y presentación de las actividades del congreso.'
-        },
-        {
-            id: 2,
-            fecha: '2026-10-26',
-            horaInicio: '09:30',
-            horaFin: '10:30',
-            categoria: 'Ponentes',
-            titulo: 'Bibliotecas y transformación digital',
-            participante: 'Dra. María Fernanda López',
-            lugar: 'Auditorio principal',
-            descripcion: 'Conferencia sobre los retos de la transformación digital en las bibliotecas universitarias.'
-        },
-        {
-            id: 3,
-            fecha: '2026-10-26',
-            horaInicio: '10:45',
-            horaFin: '11:30',
-            categoria: 'Presentador de Revista',
-            titulo: 'Presentación de revista académica',
-            participante: 'Dr. Carlos Hernández',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Presentación de una publicación académica y sus líneas editoriales.'
-        },
-        {
-            id: 4,
-            fecha: '2026-10-26',
-            horaInicio: '11:30',
-            horaFin: '12:30',
-            categoria: 'Presentador de libro',
-            titulo: 'Nuevas perspectivas de investigación',
-            participante: 'Mtra. Ana Martínez',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Presentación editorial y diálogo con los asistentes.'
-        },
-        {
-            id: 5,
-            fecha: '2026-10-27',
-            horaInicio: '09:00',
-            horaFin: '10:00',
-            categoria: 'Ponentes',
-            titulo: 'Acceso abierto y comunicación científica',
-            participante: 'Dr. Juan Pérez',
-            lugar: 'Auditorio principal',
-            descripcion: 'Panorama del acceso abierto y la difusión de la producción científica.'
-        },
-        {
-            id: 6,
-            fecha: '2026-10-27',
-            horaInicio: '10:15',
-            horaFin: '11:00',
-            categoria: 'Presentador de Revista',
-            titulo: 'Revistas universitarias y difusión del conocimiento',
-            participante: 'Mtra. Laura García',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Experiencias editoriales en revistas universitarias.'
-        },
-        {
-            id: 7,
-            fecha: '2026-10-27',
-            horaInicio: '11:15',
-            horaFin: '12:15',
-            categoria: 'Presentador de libro',
-            titulo: 'Novedades editoriales universitarias',
-            participante: 'Dr. Roberto Sánchez',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Presentación de novedades editoriales y conversación con el autor.'
-        },
-        {
-            id: 8,
-            fecha: '2026-10-28',
-            horaInicio: '09:00',
-            horaFin: '10:00',
-            categoria: 'Ponentes',
-            titulo: 'Innovación en los servicios bibliotecarios',
-            participante: 'Dra. Gabriela Torres',
-            lugar: 'Auditorio principal',
-            descripcion: 'Nuevas herramientas y estrategias para los servicios bibliotecarios.'
-        },
-        {
-            id: 9,
-            fecha: '2026-10-28',
-            horaInicio: '10:15',
-            horaFin: '11:00',
-            categoria: 'Presentador de Revista',
-            titulo: 'Investigación y publicaciones periódicas',
-            participante: 'Mtro. Daniel Ruiz',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Importancia de las publicaciones periódicas en la investigación.'
-        },
-        {
-            id: 10,
-            fecha: '2026-10-28',
-            horaInicio: '11:15',
-            horaFin: '12:15',
-            categoria: 'Presentador de libro',
-            titulo: 'Presentación de obra de investigación',
-            participante: 'Dra. Elena Cruz',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Presentación de una obra académica y sus principales aportaciones.'
-        },
-        {
-            id: 11,
-            fecha: '2026-10-29',
-            horaInicio: '09:00',
-            horaFin: '10:00',
-            categoria: 'Ponentes',
-            titulo: 'Preservación del patrimonio documental',
-            participante: 'Dra. Patricia Medina',
-            lugar: 'Auditorio principal',
-            descripcion: 'Estrategias para conservar y difundir el patrimonio documental.'
-        },
-        {
-            id: 12,
-            fecha: '2026-10-29',
-            horaInicio: '10:15',
-            horaFin: '11:00',
-            categoria: 'Presentador de Revista',
-            titulo: 'Publicación científica en la universidad',
-            participante: 'Mtro. Miguel Flores',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Procesos editoriales y oportunidades para la publicación científica.'
-        },
-        {
-            id: 13,
-            fecha: '2026-10-29',
-            horaInicio: '11:15',
-            horaFin: '12:15',
-            categoria: 'Presentador de libro',
-            titulo: 'Presentación de libro especializado',
-            participante: 'Mtra. Sofía Ramírez',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Presentación de una publicación especializada.'
-        },
-        {
-            id: 14,
-            fecha: '2026-10-30',
-            horaInicio: '09:00',
-            horaFin: '10:00',
-            categoria: 'Ponentes',
-            titulo: 'El futuro de las bibliotecas universitarias',
-            participante: 'Dr. Andrés Navarro',
-            lugar: 'Auditorio principal',
-            descripcion: 'Tendencias y perspectivas para las bibliotecas universitarias.'
-        },
-        {
-            id: 15,
-            fecha: '2026-10-30',
-            horaInicio: '10:15',
-            horaFin: '11:00',
-            categoria: 'Presentador de Revista',
-            titulo: 'Revistas académicas: retos y oportunidades',
-            participante: 'Dra. Claudia Vega',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Retos de las publicaciones académicas en el entorno actual.'
-        },
-        {
-            id: 16,
-            fecha: '2026-10-30',
-            horaInicio: '11:15',
-            horaFin: '12:15',
-            categoria: 'Presentador de libro',
-            titulo: 'Presentación editorial y diálogo con autores',
-            participante: 'Mtro. Eduardo López',
-            lugar: 'Sala de conferencias',
-            descripcion: 'Encuentro con autores y presentación de novedades editoriales.'
-        },
-        {
-            id: 17,
-            fecha: '2026-10-30',
-            horaInicio: '12:30',
-            horaFin: '13:00',
-            categoria: 'Ponentes',
-            titulo: 'Clausura del congreso',
-            participante: 'Comité organizador',
-            lugar: 'Auditorio principal',
-            descripcion: 'Cierre de actividades y agradecimientos a los participantes.'
-        }
-    ];
+    readonly actividadesFiltradas = computed(() => {
+        const fecha = this.diaSeleccionado();
+        const categoria = this.categoriaSeleccionada();
 
-    get actividadesFiltradas(): ActividadCongreso[] {
-        return this.actividades
-            .filter(actividad => actividad.fecha === this.diaSeleccionado)
-            .filter(actividad =>
-                this.categoriaSeleccionada === 'Todas' ||
-                actividad.categoria === this.categoriaSeleccionada
-            )
-            .sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
+        return this.actividades().filter(actividad =>
+            (fecha === 'general' || actividad.fecha === fecha) &&
+            (categoria === 'Todas' || actividad.categoria === categoria)
+        );
+    });
+
+    readonly totalActividadesDia = computed(() => {
+        const fecha = this.diaSeleccionado();
+
+        return this.actividades().filter(
+            actividad => fecha === 'general' || actividad.fecha === fecha
+        ).length;
+    });
+
+    ngOnInit(): void {
+        this.cargarCronograma();
     }
 
-    get totalActividadesDia(): number {
-        return this.actividades.filter(
-            actividad => actividad.fecha === this.diaSeleccionado
-        ).length;
+    cargarCronograma(): void {
+        this.cargando.set(true);
+        this.errorCarga.set('');
+
+        this.cronogramaService.obtenerCronograma().subscribe({
+            next: respuesta => {
+                const actividades = (respuesta.data ?? [])
+                    .map(registro => this.convertirActividad(registro))
+                    .filter((actividad): actividad is ActividadCongreso => actividad !== null)
+                    .sort((a, b) =>
+                        a.fecha.localeCompare(b.fecha) ||
+                        a.horaInicio.localeCompare(b.horaInicio)
+                    );
+
+                this.actividades.set(actividades);
+                this.cargando.set(false);
+            },
+            error: error => {
+                console.error('Error al consultar el cronograma:', error);
+                this.errorCarga.set('No fue posible cargar el programa del congreso. Intenta nuevamente.');
+                this.cargando.set(false);
+            }
+        });
+    }
+
+    private convertirActividad(registro: CronogramaRegistro): ActividadCongreso | null {
+
+        const fecha = this.normalizarFecha(registro.Dia);
+        const horaInicio = (registro.Hora ?? '').substring(0, 5);
+        const tipo = (registro.Tipo ?? '').trim().toLowerCase();
+
+        if (!fecha || !horaInicio) {
+            return null;
+        }
+
+        let categoria: string;
+        let titulo = '';
+        let participante = '';
+        const participantes: string[] = [];
+        const detalles: string[] = [];
+
+        if (tipo === 'revista') {
+            categoria = 'Presentador de Revista';
+            titulo = registro.NombreRevista || 'Presentación de revista';
+            participante = registro.Presentador || registro.EditorJefe || '';
+            this.agregarUnico(participantes, registro.Presentador);
+            this.agregarUnico(participantes, registro.EditorJefe);
+        } else if (tipo === 'libro') {
+            categoria = 'Presentador de libro';
+            titulo = registro.TituloLibro || 'Presentación de libro';
+            participante = registro.PresentadorLibro || registro.AutorLibro || '';
+
+            this.agregarUnico(participantes, registro.AutorLibro);
+            this.agregarUnico(participantes, registro.CoautorLibro1);
+            this.agregarUnico(participantes, registro.CoautorLibro2);
+            this.agregarUnico(participantes, registro.PresentadorLibro);
+        } else if (tipo === 'ponencia' || tipo === 'preponencia') {
+            categoria = 'Ponentes';
+            titulo = registro.TituloPonencia || 'Ponencia';
+            participante = registro.PresentadorPonenecia || '';
+
+            this.agregarUnico(participantes, registro.PresentadorPonenecia);
+            this.agregarUnico(participantes, registro.CoautorPon1);
+            this.agregarUnico(participantes, registro.CoautorPon2);
+            this.agregarUnico(participantes, registro.CoautorPon3);
+            this.agregarUnico(participantes, registro.CoautorPon4);
+
+            if (registro.Eje) {
+                detalles.push(registro.Eje);
+            }
+
+            if (registro.Mesa) {
+                detalles.push(registro.Mesa);
+            }
+        } else {
+            categoria = 'Comité Organizador';
+            titulo = registro.TituloOrganizacion || 'Actividad del comité organizador';
+            participante = registro.Tipo || 'Comité organizador';
+
+            participante = titulo.trim().toLowerCase() === 'conferencia magistral'
+            ? 'Claudio Lomnitz'
+            : registro.Tipo || 'Comité organizador';
+        }
+
+        if (registro.Afiliacion) {
+            detalles.push(registro.Afiliacion);
+        }
+
+        if (registro.Pais) {
+            detalles.push(registro.Pais);
+        }
+
+        if (participantes.length > 0) {
+            participante = participantes.join(', ');
+        }
+
+        return {
+            id: registro.Id,
+            fecha,
+            horaInicio,
+            horaFin: '',
+            categoria,
+            titulo,
+            participante: participante || 'Por confirmar',
+            lugar: 'Virtual',
+            descripcion: detalles.join(' · ')
+        };
+    }
+
+    private agregarUnico(lista: string[], valor: string | null | undefined): void {
+        const nombre = (valor ?? '').trim();
+
+        if (nombre && !lista.includes(nombre)) {
+            lista.push(nombre);
+        }
+    }
+
+    private normalizarFecha(fecha: string | null | undefined): string {
+        if (!fecha) {
+            return '';
+        }
+
+        return fecha.substring(0, 10);
     }
 
     seleccionarDia(fecha: string): void {
-        this.diaSeleccionado = fecha;
+        this.diaSeleccionado.set(fecha);
     }
 
     seleccionarCategoria(categoria: string): void {
-        this.categoriaSeleccionada = categoria;
+        this.categoriaSeleccionada.set(categoria);
     }
 
     imprimirPrograma(): void {

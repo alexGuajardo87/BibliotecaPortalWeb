@@ -1,14 +1,14 @@
 
 <div class="min-h-screen bg-gray-50">
-    <section class="bg-[#0a2f7a] text-white">
+    <section class="bg-[#0a2f7a] text-white print:bg-white print:text-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
             <div class="flex flex-col md:flex-row items-center gap-6">
-                <div class="flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 shrink-0">
+                <div class="flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 shrink-0 print:hidden">
                     <i class="pi pi-users text-5xl"></i>
                 </div>
 
                 <div class="text-center md:text-left flex-1">
-                    <p class="text-sm uppercase tracking-widest text-white/80 mb-2">
+                    <p class="text-sm uppercase tracking-widest text-white/80 mb-2 print:text-gray-600">
                         Universidad Autónoma de Sinaloa
                     </p>
 
@@ -16,7 +16,7 @@
                         Programa CONLAIN UAS 2026
                     </h1>
 
-                    <p class="text-white/90 mt-3 text-base md:text-lg">
+                    <p class="mt-3 text-base md:text-lg text-white/90 print:text-gray-700">
                         Dirección General de Bibliotecas
                     </p>
 
@@ -31,22 +31,13 @@
                             9:00 a 14:00 horas
                         </span>
                     </div>
-                    
                 </div>
-
-                <button
-                    type="button"
-                    (click)="imprimirPrograma()"
-                    class="print:hidden inline-flex items-center gap-2 bg-white text-[#0a2f7a] font-semibold px-5 py-3 rounded-lg hover:bg-gray-100 transition-colors">
-                    <i class="pi pi-print"></i>
-                    Imprimir programa
-                </button>
             </div>
         </div>
     </section>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
-        <section class="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 mb-8 shadow-sm">
+        <section class="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 mb-8 shadow-sm print:hidden">
             <div class="flex items-start gap-4">
                 <div class="hidden sm:flex items-center justify-center w-12 h-12 rounded-xl bg-[#877514]/10 text-[#877514] shrink-0">
                     <i class="pi pi-info-circle text-2xl"></i>
@@ -61,18 +52,14 @@
                         Consulta las actividades académicas, ponencias y presentaciones
                         editoriales programadas durante el congreso de la Dirección
                         General de Bibliotecas de la Universidad Autónoma de Sinaloa.
-                        Selecciona un día y una categoría para consultar las actividades.
-                    </p>
-
-                    <p class="text-xs text-gray-400 mt-3">
-                        Los participantes, títulos y horarios específicos mostrados
-                        son datos de prueba.
+                        Selecciona un día o el programa general y filtra por categoría
+                        para consultar las actividades.
                     </p>
                 </div>
             </div>
         </section>
 
-        <section class="mb-8">
+        <section class="mb-8 print:hidden">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">
@@ -90,35 +77,42 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-7">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-7">
                 @for (dia of dias; track dia.fecha) {
                     <button
                         type="button"
                         (click)="seleccionarDia(dia.fecha)"
-                        [class.bg-[#0a2f7a]]="diaSeleccionado === dia.fecha"
-                        [class.text-white]="diaSeleccionado === dia.fecha"
-                        [class.border-[#0a2f7a]]="diaSeleccionado === dia.fecha"
-                        [class.bg-white]="diaSeleccionado !== dia.fecha"
-                        [class.text-gray-700]="diaSeleccionado !== dia.fecha"
-                        [class.border-gray-200]="diaSeleccionado !== dia.fecha"
+                        [class.bg-[#0a2f7a]]="diaSeleccionado() === dia.fecha"
+                        [class.text-white]="diaSeleccionado() === dia.fecha"
+                        [class.border-[#0a2f7a]]="diaSeleccionado() === dia.fecha"
+                        [class.bg-white]="diaSeleccionado() !== dia.fecha"
+                        [class.text-gray-700]="diaSeleccionado() !== dia.fecha"
+                        [class.border-gray-200]="diaSeleccionado() !== dia.fecha"
                         class="border rounded-xl p-4 text-left transition-all hover:border-[#0a2f7a]">
                         <span class="block text-sm opacity-80">
                             {{ dia.nombre }}
                         </span>
 
-                        <span class="block text-2xl font-bold mt-1">
-                            {{ dia.numero }}
-                        </span>
+                        @if (dia.fecha === 'general') {
+                            <i class="pi pi-calendar text-2xl mt-2 block"></i>
+                            <span class="block text-xs mt-2">
+                                Todas las fechas
+                            </span>
+                        } @else {
+                            <span class="block text-2xl font-bold mt-1">
+                                {{ dia.numero }}
+                            </span>
 
-                        <span class="block text-xs mt-1">
-                            Octubre 2026
-                        </span>
+                            <span class="block text-xs mt-1">
+                                Octubre 2026
+                            </span>
+                        }
                     </button>
                 }
             </div>
         </section>
 
-        <section class="mb-7">
+        <section class="mb-7 print:hidden">
             <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
                 Filtrar por categoría
             </h3>
@@ -128,12 +122,12 @@
                     <button
                         type="button"
                         (click)="seleccionarCategoria(categoria)"
-                        [class.bg-[#0a2f7a]]="categoriaSeleccionada === categoria"
-                        [class.text-white]="categoriaSeleccionada === categoria"
-                        [class.border-[#0a2f7a]]="categoriaSeleccionada === categoria"
-                        [class.bg-white]="categoriaSeleccionada !== categoria"
-                        [class.text-gray-700]="categoriaSeleccionada !== categoria"
-                        [class.border-gray-200]="categoriaSeleccionada !== categoria"
+                        [class.bg-[#0a2f7a]]="categoriaSeleccionada() === categoria"
+                        [class.text-white]="categoriaSeleccionada() === categoria"
+                        [class.border-[#0a2f7a]]="categoriaSeleccionada() === categoria"
+                        [class.bg-white]="categoriaSeleccionada() !== categoria"
+                        [class.text-gray-700]="categoriaSeleccionada() !== categoria"
+                        [class.border-gray-200]="categoriaSeleccionada() !== categoria"
                         class="border rounded-full px-4 py-2 text-sm font-medium transition-colors hover:border-[#0a2f7a]">
                         {{ categoria }}
                     </button>
@@ -145,27 +139,69 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
                 <div>
                     <h3 class="text-xl font-bold text-gray-800">
-                        {{ nombreDia(diaSeleccionado) }} {{ diaSeleccionado | date:'d' : 'UTC' }} de octubre
+                        @if (diaSeleccionado() === 'general') {
+                            Programa general del congreso
+                        } @else {
+                            {{ nombreDia(diaSeleccionado()) }}
+                            {{ diaSeleccionado() | date:'d':'UTC' }} de octubre
+                        }
                     </h3>
 
                     <p class="text-sm text-gray-500 mt-1">
-                        Actividades programadas para este día
+                        @if (diaSeleccionado() === 'general') {
+                            Todas las actividades del 26 al 30 de octubre de 2026
+                        } @else {
+                            Actividades programadas para este día
+                        }
                     </p>
                 </div>
 
                 <span class="inline-flex items-center gap-2 text-sm font-medium bg-[#877514]/10 text-[#877514] rounded-full px-4 py-2 w-fit">
                     <i class="pi pi-list"></i>
-                    {{ actividadesFiltradas.length }}
-                    {{ actividadesFiltradas.length === 1 ? 'actividad' : 'actividades' }}
+                    {{ actividadesFiltradas().length }}
+                    {{ actividadesFiltradas().length === 1 ? 'actividad' : 'actividades' }}
                 </span>
             </div>
 
-            @if (actividadesFiltradas.length > 0) {
+            @if (cargando()) {
+                <div class="bg-white border border-gray-200 rounded-2xl py-12 px-5 text-center">
+                    <i class="pi pi-spin pi-spinner text-3xl text-[#0a2f7a]"></i>
+                    <p class="text-gray-600 mt-3">
+                        Cargando programa del congreso...
+                    </p>
+                </div>
+            } @else if (errorCarga()) {
+                <div class="bg-white border border-red-200 rounded-2xl py-8 px-5 text-center">
+                    <i class="pi pi-exclamation-circle text-3xl text-red-500"></i>
+
+                    <p class="text-red-600 mt-3">
+                        {{ errorCarga() }}
+                    </p>
+
+                    <button
+                        type="button"
+                        (click)="cargarCronograma()"
+                        class="mt-4 bg-[#0a2f7a] text-white rounded-lg px-5 py-2.5 font-medium hover:bg-blue-900">
+                        <i class="pi pi-refresh mr-2"></i>
+                        Reintentar
+                    </button>
+                </div>
+            } @else if (actividadesFiltradas().length > 0) {
                 <div class="space-y-4">
-                    @for (actividad of actividadesFiltradas; track actividad.id) {
-                        <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    @for (actividad of actividadesFiltradas(); track actividad.id) {
+                        <article class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow print:shadow-none print:break-inside-avoid">
                             <div class="flex flex-col md:flex-row">
                                 <div class="md:w-48 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200 p-5 flex md:flex-col items-center md:items-start justify-center gap-3">
+                                    @if (diaSeleccionado() === 'general') {
+                                        <div class="flex items-center gap-2">
+                                            <i class="pi pi-calendar text-[#877514] text-xl"></i>
+                                            <span class="text-sm font-semibold text-gray-600">
+                                                {{ nombreDia(actividad.fecha) }}
+                                                {{ actividad.fecha | date:'d':'UTC' }} de octubre
+                                            </span>
+                                        </div>
+                                    }
+
                                     <i class="pi pi-clock text-[#877514] text-xl"></i>
 
                                     <div>
@@ -173,9 +209,11 @@
                                             {{ actividad.horaInicio }}
                                         </p>
 
-                                        <p class="text-sm text-gray-500">
-                                            a {{ actividad.horaFin }}
-                                        </p>
+                                        @if (actividad.horaFin) {
+                                            <p class="text-sm text-gray-500">
+                                                a {{ actividad.horaFin }}
+                                            </p>
+                                        }
                                     </div>
                                 </div>
 
@@ -188,11 +226,14 @@
                                             [class.text-purple-700]="actividad.categoria === 'Presentador de Revista'"
                                             [class.bg-amber-50]="actividad.categoria === 'Presentador de libro'"
                                             [class.text-amber-800]="actividad.categoria === 'Presentador de libro'"
+                                            [class.bg-gray-100]="actividad.categoria === 'Comité Organizador'"
+                                            [class.text-gray-700]="actividad.categoria === 'Comité Organizador'"
                                             class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold">
                                             <i
                                                 [class.pi-users]="actividad.categoria === 'Ponentes'"
                                                 [class.pi-book]="actividad.categoria === 'Presentador de Revista'"
                                                 [class.pi-bookmark]="actividad.categoria === 'Presentador de libro'"
+                                                [class.pi-briefcase]="actividad.categoria === 'Comité Organizador'"
                                                 class="pi">
                                             </i>
                                             {{ actividad.categoria }}
@@ -203,14 +244,16 @@
                                         {{ actividad.titulo }}
                                     </h4>
 
-                                    <p class="text-gray-600 mt-2 leading-relaxed">
-                                        {{ actividad.descripcion }}
-                                    </p>
+                                    @if (actividad.descripcion) {
+                                        <p class="text-gray-600 mt-2 leading-relaxed">
+                                            {{ actividad.descripcion }}
+                                        </p>
+                                    }
 
                                     <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-5 mt-5 text-sm">
-                                        <span class="flex items-center gap-2 text-gray-600">
-                                            <i class="pi pi-user text-[#877514]"></i>
-                                            {{ actividad.participante }}
+                                        <span class="flex items-start gap-2 text-gray-600">
+                                            <i class="pi pi-user text-[#877514] mt-0.5"></i>
+                                            <span>{{ actividad.participante }}</span>
                                         </span>
 
                                         <span class="flex items-center gap-2 text-gray-600">
@@ -232,22 +275,22 @@
                     </h4>
 
                     <p class="text-gray-500 mt-2">
-                        Selecciona otra categoría para consultar el programa.
+                        Selecciona otro día o categoría para consultar las actividades.
                     </p>
 
                     <button
                         type="button"
                         (click)="seleccionarCategoria('Todas')"
-                        class="mt-5 bg-[#0a2f7a] text-white rounded-lg px-5 py-2.5 font-medium hover:bg-blue-900">
+                        class="mt-5 bg-[#0a2f7a] text-white rounded-lg px-5 py-2.5 font-medium hover:bg-blue-900 print:hidden">
                         Ver todas las actividades
                     </button>
                 </div>
             }
         </section>
 
-        <section class="mt-10 bg-[#0a2f7a] text-white rounded-2xl p-6 md:p-8">
+        <section class="mt-10 bg-[#0a2f7a] text-white rounded-2xl p-6 md:p-8 print:bg-white print:text-gray-900 print:border print:border-gray-200">
             <div class="flex flex-col md:flex-row md:items-center gap-4">
-                <div class="flex items-center justify-center rounded-xl bg-white/10 w-14 h-14 shrink-0">
+                <div class="flex items-center justify-center rounded-xl bg-white/10 w-14 h-14 shrink-0 print:hidden">
                     <i class="pi pi-book text-2xl"></i>
                 </div>
 
@@ -256,7 +299,7 @@
                         Dirección General de Bibliotecas
                     </h3>
 
-                    <p class="text-white/80 mt-1">
+                    <p class="text-white/80 mt-1 print:text-gray-700">
                         Universidad Autónoma de Sinaloa
                     </p>
                 </div>
@@ -264,7 +307,7 @@
         </section>
     </main>
 
-    <footer class="border-t border-gray-200 bg-white">
+    <footer class="border-t border-gray-200 bg-white print:hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 text-center text-sm text-gray-500">
             Dirección General de Bibliotecas · Universidad Autónoma de Sinaloa
         </div>

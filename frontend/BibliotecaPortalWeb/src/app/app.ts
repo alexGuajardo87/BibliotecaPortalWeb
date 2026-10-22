@@ -195,86 +195,10 @@ export class App {
             ]
         },
         {
-            label: 'Servicios para usuarios',
-            icon: 'pi pi-users',
-            items: [
-                {
-                    label: 'Solicitud de cursos',
-                    icon: 'pi pi-book',
-                    routerLink: ['/servicios-usuarios-cursos']
-                },
-                {
-                    label: 'Solicitud de auditorio',
-                    icon: 'pi pi-microphone',
-                    routerLink: ['/servicios-usuarios-auditorio']
-                }
-            ]
-        },
-            {
             label: 'CONLAIN-UAS',
             icon: 'pi pi-globe',
             routerLink: ['/congreso-conlain-uas']
         }
-        
-        /*,
-        {
-            label: 'Administración',
-            icon: 'pi pi-cog',
-            items: [
-                {
-                    label: 'Catálogos',
-                    icon: 'pi pi-database',
-                    items: [
-                        {
-                            label: 'Campos',
-                            icon: 'pi pi-list',
-                            routerLink: ['/catalogos/campos']
-                        },
-                        {
-                            label: 'Categorías',
-                            icon: 'pi pi-tags',
-                            routerLink: ['/catalogos/categorias']
-                        },
-                        {
-                            label: 'Tipos',
-                            icon: 'pi pi-table',
-                            routerLink: ['/catalogos/tipos']
-                        }
-                    ]
-                },
-                {
-                    label: 'Reportes',
-                    icon: 'pi pi-chart-bar',
-                    items: [
-                        {
-                            label: 'Reporte general',
-                            icon: 'pi pi-file',
-                            routerLink: ['/reportes/general']
-                        },
-                        {
-                            label: 'Estadísticas',
-                            icon: 'pi pi-chart-line',
-                            routerLink: ['/reportes/estadisticas']
-                        }
-                    ]
-                },
-                {
-                    label: 'Usuarios',
-                    icon: 'pi pi-users',
-                    routerLink: ['/admin/usuarios']
-                },
-                {
-                    label: 'Roles',
-                    icon: 'pi pi-shield',
-                    routerLink: ['/admin/roles']
-                },
-                {
-                    label: 'Permisos',
-                    icon: 'pi pi-lock',
-                    routerLink: ['/admin/permisos']
-                }
-            ]
-        }*/
     ];
 
     itemsV: MegaMenuItem[] = [

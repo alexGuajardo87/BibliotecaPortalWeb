@@ -106,7 +106,7 @@ export class ChatbotComponent implements OnInit {
             }
         ]);
 
-        this.abierto.set(true);
+        this.abierto.set(false);
 
         setTimeout(() => {
             this.desplazarAlFinal();
