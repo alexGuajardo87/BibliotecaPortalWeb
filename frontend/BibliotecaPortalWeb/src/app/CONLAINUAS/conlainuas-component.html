@@ -1,6 +1,14 @@
 
 <div class="min-h-screen bg-gray-50">
-    <section class="bg-[#0a2f7a] text-white print:bg-white print:text-gray-900">
+    <div class="w-full mb-6">
+        <img
+            src="/conlain-cronograma.webp"
+            alt="CONLAIN UAS 2026"
+            class="w-full h-auto max-h-80 object-cover object-center"
+        >
+    </div>
+
+    <section class="bg-[#0a2f7a] text-white print:bg-white print:text-gray-900" >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
             <div class="flex flex-col md:flex-row items-center gap-6">
                 <div class="flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 shrink-0 print:hidden">
@@ -48,12 +56,16 @@
                         Acerca del congreso
                     </h2>
 
-                    <p class="text-gray-600 leading-relaxed">
-                        Consulta las actividades académicas, ponencias y presentaciones
-                        editoriales programadas durante el congreso de la Dirección
-                        General de Bibliotecas de la Universidad Autónoma de Sinaloa.
-                        Selecciona un día o el programa general y filtra por categoría
-                        para consultar las actividades.
+                    <p class="text-gray-600 leading-relaxed" style="text-align: justify;">
+                        Te damos la bienvenida al CONLAINUAS 2026, un espacio de encuentro, 
+                        reflexión y diálogo interdisciplinario impulsado por la Universidad Autónoma de Sinaloa. 
+                        Del 26 al 30 de octubre, compartiremos conocimientos, investigaciones y experiencias a través de conferencias, 
+                        ponencias y presentaciones editoriales.
+                    </p>
+                    <br>
+                    <p class="text-gray-600 leading-relaxed" style="text-align: justify;">
+                        Explora nuestro programa de actividades y acompáñanos en esta experiencia de intercambio académico, 
+                        construcción colectiva del conocimiento y fortalecimiento de los vínculos universitarios.
                     </p>
                 </div>
             </div>
@@ -220,19 +232,19 @@
                                 <div class="flex-1 p-5 md:p-6">
                                     <div class="flex flex-wrap items-center gap-2 mb-3">
                                         <span
-                                            [class.bg-blue-50]="actividad.categoria === 'Ponentes'"
-                                            [class.text-blue-700]="actividad.categoria === 'Ponentes'"
-                                            [class.bg-purple-50]="actividad.categoria === 'Presentador de Revista'"
-                                            [class.text-purple-700]="actividad.categoria === 'Presentador de Revista'"
-                                            [class.bg-amber-50]="actividad.categoria === 'Presentador de libro'"
-                                            [class.text-amber-800]="actividad.categoria === 'Presentador de libro'"
+                                            [class.bg-blue-50]="actividad.categoria === 'Ponencias'"
+                                            [class.text-blue-700]="actividad.categoria === 'Ponencias'"
+                                            [class.bg-purple-50]="actividad.categoria === 'Presentaciones de revista'"
+                                            [class.text-purple-700]="actividad.categoria === 'Presentaciones de revista'"
+                                            [class.bg-amber-50]="actividad.categoria === 'Presentaciones de libro'"
+                                            [class.text-amber-800]="actividad.categoria === 'Presentaciones de libro'"
                                             [class.bg-gray-100]="actividad.categoria === 'Comité Organizador'"
                                             [class.text-gray-700]="actividad.categoria === 'Comité Organizador'"
                                             class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold">
                                             <i
-                                                [class.pi-users]="actividad.categoria === 'Ponentes'"
-                                                [class.pi-book]="actividad.categoria === 'Presentador de Revista'"
-                                                [class.pi-bookmark]="actividad.categoria === 'Presentador de libro'"
+                                                [class.pi-users]="actividad.categoria === 'Ponencias'"
+                                                [class.pi-book]="actividad.categoria === 'Presentaciones de revista'"
+                                                [class.pi-bookmark]="actividad.categoria === 'Presentaciones de libro'"
                                                 [class.pi-briefcase]="actividad.categoria === 'Comité Organizador'"
                                                 class="pi">
                                             </i>

@@ -29,14 +29,13 @@ export class ConlainuasComponent implements OnInit {
 
     readonly categorias = [
         'Todas',
-        'Ponentes',
-        'Presentador de Revista',
-        'Presentador de libro',
-        'Comité Organizador'
+        'Ponencias',
+        'Presentaciones de revista',
+        'Presentaciones de libro'
     ];
 
     readonly dias = [
-        { fecha: 'general', nombre: 'Día general', numero: 0 },
+        { fecha: 'general', nombre: 'Programa general', numero: 0 },
         { fecha: '2026-10-26', nombre: 'Lunes', numero: 26 },
         { fecha: '2026-10-27', nombre: 'Martes', numero: 27 },
         { fecha: '2026-10-28', nombre: 'Miércoles', numero: 28 },
@@ -114,13 +113,13 @@ export class ConlainuasComponent implements OnInit {
         const detalles: string[] = [];
 
         if (tipo === 'revista') {
-            categoria = 'Presentador de Revista';
+            categoria = 'Presentaciones de revista';
             titulo = registro.NombreRevista || 'Presentación de revista';
             participante = registro.Presentador || registro.EditorJefe || '';
             this.agregarUnico(participantes, registro.Presentador);
             this.agregarUnico(participantes, registro.EditorJefe);
         } else if (tipo === 'libro') {
-            categoria = 'Presentador de libro';
+            categoria = 'Presentaciones de libro';
             titulo = registro.TituloLibro || 'Presentación de libro';
             participante = registro.PresentadorLibro || registro.AutorLibro || '';
 
@@ -129,7 +128,7 @@ export class ConlainuasComponent implements OnInit {
             this.agregarUnico(participantes, registro.CoautorLibro2);
             this.agregarUnico(participantes, registro.PresentadorLibro);
         } else if (tipo === 'ponencia' || tipo === 'preponencia') {
-            categoria = 'Ponentes';
+            categoria = 'Ponencias';
             titulo = registro.TituloPonencia || 'Ponencia';
             participante = registro.PresentadorPonenecia || '';
 
