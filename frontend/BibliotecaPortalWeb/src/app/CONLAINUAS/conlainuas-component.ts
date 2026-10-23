@@ -2,6 +2,11 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CronogramaService, CronogramaRegistro } from '../Services/cronograma.service';
+import { switchMap } from 'rxjs';
+import { AuthSessionService } from '../Services/auth-session.service';
+
+
+
 
 interface ActividadCongreso {
     id: number;
@@ -23,6 +28,7 @@ interface ActividadCongreso {
 })
 export class ConlainuasComponent implements OnInit {
     private readonly cronogramaService = inject(CronogramaService);
+    private readonly authSession = inject(AuthSessionService);
 
     readonly fechaInicio = '2026-10-26';
     readonly fechaFin = '2026-10-30';
@@ -71,7 +77,38 @@ export class ConlainuasComponent implements OnInit {
         this.cargarCronograma();
     }
 
+    
     cargarCronograma(): void {
+        this.cargando.set(true);
+        this.errorCarga.set('');
+
+        this.authSession.inicializarSesion().pipe(
+            switchMap(() => this.cronogramaService.obtenerCronograma())
+        ).subscribe({
+            next: respuesta => {
+                const actividades = (respuesta.data ?? [])
+                    .map(registro => this.convertirActividad(registro))
+                    .filter((actividad): actividad is ActividadCongreso => actividad !== null)
+                    .sort((a, b) =>
+                        a.fecha.localeCompare(b.fecha) ||
+                        a.horaInicio.localeCompare(b.horaInicio)
+                    );
+
+                this.actividades.set(actividades);
+                this.cargando.set(false);
+            },
+            error: error => {
+                console.error('Error al consultar el cronograma:', error);
+                this.errorCarga.set(
+                    'No fue posible cargar el programa del congreso. Intenta nuevamente.'
+                );
+                this.cargando.set(false);
+            }
+        });
+    }
+
+
+    /*cargarCronograma(): void {
         this.cargando.set(true);
         this.errorCarga.set('');
 
@@ -94,7 +131,7 @@ export class ConlainuasComponent implements OnInit {
                 this.cargando.set(false);
             }
         });
-    }
+    }*/
 
     private convertirActividad(registro: CronogramaRegistro): ActividadCongreso | null {
 

@@ -8,6 +8,7 @@ import { MenuItem, MegaMenuItem } from 'primeng/api';
 import { ChatbotComponent } from './Chatbot/chatbot-component';
 import { SitiosInteresComponent } from './Modulos/sitios-interes/sitios-interes-component';
 import { AUTH_URL, COOKIE } from './Core/Constants/api.constants';
+import { AuthSessionService } from './Services/auth-session.service';
 
 declare function gtag(...args: any[]): void;
 
@@ -27,6 +28,7 @@ export class App {
 
     private readonly http = inject(HttpClient);
     private readonly router = inject(Router);
+    private readonly authSession = inject(AuthSessionService);
 
     imagenHover = signal<string | null>(null);
 
@@ -450,7 +452,16 @@ export class App {
     ngOnInit(): void {
         this.configurarGoogleAnalytics();
 
-        this.http.get(`${COOKIE}/sanctum/csrf-cookie`, {
+        this.authSession.inicializarSesion().subscribe({
+            next: (respuesta: any) => {
+                console.log(respuesta.message);
+            },
+            error: (err) => {
+                console.error('Error de autenticación:', err.error?.message ?? err);
+            }
+        });
+
+        /*this.http.get(`${COOKIE}/sanctum/csrf-cookie`, {
             withCredentials: true
         }).subscribe({
             next: () => {
@@ -470,7 +481,7 @@ export class App {
             error: (err) => {
                 console.log(err);
             }
-        });
+        });*/
     }
 
     private configurarGoogleAnalytics(): void {
