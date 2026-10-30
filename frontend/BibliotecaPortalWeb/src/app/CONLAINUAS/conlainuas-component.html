@@ -1,25 +1,65 @@
-
 <div class="min-h-screen bg-gray-50">
     <div class="w-full mb-6">
         <img
             src="/conlain-cronograma.webp"
             alt="CONLAIN UAS 2026"
-            class="w-full h-auto max-h-80 object-cover object-center"
-        >
+            class="w-full h-auto max-h-80 object-cover object-center">
     </div>
 
-    <section class="bg-[#0a2f7a] text-white print:bg-white print:text-gray-900" >
+    
+    <div class="mt-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h2 class="mb-2 text-xl font-bold text-[#0a2f7a]">
+            Consultar constancia
+        </h2>
+
+        <p class="mb-5 text-sm text-gray-600">
+            Ingresa el correo electrónico que utilizaste para participar en CONLAIN UAS 2026.
+        </p>
+
+        <form (submit)="visualizarConstancia($event)" class="flex flex-col gap-4 sm:flex-row sm:items-end">
+            <div class="flex-1">
+                <label for="correoBusqueda" class="mb-2 block text-sm font-semibold text-gray-700">
+                    Correo electrónico
+                </label>
+
+                <input
+                    id="correoBusqueda"
+                    type="email"
+                    [value]="correoBusqueda()"
+                    (input)="correoBusqueda.set($any($event.target).value)"
+                    placeholder="correo@ejemplo.com"
+                    autocomplete="email"
+                    required
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-[#877514] focus:ring-2 focus:ring-[#877514]/20"
+                />
+            </div>
+
+            <button
+                type="submit"
+                [disabled]="cargandoConstancia()"
+                class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#877514] px-6 py-3 font-semibold text-white transition hover:bg-[#6f600f] disabled:cursor-not-allowed disabled:opacity-60">
+                <i class="pi pi-search"></i>
+                {{ cargandoConstancia() ? 'Consultando...' : 'Buscar constancia' }}
+            </button>
+        </form>
+
+        @if (errorCargaConstancia()) {
+            <p class="mt-4 text-sm text-red-600">
+                No fue posible consultar la constancia. Verifica el correo electrónico e inténtalo nuevamente.
+            </p>
+        }
+    </div>
+
+    <section class="bg-[#0a2f7a] text-white print:bg-white print:text-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
             <div class="flex flex-col md:flex-row items-center gap-6">
                 <div class="flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 shrink-0 print:hidden">
                     <i class="pi pi-users text-5xl"></i>
                 </div>
-
                 <div class="text-center md:text-left flex-1">
                     <p class="text-sm uppercase tracking-widest text-white/80 mb-2 print:text-gray-600">
                         Universidad Autónoma de Sinaloa
                     </p>
-
                     <h1 class="text-3xl md:text-5xl font-bold leading-tight">
                         Programa CONLAIN UAS 2026
                     </h1>
@@ -27,16 +67,14 @@
                     <p class="mt-3 text-base md:text-lg text-white/90 print:text-gray-700">
                         Dirección General de Bibliotecas
                     </p>
-
                     <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-5 text-sm">
                         <span class="flex items-center gap-2">
                             <i class="pi pi-calendar"></i>
                             26 al 30 de octubre de 2026
                         </span>
-
                         <span class="flex items-center gap-2">
                             <i class="pi pi-clock"></i>
-                            9:00 a 14:00 horas CDMX 
+                            9:00 a 14:00 horas CDMX
                         </span>
                     </div>
                 </div>
@@ -50,22 +88,16 @@
                 <div class="hidden sm:flex items-center justify-center w-12 h-12 rounded-xl bg-[#877514]/10 text-[#877514] shrink-0">
                     <i class="pi pi-info-circle text-2xl"></i>
                 </div>
-
                 <div>
                     <h2 class="text-xl font-bold text-gray-800 mb-2">
                         Acerca del congreso
                     </h2>
-
-                    <p class="text-gray-600 leading-relaxed" style="text-align: justify;">
-                        Te damos la bienvenida al CONLAINUAS 2026, un espacio de encuentro, 
-                        reflexión y diálogo interdisciplinario impulsado por la Universidad Autónoma de Sinaloa. 
-                        Del 26 al 30 de octubre, compartiremos conocimientos, investigaciones y experiencias a través de conferencias, 
-                        ponencias y presentaciones editoriales.
+                    <p class="text-gray-600 leading-relaxed text-justify">
+                        Te damos la bienvenida al CONLAINUAS 2026, un espacio de encuentro, reflexión y diálogo interdisciplinario impulsado por la Universidad Autónoma de Sinaloa. Del 26 al 30 de octubre, compartiremos conocimientos, investigaciones y experiencias a través de conferencias, ponencias y presentaciones editoriales.
                     </p>
                     <br>
-                    <p class="text-gray-600 leading-relaxed" style="text-align: justify;">
-                        Explora nuestro programa de actividades y acompáñanos en esta experiencia de intercambio académico, 
-                        construcción colectiva del conocimiento y fortalecimiento de los vínculos universitarios.
+                    <p class="text-gray-600 leading-relaxed text-justify">
+                        Explora nuestro programa de actividades y acompáñanos en esta experiencia de intercambio académico, construcción colectiva del conocimiento y fortalecimiento de los vínculos universitarios.
                     </p>
                 </div>
             </div>
@@ -77,15 +109,13 @@
                     <h2 class="text-2xl font-bold text-gray-800">
                         Programa de actividades
                     </h2>
-
                     <p class="text-gray-500 mt-1">
                         Del lunes 26 al viernes 30 de octubre
                     </p>
                 </div>
-
                 <div class="text-sm text-gray-500">
                     <i class="pi pi-calendar mr-2"></i>
-                    Horario general: 10:00–15:00 h CDMX 
+                    Horario general: 10:00–15:00 h CDMX
                 </div>
             </div>
 
@@ -101,23 +131,13 @@
                         [class.text-gray-700]="diaSeleccionado() !== dia.fecha"
                         [class.border-gray-200]="diaSeleccionado() !== dia.fecha"
                         class="border rounded-xl p-4 text-left transition-all hover:border-[#0a2f7a]">
-                        <span class="block text-sm opacity-80">
-                            {{ dia.nombre }}
-                        </span>
-
+                        <span class="block text-sm opacity-80">{{ dia.nombre }}</span>
                         @if (dia.fecha === 'general') {
                             <i class="pi pi-calendar text-2xl mt-2 block"></i>
-                            <span class="block text-xs mt-2">
-                                Todas las fechas
-                            </span>
+                            <span class="block text-xs mt-2">Todas las fechas</span>
                         } @else {
-                            <span class="block text-2xl font-bold mt-1">
-                                {{ dia.numero }}
-                            </span>
-
-                            <span class="block text-xs mt-1">
-                                Octubre 2026
-                            </span>
+                            <span class="block text-2xl font-bold mt-1">{{ dia.numero }}</span>
+                            <span class="block text-xs mt-1">Octubre 2026</span>
                         }
                     </button>
                 }
@@ -128,7 +148,6 @@
             <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
                 Filtrar por categoría
             </h3>
-
             <div class="flex flex-wrap gap-2">
                 @for (categoria of categorias; track categoria) {
                     <button
@@ -158,7 +177,6 @@
                             {{ diaSeleccionado() | date:'d':'UTC' }} de octubre
                         }
                     </h3>
-
                     <p class="text-sm text-gray-500 mt-1">
                         @if (diaSeleccionado() === 'general') {
                             Todas las actividades del 26 al 30 de octubre de 2026
@@ -167,7 +185,6 @@
                         }
                     </p>
                 </div>
-
                 <span class="inline-flex items-center gap-2 text-sm font-medium bg-[#877514]/10 text-[#877514] rounded-full px-4 py-2 w-fit">
                     <i class="pi pi-list"></i>
                     {{ actividadesFiltradas().length }}
@@ -178,18 +195,12 @@
             @if (cargando()) {
                 <div class="bg-white border border-gray-200 rounded-2xl py-12 px-5 text-center">
                     <i class="pi pi-spin pi-spinner text-3xl text-[#0a2f7a]"></i>
-                    <p class="text-gray-600 mt-3">
-                        Cargando programa del congreso...
-                    </p>
+                    <p class="text-gray-600 mt-3">Cargando programa del congreso...</p>
                 </div>
             } @else if (errorCarga()) {
                 <div class="bg-white border border-red-200 rounded-2xl py-8 px-5 text-center">
                     <i class="pi pi-exclamation-circle text-3xl text-red-500"></i>
-
-                    <p class="text-red-600 mt-3">
-                        {{ errorCarga() }}
-                    </p>
-
+                    <p class="text-red-600 mt-3">{{ errorCarga() }}</p>
                     <button
                         type="button"
                         (click)="cargarCronograma()"
@@ -213,18 +224,13 @@
                                             </span>
                                         </div>
                                     }
-
                                     <i class="pi pi-clock text-[#877514] text-xl"></i>
-
                                     <div>
                                         <p class="text-lg font-bold text-gray-800">
-                                            {{ actividad.horaInicio }} CDMX 
+                                            {{ actividad.horaInicio }} CDMX
                                         </p>
-
                                         @if (actividad.horaFin) {
-                                            <p class="text-sm text-gray-500">
-                                                a {{ actividad.horaFin }}
-                                            </p>
+                                            <p class="text-sm text-gray-500">a {{ actividad.horaFin }}</p>
                                         }
                                     </div>
                                 </div>
@@ -251,23 +257,19 @@
                                             {{ actividad.categoria }}
                                         </span>
                                     </div>
-
                                     <h4 class="text-lg md:text-xl font-bold text-gray-800">
                                         {{ actividad.titulo }}
                                     </h4>
-
                                     @if (actividad.descripcion) {
                                         <p class="text-gray-600 mt-2 leading-relaxed">
                                             {{ actividad.descripcion }}
                                         </p>
                                     }
-
                                     <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-5 mt-5 text-sm">
                                         <span class="flex items-start gap-2 text-gray-600">
                                             <i class="pi pi-user text-[#877514] mt-0.5"></i>
                                             <span>{{ actividad.participante }}</span>
                                         </span>
-
                                         <span class="flex items-center gap-2 text-gray-600">
                                             <i class="pi pi-map-marker text-[#877514]"></i>
                                             {{ actividad.lugar }}
@@ -281,15 +283,12 @@
             } @else {
                 <div class="bg-white border border-gray-200 rounded-2xl py-12 px-5 text-center">
                     <i class="pi pi-calendar-times text-4xl text-gray-300"></i>
-
                     <h4 class="text-lg font-semibold text-gray-700 mt-4">
                         No hay actividades para este filtro
                     </h4>
-
                     <p class="text-gray-500 mt-2">
                         Selecciona otro día o categoría para consultar las actividades.
                     </p>
-
                     <button
                         type="button"
                         (click)="seleccionarCategoria('Todas')"
@@ -305,12 +304,8 @@
                 <div class="flex items-center justify-center rounded-xl bg-white/10 w-14 h-14 shrink-0 print:hidden">
                     <i class="pi pi-book text-2xl"></i>
                 </div>
-
                 <div>
-                    <h3 class="text-xl font-bold">
-                        Dirección General de Bibliotecas
-                    </h3>
-
+                    <h3 class="text-xl font-bold">Dirección General de Bibliotecas</h3>
                     <p class="text-white/80 mt-1 print:text-gray-700">
                         Universidad Autónoma de Sinaloa
                     </p>
@@ -325,3 +320,58 @@
         </div>
     </footer>
 </div>
+
+@if (visorAbierto()) {
+    <div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4">
+        <div class="flex h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
+            <div class="flex shrink-0 items-center justify-between border-b border-gray-200 px-5 py-4">
+                <h2 class="text-lg font-bold text-gray-800">
+                    Visualizar constancia
+                </h2>
+                <button
+                    type="button"
+                    (click)="cerrarVisor()"
+                    class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
+                    aria-label="Cerrar visor">
+                    <i class="pi pi-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-gray-200 p-3">
+                @if (cargandoConstancia()) {
+                    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white/90">
+                        <div class="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-[#0a2f7a]"></div>
+                        <p class="text-sm font-semibold text-gray-700">
+                            Generando constancia...
+                        </p>
+                    </div>
+                }
+
+               @if (constanciaUrl()) {
+                    <img
+                        [src]="constanciaUrl()"
+                        alt="Constancia CONLAIN UAS 2026"
+                        (error)="errorConstancia()"
+                        class="h-auto max-h-[75vh] max-w-full object-contain"
+                    />
+                }
+
+                @if (errorCargaConstancia()) {
+                    <div class="flex flex-col items-center gap-3 text-center">
+                        <i class="pi pi-exclamation-circle text-4xl text-red-600"></i>
+                        <p class="text-sm text-red-700">
+                            No fue posible cargar la constancia.
+                        </p>
+                        <button
+                            type="button"
+                            (click)="visualizarConstancia()"
+                            class="rounded-lg bg-[#0a2f7a] px-4 py-2 text-white hover:bg-blue-900">
+                            <i class="pi pi-refresh mr-2"></i>
+                            Intentar nuevamente
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

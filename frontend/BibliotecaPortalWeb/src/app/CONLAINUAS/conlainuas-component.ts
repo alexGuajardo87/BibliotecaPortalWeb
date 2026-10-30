@@ -1,10 +1,10 @@
-
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { CronogramaService, CronogramaRegistro } from '../Services/cronograma.service';
 import { switchMap } from 'rxjs';
+import { CronogramaService, CronogramaRegistro } from '../Services/cronograma.service';
 import { AuthSessionService } from '../Services/auth-session.service';
-
+import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs';
 
 
 
@@ -29,6 +29,7 @@ interface ActividadCongreso {
 export class ConlainuasComponent implements OnInit {
     private readonly cronogramaService = inject(CronogramaService);
     private readonly authSession = inject(AuthSessionService);
+    private http = inject(HttpClient);
 
     readonly fechaInicio = '2026-10-26';
     readonly fechaFin = '2026-10-30';
@@ -73,11 +74,16 @@ export class ConlainuasComponent implements OnInit {
         ).length;
     });
 
+    correoBusqueda = signal('');
+    readonly visorAbierto = signal(false);
+    readonly constanciaUrl = signal<string | null>(null);
+    readonly cargandoConstancia = signal(false);
+    readonly errorCargaConstancia = signal(false);
+
     ngOnInit(): void {
         this.cargarCronograma();
     }
 
-    
     cargarCronograma(): void {
         this.cargando.set(true);
         this.errorCarga.set('');
@@ -107,34 +113,7 @@ export class ConlainuasComponent implements OnInit {
         });
     }
 
-
-    /*cargarCronograma(): void {
-        this.cargando.set(true);
-        this.errorCarga.set('');
-
-        this.cronogramaService.obtenerCronograma().subscribe({
-            next: respuesta => {
-                const actividades = (respuesta.data ?? [])
-                    .map(registro => this.convertirActividad(registro))
-                    .filter((actividad): actividad is ActividadCongreso => actividad !== null)
-                    .sort((a, b) =>
-                        a.fecha.localeCompare(b.fecha) ||
-                        a.horaInicio.localeCompare(b.horaInicio)
-                    );
-
-                this.actividades.set(actividades);
-                this.cargando.set(false);
-            },
-            error: error => {
-                console.error('Error al consultar el cronograma:', error);
-                this.errorCarga.set('No fue posible cargar el programa del congreso. Intenta nuevamente.');
-                this.cargando.set(false);
-            }
-        });
-    }*/
-
     private convertirActividad(registro: CronogramaRegistro): ActividadCongreso | null {
-
         const fecha = this.normalizarFecha(registro.Dia);
         const horaInicio = (registro.Hora ?? '').substring(0, 5);
         const tipo = (registro.Tipo ?? '').trim().toLowerCase();
@@ -185,11 +164,9 @@ export class ConlainuasComponent implements OnInit {
         } else {
             categoria = 'Comité Organizador';
             titulo = registro.TituloOrganizacion || 'Actividad del comité organizador';
-            participante = registro.Tipo || 'Comité organizador';
-
             participante = titulo.trim().toLowerCase() === 'conferencia magistral'
-            ? 'Claudio Lomnitz'
-            : registro.Tipo || 'Comité organizador';
+                ? 'Claudio Lomnitz'
+                : registro.Tipo || 'Comité organizador';
         }
 
         if (registro.Afiliacion) {
@@ -249,4 +226,53 @@ export class ConlainuasComponent implements OnInit {
         const dia = this.dias.find(item => item.fecha === fecha);
         return dia ? dia.nombre : '';
     }
+
+
+    visualizarConstancia(event?: Event): void {
+        event?.preventDefault();
+
+        const correo = this.correoBusqueda().trim();
+
+        if (!correo || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+            this.errorCargaConstancia.set(true);
+            return;
+        }
+
+        this.visorAbierto.set(true);
+        this.cargandoConstancia.set(true);
+        this.errorCargaConstancia.set(false);
+
+        this.http.get('http://localhost:7778/constancias/conlainuas/prueba', {
+            params: { correo },
+            responseType: 'blob'
+        }).pipe(
+            finalize(() => this.cargandoConstancia.set(false))
+        ).subscribe({
+            next: (imagen: Blob) => {
+                if (this.constanciaUrl()) {
+                    URL.revokeObjectURL(this.constanciaUrl()!);
+                }
+
+                const url = URL.createObjectURL(imagen);
+                this.constanciaUrl.set(url);
+            },
+            error: () => {
+                this.errorCargaConstancia.set(true);
+                this.constanciaUrl.set(null);
+            }
+        });
+    }
+
+    errorConstancia(): void {
+        this.cargandoConstancia.set(false);
+        this.errorCargaConstancia.set(true);
+    }
+
+    cerrarVisor(): void {
+        this.visorAbierto.set(false);
+        this.constanciaUrl.set(null);
+        this.cargandoConstancia.set(false);
+        this.errorCargaConstancia.set(false);
+    }
+
 }
