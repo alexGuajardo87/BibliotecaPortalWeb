@@ -6,6 +6,8 @@ import { InicioComponent } from './Modulos/inicio/inicio-component';
 import { MisionVisionComponent } from './Modulos/mision-vision/mision-vision-component';
 import { HistoriaUniversidadComponent } from './Modulos/historia-universidad/historia-universidad-component';
 import { BibliotecaCentralComponent } from './Modulos/biblioteca-central/biblioteca-central-component';
+import { ValidarConstanciaComponent } from './Modulos/constancias/validar-constancia/validar-constancia-component';
+
 import { CongresosComponent } from './Formularios/congresos/congresos-component';
 
 import { ConlainuasComponent } from './CONLAINUAS/conlainuas-component';
@@ -20,5 +22,6 @@ export const routes: Routes = [
     { path: 'historia-universidad', component: HistoriaUniversidadComponent, title: 'historia-universidad' },
     { path: 'biblioteca-central', component: BibliotecaCentralComponent, title: 'biblioteca-central' },
     { path: 'registro-congresos', component: CongresosComponent, title: 'congresos' },
+    { path: 'constancias/validar-constancia', component: ValidarConstanciaComponent, title: 'validar-constancia' },
     
 ];

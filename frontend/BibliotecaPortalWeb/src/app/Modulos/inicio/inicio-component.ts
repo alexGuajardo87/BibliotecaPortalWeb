@@ -25,7 +25,6 @@ export class InicioComponent implements AfterViewInit, OnInit {
     private readonly router = inject(Router);
 
     mostrarInfoTesis = false;
-    mostrarModal = false;
 
     items = [
         {
@@ -78,14 +77,7 @@ export class InicioComponent implements AfterViewInit, OnInit {
         }
     ];
 
-    ngOnInit(): void {
-        this.mostrarModal = true;
-    }
-
-    irAlModulo(): void {
-        this.mostrarModal = false;
-        this.router.navigate(['/congreso-conlain-uas']);
-    }
+    ngOnInit(): void {}
 
     ngAfterViewInit(): void {
         this.cargarFacebook();

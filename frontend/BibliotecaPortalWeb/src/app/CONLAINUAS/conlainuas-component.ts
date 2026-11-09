@@ -3,7 +3,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { switchMap } from 'rxjs';
 import { CronogramaService, CronogramaRegistro } from '../Services/cronograma.service';
 import { AuthSessionService } from '../Services/auth-session.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
 
 
@@ -79,6 +79,18 @@ export class ConlainuasComponent implements OnInit {
     readonly constanciaUrl = signal<string | null>(null);
     readonly cargandoConstancia = signal(false);
     readonly errorCargaConstancia = signal(false);
+
+    constancias = signal<any[]>([]);
+    indiceConstancia = signal(0);
+
+    mensajeError = signal('');
+    correoContacto = signal('conlainuas@gmail.com');
+    statusError = signal<number | null>(null);
+
+
+    constanciaActual = computed(() =>
+        this.constancias()[this.indiceConstancia()] ?? null
+    );
 
     ngOnInit(): void {
         this.cargarCronograma();
@@ -227,6 +239,22 @@ export class ConlainuasComponent implements OnInit {
         return dia ? dia.nombre : '';
     }
 
+    anteriorConstancia(): void {
+        if (this.indiceConstancia() > 0) {
+            this.indiceConstancia.update(indice => indice - 1);
+        }
+    }
+
+    siguienteConstancia(): void {
+        if (this.indiceConstancia() < this.constancias().length - 1) {
+            this.indiceConstancia.update(indice => indice + 1);
+        }
+    }
+
+    seleccionarConstancia(indice: number): void {
+        this.indiceConstancia.set(indice);
+    }
+
 
     visualizarConstancia(event?: Event): void {
         event?.preventDefault();
@@ -242,23 +270,37 @@ export class ConlainuasComponent implements OnInit {
         this.cargandoConstancia.set(true);
         this.errorCargaConstancia.set(false);
 
-        this.http.get('http://localhost:7778/constancias/conlainuas/prueba', {
-            params: { correo },
-            responseType: 'blob'
-        }).pipe(
+        this.constancias.set([]);
+        this.indiceConstancia.set(0);
+
+        this.http.get<any>(
+            `http://localhost:7778/constancias/congreso/generar-constancia`,
+            {
+                params: { correo },
+                withCredentials: true
+            }
+        ).pipe(
             finalize(() => this.cargandoConstancia.set(false))
         ).subscribe({
-            next: (imagen: Blob) => {
-                if (this.constanciaUrl()) {
-                    URL.revokeObjectURL(this.constanciaUrl()!);
+            next: (respuesta) => {
+                if (!respuesta.constancias || respuesta.constancias.length === 0) {
+                    this.errorCargaConstancia.set(true);
+                    return;
                 }
 
-                const url = URL.createObjectURL(imagen);
-                this.constanciaUrl.set(url);
+                this.constancias.set(respuesta.constancias);
+                this.indiceConstancia.set(0);
+                this.statusError.set(null);
             },
-            error: () => {
+            error: (error: HttpErrorResponse) => {
                 this.errorCargaConstancia.set(true);
-                this.constanciaUrl.set(null);
+                this.constancias.set([]);
+                this.indiceConstancia.set(0);
+                this.statusError.set(error.status);
+
+                this.mensajeError.set(
+                    error.error?.mensaje || 'No fue posible consultar las constancias.'
+                );
             }
         });
     }
@@ -270,8 +312,8 @@ export class ConlainuasComponent implements OnInit {
 
     cerrarVisor(): void {
         this.visorAbierto.set(false);
-        this.constanciaUrl.set(null);
-        this.cargandoConstancia.set(false);
+        this.constancias.set([]);
+        this.indiceConstancia.set(0);
         this.errorCargaConstancia.set(false);
     }
 
