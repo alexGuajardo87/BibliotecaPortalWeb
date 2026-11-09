@@ -5,6 +5,7 @@ import { CronogramaService, CronogramaRegistro } from '../Services/cronograma.se
 import { AuthSessionService } from '../Services/auth-session.service';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
+import { CONSTANCIAS } from '../Core/Constants/api.constants';
 
 
 
@@ -273,8 +274,9 @@ export class ConlainuasComponent implements OnInit {
         this.constancias.set([]);
         this.indiceConstancia.set(0);
 
+
         this.http.get<any>(
-            `http://localhost:7778/constancias/congreso/generar-constancia`,
+            `${CONSTANCIAS}/congreso/generar-constancia`,
             {
                 params: { correo },
                 withCredentials: true
