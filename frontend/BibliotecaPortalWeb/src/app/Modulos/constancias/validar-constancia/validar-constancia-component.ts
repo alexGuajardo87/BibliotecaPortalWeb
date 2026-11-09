@@ -46,7 +46,7 @@ export class ValidarConstanciaComponent implements OnInit {
         this.constancia.set(null);
 
         this.http.get<any>(
-            `${CONSTANCIAS}/constancias/congreso/verificar-constancia`,
+            `${CONSTANCIAS}/congreso/verificar-constancia`,
             {
                 params: { id },
                 withCredentials: true
