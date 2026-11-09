@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
+import { CONSTANCIAS } from '../../../Core/Constants/api.constants';
 
 @Component({
     selector: 'app-validar-constancia',
@@ -45,7 +46,7 @@ export class ValidarConstanciaComponent implements OnInit {
         this.constancia.set(null);
 
         this.http.get<any>(
-            'http://localhost:7778/constancias/congreso/verificar-constancia',
+            `${CONSTANCIAS}/constancias/congreso/verificar-constancia`,
             {
                 params: { id },
                 withCredentials: true
