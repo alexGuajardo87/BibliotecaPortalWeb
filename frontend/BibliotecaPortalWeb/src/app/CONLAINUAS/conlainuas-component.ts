@@ -6,6 +6,7 @@ import { AuthSessionService } from '../Services/auth-session.service';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
 import { CONSTANCIAS } from '../Core/Constants/api.constants';
+import { jsPDF } from 'jspdf';
 
 
 
@@ -31,7 +32,6 @@ export class ConlainuasComponent implements OnInit {
     private readonly cronogramaService = inject(CronogramaService);
     private readonly authSession = inject(AuthSessionService);
     private http = inject(HttpClient);
-
     readonly fechaInicio = '2026-10-26';
     readonly fechaFin = '2026-10-30';
 
@@ -80,6 +80,7 @@ export class ConlainuasComponent implements OnInit {
     readonly constanciaUrl = signal<string | null>(null);
     readonly cargandoConstancia = signal(false);
     readonly errorCargaConstancia = signal(false);
+    readonly descargandoPdf = signal(false);
 
     constancias = signal<any[]>([]);
     indiceConstancia = signal(0);
@@ -306,6 +307,72 @@ export class ConlainuasComponent implements OnInit {
             }
         });
     }
+
+
+    async descargarTodasConstanciasPdf(): Promise<void> {
+        const constancias = this.constancias();
+
+        if (!constancias.length || this.descargandoPdf()) {
+            return;
+        }
+
+        this.descargandoPdf.set(true);
+
+        try {
+            const pdf = new jsPDF({
+                orientation: 'landscape',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            for (let i = 0; i < constancias.length; i++) {
+                const imagen = constancias[i].imagen;
+
+                if (!imagen) {
+                    continue;
+                }
+
+                const propiedades = pdf.getImageProperties(imagen);
+
+                const anchoPagina = pdf.internal.pageSize.getWidth();
+                const altoPagina = pdf.internal.pageSize.getHeight();
+
+                const proporcion = Math.min(
+                    anchoPagina / propiedades.width,
+                    altoPagina / propiedades.height
+                );
+
+                const ancho = propiedades.width * proporcion;
+                const alto = propiedades.height * proporcion;
+
+                const x = (anchoPagina - ancho) / 2;
+                const y = (altoPagina - alto) / 2;
+
+                if (i > 0) {
+                    pdf.addPage();
+                }
+
+                pdf.addImage(
+                    imagen,
+                    propiedades.fileType,
+                    x,
+                    y,
+                    ancho,
+                    alto
+                );
+            }
+
+            pdf.save('constancias-conlain-uas-2026.pdf');
+
+        } catch (error) {
+            console.error('Error al generar el PDF:', error);
+            alert('No fue posible generar el archivo PDF.');
+
+        } finally {
+            this.descargandoPdf.set(false);
+        }
+    }
+
 
     errorConstancia(): void {
         this.cargandoConstancia.set(false);

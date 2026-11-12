@@ -322,6 +322,7 @@
 </div>
 
 
+
 @if (visorAbierto()) {
     <div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4">
         <div class="flex h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
@@ -339,13 +340,35 @@
                     }
                 </div>
 
-                <button
-                    type="button"
-                    (click)="cerrarVisor()"
-                    class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
-                    aria-label="Cerrar visor">
-                    <i class="pi pi-times text-xl"></i>
-                </button>
+                <div class="flex items-center gap-2">
+
+                    @if (constancias().length > 0 && !cargandoConstancia() && !errorCargaConstancia()) {
+                        <button
+                            type="button"
+                            (click)="descargarTodasConstanciasPdf()"
+                            [disabled]="descargandoPdf()"
+                            class="inline-flex items-center gap-2 rounded-lg bg-[#877514] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#6f600f] disabled:cursor-not-allowed disabled:opacity-60">
+
+                            @if (descargandoPdf()) {
+                                <i class="pi pi-spin pi-spinner"></i>
+                                Generando PDF...
+                            } @else {
+                                <i class="pi pi-file-pdf"></i>
+                                Descargar todas
+                            }
+
+                        </button>
+                    }
+
+                    <button
+                        type="button"
+                        (click)="cerrarVisor()"
+                        class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
+                        aria-label="Cerrar visor">
+                        <i class="pi pi-times text-xl"></i>
+                    </button>
+
+                </div>
             </div>
 
             <div class="relative flex min-h-0 flex-1 flex-col overflow-hidden bg-gray-200">
@@ -362,7 +385,7 @@
                 @if (errorCargaConstancia() && !cargandoConstancia()) {
 
                     @if (statusError() === 404) {
-                    <div class="flex flex-col items-center text-center gap-3 p-5">
+                        <div class="flex flex-col items-center text-center gap-3 p-5">
                             <i class="pi pi-exclamation-circle text-4xl text-orange-500"></i>
 
                             <p class="text-gray-600">
@@ -380,7 +403,7 @@
                                 solicitando información para obtener constancia. Gracias
                             </p>
                         </div>
-                    }@else {
+                    } @else {
 
                         <div class="flex flex-1 flex-col items-center justify-center gap-3 text-center">
                             <i class="pi pi-exclamation-circle text-4xl text-red-600"></i>
@@ -389,8 +412,6 @@
                                 No fue posible cargar las constancias.
                             </p>
 
-                            
-
                             <button
                                 type="button"
                                 (click)="visualizarConstancia()"
@@ -398,8 +419,6 @@
                                 <i class="pi pi-refresh mr-2"></i>
                                 Intentar nuevamente
                             </button>
-
-
                         </div>
                     }
                 }
